@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        
+        function sum(a){
+           
+           
+            return function(b){
+            //    return sum(a)
+            return console.log(a+b)
+               
+           }
+        
+        }
+           sum(4)(5) ;
+           let users = [
+     { name: "John", age: 20, surname: "Johnson" },
+     { name: "Pete", age: 18, surname: "Peterson" },
+     { name: "Ann", age: 19, surname: "Hathaway" },
+     { name: "Znn", age: 19, surname: "Hathaway" }
+   ];
+   
+   // 通常的做法：
+//    console.log(users)
+   // 通过 name (Ann, John, Pete)
+//    users.sort(function(a, b){ return a.name > b.name ? 1 : -1 });
+   // 通过 age (Pete, Ann, John)
+//    console.log(users)
+//    users.sort(function(a, b) { return a.age > b.age ? 1 : -1 });
+
+    console.log(users)
+   // 要求简化为：
+   function byField(c){
+       console.log(c)
+   
+    return function(a, b){ return a[c] > b[c] ? 1 : -1 }; 
+      
+     
+   
+   
+      
+   }
+
+// console.log(byField('name'))
+//    users.sort(byField('name'));
+   users.sort(byField('age'));
+ 
+   
+
+        
+        
+        
+        
+        
+        
+        </script>
+</body>
+</html>

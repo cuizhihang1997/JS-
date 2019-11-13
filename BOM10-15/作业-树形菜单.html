@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>树形菜单</title>
+		<style>
+			.tree{
+				width: 600px;
+				margin: 50px auto;
+			}
+			li{
+				cursor: pointer;
+			}
+			li:hover{
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<ul class="tree" id="tree">
+		  <li>Animals
+		    <ul>
+		      <li>Mammals
+		        <ul>
+		          <li>Cows</li>
+		          <li>Donkeys</li>
+		          <li>Dogs</li>
+		          <li>Tigers</li>
+		        </ul>
+		      </li>
+		      <li>Other
+		        <ul>
+		          <li>Snakes</li>
+		          <li>Birds</li>
+		          <li>Lizards</li>
+		        </ul>
+		      </li>
+		    </ul>
+		  </li>
+		  <li>Fishes
+		    <ul>
+		      <li>Aquarium
+		        <ul>
+		          <li>Guppy</li>
+		          <li>Angelfish</li>
+		        </ul>
+		      </li>
+		      <li>Sea
+		        <ul>
+		          <li>Sea trout</li>
+		        </ul>
+		      </li>
+		    </ul>
+		  </li>
+		</ul>
+		
+		<script type="text/javascript">
+
+           var ulParent = document.getElementsByTagName("li");	
+
+			tree.addEventListener("click", function (){
+				var ulParent1 = event.target.closest("ulParent");
+				console.log(ulParent1);
+                    
+			})
+		</script>
+	</body>
+</html>

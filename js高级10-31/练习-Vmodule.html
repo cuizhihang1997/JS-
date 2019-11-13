@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>练习-Vmodule</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			pre{
+				width: 400px;
+				height: 500px;
+				font-size: 18px;
+				color: #fff;
+				word-break: break-all;
+				background-color: #333;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="text" placeholder="请输入姓名" v-module="name">
+		<input type="text" placeholder="请输入年龄" v-module="age">
+		<button v-on="changeCount">点击数字加 1</button>
+		<pre id="code" contenteditable="true">
+			console.log("aaa");
+		</pre>
+		<script>
+			console.log("v-module");
+			var data = { };
+			var eles = document.querySelectorAll("input[v-module]");
+			console.log(eles)
+			
+			for(let i = 0; i < eles.length; i ++){
+				// var str = eles[i]['v-module'];
+				var str = eles[i].getAttribute("v-module");
+			
+				
+				
+				Object.defineProperties(data,{
+					[str]: {
+						get: function(){
+							return eles[i].value;
+						},
+						set: function(v){
+							console.log(data[str]);
+							eles[i].value = v;
+						}
+					}
+				})
+			}
+		</script>
+	</body>
+</html>

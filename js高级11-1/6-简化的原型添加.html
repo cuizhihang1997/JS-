@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>简化的原型添加</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function Person(){};
+			
+			// extend 继承 / 扩展
+			// 通过方法接受参数的形式,将要添加的属性和方法添加在原型上,此时,原型对象上的constructor不会消失
+			Person.extend = function(obj){
+				console.log(this);
+				for(var i in obj){
+					// 判断原型上是否存在该属性和方法   in  === undefined  Object.getOwnPropertyNames(obj).indexOf(str) === -1
+					if(!(i in this.prototype)){
+						this.prototype[i] = obj[i];
+					}
+				}
+			}
+			
+			Person.extend({
+				name: "李白",
+				age: 24,
+				sayName: function (){
+					console.log(this.name);
+				}
+			})
+			
+			var user = new Person();
+			var user1 = new Person();
+		</script>
+	</body>
+</html>

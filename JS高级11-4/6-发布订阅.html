@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>发布订阅</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*
+				情景: 订阅信息栏目,关注蓝海小区房地产价格信息
+					A先生订阅了 sqr088 的信息
+					B先生订阅了 sqr100 的信息
+					C先生订阅了 sqr120 的信息
+					...
+					根据订阅信息,5秒后推送消息
+			*/
+			
+			var types = ['sqr088','sqr100','sqr120']; // 定义房子类型
+			// 假设张三订阅了88平房子信息,5s后向他推送88平当前价格为 900元/平
+			// 李四也订阅了88平房子
+			// 对应关系: 88平房子有[两个回调]
+			// { sqr088: [回调1,回调2,回调3...], sqr100: [回调1,回调2] }
+			
+			function Observe(){
+				this.list = {
+					// type: [回调数组]
+				}
+			}
+			
+			Observe.prototype = {
+				// 订阅   须知:房子类型,消息推送内容(回调函数(价格))
+				on(type,callback){
+					// 看房源信息是否已注册
+					if(!this.list[type]){
+						// 不存在注册相关信息
+						this.list[type] = [callback];
+					}else{
+						// 存在直接添加回调
+						this.list[type].push(callback);
+					}
+				},
+				// 推送  类型,当前价格
+				// notify(type,price,flower,fruit){
+				notify(){
+					// 获取所有type注册用户
+					// var funs = this.list[type];
+					// 不定参
+					var funs = this.list[arguments[0]];
+					// [] 代表数组  Array.prototype.slice/push...
+					funs.forEach(item => {
+						// item(price,flower,fruit);
+						// 所有的礼品
+						item.apply(this,[].slice.call(arguments,1));
+					})
+				}
+			}
+			
+			var ob = new Observe();
+			
+			// function getPrice(type,price){
+			// 	console.log("张三订阅了" + this.type + "的信息,当前每平米价格为: " + price);
+			// }
+			
+			// function getLisi(type,price){
+			// 	console.log("李四订阅了" + this.type + "的信息,当前每平米价格为: " + price);
+			// }
+			
+			// 'sqr088': [getPrice,getLisi];
+			
+			// setTimeout(function (){
+				// getPrice('sqr088',10000);
+				// getLisi("sqr088",10000);
+			// },3000)
+	
+			
+			// ob.on("sqr088",function(price){
+			// 	console.log("张三订阅了88平房子的信息,当前每平米价格为: " + price);
+			// })
+			// ob.on("sqr088", price => {
+			// 	console.log("房地产的儿子订阅了88平房子的信息,当前每平米价格为: " + price / 2);
+			// })
+			// ob.on("sqr100", (price,flower) => {
+			// 	console.log("李白订阅了100平房子的信息,当前价格为: " + price + " 贵宾用户礼品: " + flower);
+			// })
+			// ob.on("sqr120", (price,flower,fruit) => {
+			// 	console.log("苏轼订阅了120平房子的信息,当前价格为: " + price + " 贵宾用户礼品: " + flower,' 赠送水果: ' + fruit);
+			// })
+			
+			setTimeout(function (){
+				ob.notify('sqr088',1000);
+				ob.notify('sqr100',3000,"白兰地",);
+				ob.notify('sqr120',6000,"荷花","榴莲");
+				setTimeout(function (){
+					ob.notify('sqr088',800);
+					ob.notify('sqr100',2000,"白兰地",);
+					ob.notify('sqr120',8000,"荷花","榴莲");
+				},3000)
+			},3000)
+		</script>
+	</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>事件委托</title>
+	</head>
+	<body>
+		<ul>
+			<li class="changeColor">li_1</li>
+			<li>li_2</li>
+			<li>li_3</li>
+			<li>li_4</li>
+			<li>li_5</li>
+			<li>li_6</li>
+		</ul>
+		<!-- <ul>
+			<li>
+				<p>li_1</p>
+			</li>
+			<li>
+				<p>li_2</p>
+			</li>
+			<li>
+				<p>li_3</p>
+			</li>
+			<li>
+				<p>li_4</p>
+			</li>
+			<li>
+				<p>li_5</p>
+			</li>
+			<li>
+				<p>li_6</p>
+			</li>
+		</ul> -->
+		<div class="changeColor">改变我的颜色</div>
+		
+		count1: <input type="button" value="1" data-count>
+		count1: <input type="button" value="1" data-count>
+		count3: <input type="button" value="1" data-count>
+		
+		<button data-name="李白" data-age>添加li</button>
+		<script type="text/javascript">
+			
+			// var lis = document.querySelectorAll("li");   // 隐藏机制 不会更新
+			var lis1 = document.getElementsByTagName("li");		// 会更新节点;
+			var ulEle = lis1[0].parentNode;
+			var btn = document.querySelector("button");
+			// 点击 li 更改字体颜色为红色;
+			// for(var i = 0; i < lis.length; i ++){
+			// 	lis[i].onclick = function (){
+			// 		this.style.color = "red";
+			// 	}
+			// }
+			
+			
+			
+			/*ulEle.onclick = function (){
+				// 知道哪个li被点击了   触发事件的元素  event.target
+				// if(event.target.tagName === "LI"){
+				// 	event.target.style.color = 'red';
+				// }
+				if(event.target.closest("li")){
+					event.target.closest("li").style.color = 'red';
+				}
+			}*/
+			
+			btn.onclick = function (){
+				var liEle = document.createElement("li");
+				liEle.innerText = 'li_' + (lis1.length+1);
+				lis1[0].parentNode.appendChild(liEle);				
+			}
+			
+			btn.addEventListener('click',function (){
+				// console.log("aaa");
+				console.log(this.dataset.tel);
+			}) 
+			btn.addEventListener('click',function (){
+				console.log("ccc");
+			}) 
+			
+			// addEventListener  可以为同一事件绑定多个事件处理函数
+			document.addEventListener('click',function (){
+				// 判断是否添加了特殊属性  data-count
+				if(event.target.dataset.count !== undefined){
+					event.target.value ++;
+				}
+			})
+			
+			// 行为型  控制行为 ===> 只要有特殊标识,就能执行特殊事件
+			document.addEventListener("click",function (){
+				// add remove contains toggle
+				if(event.target.classList.contains("changeColor")){
+					event.target.style.color = 'red';
+				}
+			})
+		</script>
+	</body>
+</html>

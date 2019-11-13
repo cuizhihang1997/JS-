@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>昨日练习</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 1. 扁平化数组,去重并升序返回
+			var arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];
+			
+			/*function dealArr(arr){
+				// 声明一个新数组
+				var newArr = [];
+				flat.call(newArr,arr);
+				
+				// 排序
+				newArr.sort(function (a,b){
+					return a - b;
+				});
+				
+				return newArr;
+			}
+			
+			function flat(arr){
+				// 扁平化
+				// 去重
+				var that = this;
+				arr.forEach(item => {
+					// 判断是否是数组  instanceof/Object.prototype.toStirng(item) === '[object Array]'
+					item instanceof Array ? flat.call(that,item) : (that.indexOf(item) === -1 ? that.push(item) : '');
+				})
+			}*/
+			
+			function dealArr(arr){
+				var newArr = [];
+				var obj = {};
+				arr.toString().split(",").sort((a,b) => { return a - b }).forEach(item => {
+					// if(newArr.indexOf(item) === -1){
+					// 	newArr.push(+item);
+					// }
+					// 拿到所有obj的key值,即所有不重复的数组值
+					if(!obj[item]) obj[item] = 1;
+				})
+				
+				// Set 代表唯一值
+				// var arr3 = [...new Set(arr.toString().split(",").sort((a,b) => { return a - b }))];
+				// console.log(arr3);
+				// 获取所有对象的key值
+				var arr1 = Object.getOwnPropertyNames(obj);
+				var arr2 = Object.keys(obj);
+				// console.log(arr1,arr2);
+				// return newArr;
+			}
+			
+			
+			//2、创建一个函数`delay(func, time)`，将每次调用 `func` 延迟 `time` 毫秒。
+			function func(str) {
+				console.log(str);
+			}
+			
+			function delay(f,t){
+				return function (){
+					// arguments
+					var args = arguments;
+					setTimeout(function (){
+						// f.call(this,arg1,arg2)
+						// f(...args);
+						// 使用apply方法,将第二参数拆开传递
+						// console.log(this);
+						f.apply(this,args);
+					},t)
+				}
+			}
+
+			// create
+			var f1000 = delay(func, 1000);
+			var f1500 = delay(func, 1500);
+
+			f1000("hello"); // 在 1000 ms 后展示 "hello"
+			f1500("world"); // 在 1500 ms 后展示 "world"
+		</script>
+	</body>
+</html>

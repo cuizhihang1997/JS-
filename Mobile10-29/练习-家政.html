@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>练习-家政</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			header{
+				display: flex;
+				align-items: center;
+				padding: 0 0.4rem;
+			}
+			.city{
+				font-size: 0.426666rem;
+				color: #333;
+			}
+			.logo{
+				font-size: 0.64rem;
+				color: #FED852;
+				margin: 0 auto;
+			}
+			.search{
+				width: 0.506666rem;
+				height: 0.506666rem;
+				background: url('../lib/image/mobile/jz/icon.png') no-repeat -3.866666rem -5.2rem/11.733333rem;
+			}
+			
+			.banner{
+				width: 100%;
+				height: 4.293333rem;
+			}
+			.serve{
+				height: 4.453333rem;
+				overflow: hidden;
+			}
+			.serve-content{
+				position: relative;
+				left: 0;
+				display: flex;
+				width: 200%;
+				height: 100%;
+				transition: all 1s ease;
+			}
+			.serve-content ul{
+				display: flex;
+				flex-wrap: wrap;
+				width: 50%;
+				height: 100%;
+				list-style: none;
+			}
+			.serve-content ul li{
+				width: 20%;
+				font-size: 12px;
+				color: #666666;
+				text-align: center;
+			}
+			.serve-content ul li div{
+				width: 1.173333rem;
+				height: 1.173333rem;
+				margin: 0.373333rem auto 0.133333rem;
+				border-radius: 50%;
+			}
+			
+			.hot{
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+			}
+			.hot div{
+				position: relative;
+				width: 48.5%;
+				height: 1.813333rem;
+				background-color: grey;
+			}
+			.hot .act{
+				position: absolute;
+				width: 0;
+				height: 0;
+				border: 0.333333rem solid orange;
+				border-color: orange transparent transparent orange;
+			}
+			.hot .act::after{
+				position: absolute;
+				top: -0.293333rem;
+				left: -0.293333rem;
+				font-size: 0.266666rem;
+				color: #fff;
+				transform: rotate(-45deg);
+				content: "热";
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="city">郑州</div>
+			<div class="logo">LOGO</div>
+			<div class="search"></div>
+		</header>
+		
+		<img class="banner" src="../lib/image/mobile/jz/banner.png" >
+		
+		<div class="serve">
+			<div class="serve-content">
+				<!-- ul>li>div(>p) -->
+			</div>
+		</div>
+		
+		<div class="hot">
+			<div><div class="act"></div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		
+		<script type="text/javascript">
+			window.onload = window.onresize = initFont;
+			function initFont(){
+				document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + "px";
+			}
+			var serveContent = document.querySelector(".serve-content");
+			
+			var arr = [
+				'日常保洁','空房开荒','专业擦玻璃','厨房熏蒸','地板打蜡',
+				`房屋消毒`, `床垫清洗`,`石材除渗透`,`瓷砖美缝`,`晶面处理`,
+				'地毯清洗','窗帘清洗','家具保养','沙发保养','卫生间消毒',
+				`甲醛处理`, `管道疏通`,`油烟机清洗`,`灯具清洗`,`更多服务`
+			];
+			var colors = [
+				{ f: '#F4A77A',t: '#EB6B2B'},
+				{ f: '#F380BA',t: '#D74B8B'},
+				{ f: '#FB9985',t: '#E55239'},
+				{ f: '#C3D46D',t: '#A1C021'},
+				{ f: '#F2C695',t: '#ED933E'},
+				{ f: '#A4B8F4',t: '#657ED8'},
+				{ f: '#F2C695',t: '#ED933E'},
+				{ f: '#C3E582',t: '#86B935'},
+				{ f: '#FAA8CC',t: '#E76198'},
+				{ f: '#BEB8F8',t: '#7C72EF'},
+				{ f: '#A4B8F4',t: '#657ED8'},
+				{ f: '#FCCA83',t: '#F79A2F'},
+				{ f: '#FAA8CC',t: '#E76198'},
+				{ f: '#BEB8F8',t: '#7C72EF'},
+				{ f: '#C3E582',t: '#86B935'},
+				{ f: '#C3D46D',t: '#A1C021'},
+				{ f: '#FCCA83',t: '#F79A2F'},
+				{ f: '#F380BA',t: '#D74B8B'},
+				{ f: '#F4A77A',t: '#EB6B2B'},
+				{ f: '#FB9985',t: '#E55239'}
+			]
+
+			
+			var str = "";
+			for(var i = 0; i < arr.length; i ++){
+				if(i % 10 === 0){
+					str += "<ul>";
+				}
+				/* 0-4     5-9
+					 10-14   15-19
+					 0-4(i) 5-14(i-5) 15-19(i-10)  x
+					 
+					 0-4 10-14 y=0
+					 5-9 15-19 y=-44px
+				*/
+				str += `<li ${i}>
+				<div style="background: url('../lib/image/mobile/jz/icon.png') no-repeat ${(i < 5 ? i : (i < 15 ? i-5 : i -10)) * -1.173333}rem ${ i % 10 > 4 ? -1.173333 : 0}rem/11.733333rem,
+				linear-gradient(to top, ${colors[i].f} 5%, ${colors[i].t} 100%);"></div><p>${arr[i]}</p></li>`;
+				if(i % 10 === 9){
+					str += "</ul>";
+				}
+			}
+			serveContent.innerHTML = str;
+			
+			// 表明手指左滑右滑   左滑x-起始x 负值
+			serveContent.ontouchstart = function (){
+				var startX = event.targetTouches[0].pageX;
+				
+				serveContent.ontouchend = function (){
+					console.log(event);
+					// changedTouches 表示手指离开屏幕时的列表
+					var endX = event.changedTouches[0].pageX;
+					if(endX - startX > 100){
+						// 右滑
+						serveContent.style.left = 0;
+					}else if(endX - startX < -100){
+						// 左滑
+						serveContent.style.left = -serveContent.parentNode.offsetWidth + "px";
+					}
+				}
+			}
+			
+		</script>
+	</body>
+</html>

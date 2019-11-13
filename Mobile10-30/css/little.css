@@ -1,0 +1,7 @@
+@media (max-width: 900px){
+	.box{
+		width: 200px;
+		height: 200px;
+		background-color: red;
+	}
+}

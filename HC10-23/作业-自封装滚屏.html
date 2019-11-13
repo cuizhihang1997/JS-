@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>自封装滚屏</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			.box{
+				height: 400%;
+				transition: all .4s ease;
+			}
+			.section{
+				height: 25%;
+				font-size: 80px;
+				color: #fff;
+				text-align: center;
+				line-height: 300px;
+				background-color: orange;
+			}
+			.section:nth-child(2){
+				background-color: brown;
+			}
+			.section:nth-child(3){
+				background-color: blue;
+			}
+			.section:last-child{
+				background-color: green;
+			}
+			.dots{
+				position: fixed;
+				top: 50%;
+				right: 30px;
+				width: 20px;
+				list-style: none;
+			}
+			li{
+				width: 20px;
+				height: 20px;
+				margin-bottom: 10px;
+				background-color: #fff;
+				border-radius: 50%;
+			}
+			li.act{
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="section">1</div>
+			<div class="section">2</div>
+			<div class="section">3</div>
+			<div class="section">4</div>
+		</div>
+		<ul class="dots">
+			<li data-index="0" class="act"></li>
+			<li data-index="1" ></li>
+			<li data-index="2" ></li>
+			<li data-index="3" ></li>
+		</ul>
+		
+		<script type="text/javascript">
+			var box = document.querySelector(".box");
+			var lis = document.querySelectorAll("li");
+			
+			var count = 0; // 记录当前滚动页面下标
+			
+			// for(let i = 0; i < lis.length; i ++){
+			// 	lis[i].
+			// }
+			lis[0].parentNode.onclick = function (){
+				var ele = event.target;
+				if(ele.tagName === "LI"){
+					count = ele.dataset.index;
+					changeAct(count);
+					box.style.transform = `translateY(${-count * 25}%)`;
+				}
+			}
+			
+			// 1s 内执行1次
+			var startTime = performance.now();
+			window.addEventListener("mousewheel",function (){
+				var now = performance.now();
+				if(now - startTime > 500){
+					startTime = now;
+					if(event.wheelDelta > 0){
+						count --;
+						if(count <= 0){
+							count = 0;
+						}
+						console.log("up ...");
+					}else if(event.wheelDelta < 0){
+						count ++;
+						// 到达最底部
+						if(count >= box.children.length - 1){
+							count = box.children.length - 1;
+						}
+						// document.querySelector(".dots li.act").classList.remove("act");
+						// lis[count].classList.add("act");
+						console.log("down ...");
+					}
+					changeAct(count);
+					// `` 表示字符串  里面可以使用 ${变量} 装变量相当于 '+ 变量 +'
+					box.style.transform = `translateY(${-count * 25}%)`;
+				}
+			})
+			
+			function changeAct(i){
+				document.querySelector(".dots li.act").classList.remove("act");
+				lis[i].classList.add("act");
+			}
+			
+			
+			
+			function throttle(func, wait){
+				var startTime = performance.now();
+				return function (){
+					var now = performance.now();
+					if(now - startTime > wait){
+						startTime = now;
+						func();
+					}
+				}
+			}
+			
+			
+		</script>
+	</body>
+</html>

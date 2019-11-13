@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>1-栅格化布局</title>
+		<link rel="stylesheet" type="text/css" href="../lib/layui/css/layui.css"/>
+		
+		<style>
+			.layui-container{
+				/* height: 100px; */
+				border: 1px solid red;
+			}
+			
+			/* @media (max-width: 1200px){
+				.item {
+					width: 25%;
+				}
+			} */
+			.item{
+				height: 100px;
+				border: 1px solid red;
+				box-sizing: border-box;
+			}
+			
+			/* bf-col-sm1 */
+			
+			
+			/*@media (min-width: 1200px) {
+				.bg-col-lg1{
+					width: calc(100% / 12);
+				}
+				.bg-col-lg2{
+					width: calc(100% / 6);
+				}
+				.bg-col-lg3{
+					width: calc(100% / 4);
+				}
+				.bg-col-lg4{
+					width: calc(100% / 3);
+				}
+				.bg-col-lg5{
+					width: calc(100% / 12 * 5);
+				}
+				.bg-col-lg6{
+					width: calc(100% / 2);
+				}
+				.bg-col-lg7{
+					width: calc(100% / 12 * 7);
+				}
+				.bg-col-lg8{
+					width: calc(100% / 3 * 2);
+				}
+				.bg-col-lg9{
+					width: calc(100% / 4 * 3);
+				}
+				.bg-col-lg10{
+					width: calc(100% / 6 * 5);
+				}
+				.bg-col-lg11{
+					width: calc(100% / 12 * 11);
+				}
+				.bg-col-lg12{
+					width: 100%;
+				}
+			}*/
+		</style>
+	</head>
+	<body>
+		
+		<div class="layui-container">
+			<div class="layui-row">
+				<div class="item layui-col-xs12 layui-col-sm6 layui-col-md4 bg-col-lg3">
+					<div class="grid-demo grid-demo-bg1">6/12</div>
+				</div>
+				<div class="item layui-col-xs12 layui-col-sm6 layui-col-md4 bg-col-lg3">
+					<div class="grid-demo">6/12</div>
+				</div>
+				<div class="item layui-col-xs12 layui-col-sm6 layui-col-md4 bg-col-lg3">
+					<div class="grid-demo">6/12</div>
+				</div>
+				<div class="item layui-col-xs12 layui-col-sm6 layui-col-md4 bg-col-lg3">
+					<div class="grid-demo">6/12</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- <script src="../lib/layui/layui.js" type="text/javascript" charset="utf-8"></script> -->
+	</body>
+</html>

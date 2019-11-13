@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>回忆-轮播</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: relative;
+				width: 600px;
+				height: 400px;
+				margin: 30px auto;
+				border: 1px solid red;
+			}
+			ul {
+				position: absolute;
+				left: 0;
+				width: 200%;
+				height: 100%;
+				list-style: none;
+			}
+			li {
+				float: left;
+				width: 50%;
+				height: 100%;
+				background-color: red;
+			}
+			li:last-child{
+				background-color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul id="ulEle">
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			// 运动函数, 图片计数器
+			
+			
+			
+			function move(ele,target){
+				// clearInterval(ele.timer);
+				/*ele.timer = setInterval(fucntion(){
+					// 起点
+					var start = ele.offsetLeft;
+					// 步长
+					var step = (target - start) / 10;
+					if(Math.abs(step) < 1){ [-1,1]
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ele.style.left = start + step + "px";
+					// 停止条件
+					if(start + step === target){
+						console.log('stop ...');
+						clearInterval(ele.timer);
+					}
+				},1000 / 60)*/
+				// requestAnimationFrame(callback)
+				// 起点
+				requestAnimationFrame(function fn(){
+					var start = ele.offsetLeft;
+					// 步长
+					var step = (target - start) / 10;
+					if(Math.abs(step) < 1){ [-1,1]
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ele.style.left = start + step + "px";
+					// 停止条件
+					if(Math.abs(start + step) < Math.abs(target)){
+						requestAnimationFrame(fn);
+					}
+				})
+				
+			}
+		</script>
+	</body>
+</html>

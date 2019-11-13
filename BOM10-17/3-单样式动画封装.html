@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>单样式动画封装</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				position: absolute;
+				width: 200px;
+				height: 200px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		
+		<script type="text/javascript">
+			// 改变box的宽度为400; 缓动改变
+			// 改变透明度为 .2
+			
+			box.onclick = function (){
+				var timer = setInterval(function(){
+					// 获取起点
+					// var start = parseInt(getComputedStyle(box,null).width);  // 要把有单位的字符串改成数字
+					var start = parseInt(getComputedStyle(box,null).opacity * 100);   // 放大进行,缩小赋值 小数位*100
+					// 设置步长
+					// var step = (400 - start) / 10;
+					var step = (20 - start) / 10;
+					if(Math.abs(step) < 1){
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					// box.style.width = start + step + "px";
+					box.style.opacity = (start + step) / 100;
+					// 判断终点
+					if(start + step === 20){
+						console.log("stop ...");
+						clearInterval(timer);
+					}
+				},1000/60)
+			}
+			
+			/**
+			 * @desc 改变任意元素的任意样式的动画
+			 * @auth moxuan
+			 * @param {EleObject} ele		元素
+			 * @param {String} styleName  样式名
+			 * @param {Number} target		样式值
+			 */
+			function changeStyle(ele,styleName,target){
+				if(styleName === "opacity") target *= 100;
+				if(ele.timer) clearInterval(ele.timer);
+				ele.timer = setInterval(function (){
+					// 获取起点  正常带px  透明度 . 放大倍数
+					var start;
+					if(styleName === "opacity"){
+						// 先放大,在parseInt
+						start = parseInt(getStyle(ele,'opacity') * 100);
+					}else if(styleName === "zIndex"){
+						// 层级没有变化
+						ele.style.zIndex = target;
+						clearInterval(ele.timer);
+						return;
+					}else{
+						start = parseInt(getStyle(ele,styleName));
+					}
+					var step = (target - start) / 10;
+					if(Math.abs(step) < 1){
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					if(styleName === "opacity"){
+						ele.style.opacity = (start + step) / 100;
+					}else{
+						ele.style[styleName] = start + step + 'px';
+					}
+					// 终点
+					if(start + step === target){
+						console.log("stop ...");
+						clearInterval(ele.timer);
+					}
+				},1000/60)
+			}
+			
+			function getStyle(ele,styleName){
+				if(getComputedStyle){
+					return getComputedStyle(ele,null)[styleName];
+				}else{
+					return ele.currentStyle[styleName];
+				}
+			}
+		</script>
+	</body>
+</html>
+ 

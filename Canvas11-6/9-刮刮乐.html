@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>刮刮乐</title>
+		<style>
+			.box{
+				margin: 30px auto;
+				width: 512px;
+				height: 240px;
+				background: url('https://preview.qiantucdn.com/58pic/21/47/70/85x58PICeAckDI3eg7eGr_PIC2018.jpg!w1024_new_small');
+				background-size: 512px;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<canvas id="cvs" width="512px" height="240"></canvas>
+		</div>
+		
+		<script type="text/javascript">
+			var ctx = cvs.getContext("2d");
+			
+			ctx.fillStyle = "blue";
+			ctx.fillRect(0,0,cvs.width,cvs.height);
+			// 设置图形重叠的策略
+			ctx.globalCompositeOperation = "destination-out";
+			
+			ctx.lineCap = 'round';
+			ctx.lineWidth = 40;
+			
+			
+			var canuse = false;
+			var x,y;
+			cvs.onmousedown = function (){
+				canuse = true;
+				x = event.offsetX;
+				y = event.offsetY;
+				// 不建议再写函数嵌套函数
+			}
+			cvs.onmousemove = function (){
+				if(canuse){
+					
+					ctx.beginPath();
+					// 将画笔移动到圆心位置
+					// 画圆头的线
+					ctx.moveTo(x,y);
+					ctx.lineTo(event.offsetX,event.offsetY);
+					// ctx.arc(event.offsetX,event.offsetY,20,0,2*Math.PI,false);
+					// ctx.fill();
+					x = event.offsetX;
+					y = event.offsetY;
+					ctx.stroke();
+					ctx.closePath();
+				}
+			}
+			cvs.onmouseup = function (){
+				// cvs.onmousemove = null;
+				canuse = false;
+			}
+		</script>
+	</body>
+</html>

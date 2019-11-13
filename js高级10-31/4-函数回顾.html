@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>函数回顾</title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			// 为什么用到函数   封装性 内部包含的: 实现某种功能的 n 条语句
+			// 创建函数的类型:   声明函数  匿名函数(用一个变量接收) 函数表达式
+			// function fn(){}  var fn = function (){}
+			// 循环绑定事件的时候
+			// 1. 立即执行函数
+			var gn = function (){ console.log("ccc"); }();
+			var an = (function (){ console.log("hello") })();
+			var cn = (function (){ console.log("hello1") }());
+			
+			(function fn(){ console.log("aaa") })();
+			(function fn1(){
+				console.log("world");
+			}());
+			
+			// ~ 取反-1
+			// ~~ 隐式转换原值为数字类型
+			// 花样的立即执行函数
+			+function (){console.log("花样的立即执行函数 +")}();
+			-function (){console.log("花样的立即执行函数 -")}();
+			~function (){console.log("花样的立即执行函数 ~")}();
+			
+			
+			// 递归函数  斐波那契数列
+			/*
+				1. 找规律
+				2. 写函数,加名字,形参
+				3. 写返回值
+				4. 判断临界值,即临界条件
+			*/
+			// 1 1 2 3 5 8 13 21 34 55 ...   n 的兔子数 = n-1 月的兔子数 + n-2 月的兔子数
+			function fb(n){
+				if(n === 1 || n === 2){
+					return 1;
+				}
+				return fb(n-1) + fb(n-2);
+			}
+			
+			// 5! ===>   5 * 4! ==> 5 * 4 * 3! ==> ...
+			// n! ===> n * (n-1)! ...
+			function jc(n){
+				if(n === 1){
+					return 1;
+				}
+				// return n * jc(n-1);
+				return n * arguments.callee(n-1);
+			}
+			
+			
+			// 形参  ==> arugments 简单类型值 引用类型值
+			// 形参就是实参的副本,拷贝的是地址
+			// 简单类型值 作为形参,在函数中做的更改不会反应在实参上
+			// 应用类型值 作为参数,在函数中做的更改会反映在实参上
+			var n = 10, m = 20;
+			
+			function add(a,b){
+				// arguments  所有实参的集合,伪数组,存在于任何一个函数中,它的callee方法代表函数本身
+				a += 10;
+				b += 5;
+				console.log(arguments,arguments.callee === add);
+				// argument[a,b,callee,length...];
+				arguments[0] += 30;
+				console.log(a);
+			}
+			add(n,m);
+			console.log(n,m);
+			
+			// var obj = {};
+			var arr = [];
+			function addName(obj){
+				// obj.name = "李白";
+				arr.push("李白");
+			}
+			addName(arr);
+			console.log(arr);
+			
+
+		</script>
+	</body>
+</html>

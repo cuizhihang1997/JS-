@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>client家族</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				position: relative;
+				width: 200px;
+				height: 200px;
+				margin: 40px;
+				padding: 30px;
+				border: 20px solid black;
+				background-color: red;
+			}
+			#inner{
+				position: relative;
+				width: 400px;
+				height: 400px;
+				padding: 20px;
+				background-color: blue;
+				border: 50px solid orange;
+			}
+			#insert{
+				margin: 50px;
+				width: 100px;
+				height: 100px;
+				background-color: green;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="inner">
+				<div id="insert"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			
+			// 求任一元素距离页面顶部的距离
+			// 当前元素的offsetTop + 有定位的父类的borderTop ... body
+			function getTop(ele){
+				if(ele.offsetParent.tagName === "BODY"){
+					return ele.offsetTop;
+				}
+				// if(ele.tagName === "BODY"){
+				// 	return 0;
+				// }
+				return ele.offsetTop + ele.offsetParent.clientTop + getTop(ele.offsetParent);
+			}
+			
+			// 递归   斐波那契定律
+			// 1 1 2 3 5 8 13 21 34 55 ....
+			// 当前月 n = 前两个月的兔子数相加 n-1 + n-2
+			function fb(n){
+				if(n === 1 || n === 2){
+					return 1;
+				}
+				return fb(n-1) + fb(n-2);
+			}
+		</script>
+	</body>
+</html>

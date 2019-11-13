@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>昨日-订阅</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*
+				情景: 订阅信息栏目,关注蓝海小区房地产价格信息
+					A先生订阅了 sqr088 的信息
+					B先生订阅了 sqr100 的信息
+					C先生订阅了 sqr120 的信息
+					...
+					根据订阅信息,5秒后推送消息
+			*/
+			var types = ['sqr088','sqr100','sqr120'];
+			// sqr088 : ['user','user1','user2'...]
+			function Observe(){
+				this.list = {
+					// sqr088: [user]
+				}
+			}
+			
+			Observe.prototype = {
+				// on: function (){
+					
+				// }
+				on(data){
+					// 知道是谁订阅了什么
+					if(!data.type) return;
+					if(!data.user) return;
+					
+					if(this.list[data.type]){
+						// this.list[data.type].push(data.user);
+						this.list[data.type].push(data);
+					}else{
+						// this.list[data.type] = [data.user];
+						this.list[data.type] = [data];
+					}
+				},
+				notify(params){
+					for(var i in params){
+						// 房子类型当前价格  都有谁
+						var uArr = this.list[i]; // 订阅相关房源的用户数组
+						uArr.forEach(item => {
+							var str = `尊敬的${item.user}先生,您订阅的蓝海小区${item.type}房源当前价格为: ${params[i].price}/平米`;
+							if(item.identity){
+								if(item.identity === 'vip'){
+									str += `,您是我们的超级会员,您的礼品有${params[i].gift}`;
+								}else{
+									// svip
+									str += `您是我们的顶级会员,您的礼品有${params[i].gift},您将享有${params[i].percent}折优惠`;
+								}
+							}
+							console.log(str);
+						})
+						
+					}
+				}
+			}
+			
+			var ob = new Observe();
+			
+			// 将回调绑定在Oberve里
+			ob.on({
+				type: "sqr088",
+				user: "李白",
+			})
+			ob.on({ type: "sqr088", user: "苏轼", identity: 'vip' });
+			ob.on({ type: "sqr088", user: "和珅", identity: 'svip' });
+			ob.on({ type: "sqr088", user: "李煜" });
+			ob.on({ type: "sqr100", user: "武松" });
+			ob.on({ type: "sqr120", user: "西门庆", identity: "svip" });
+			ob.on({ type: "sqr120", user: "李逵" });
+			
+			setTimeout(()=>{
+				// ob.notify('sqr088',1000);
+				// ob.notify('sqr100',1000);
+				// ob.notify('sqr120',1000);
+				ob.notify({
+					sqr088: {
+						price: 1000,
+						gift: "瓜子一包",
+						percent: 5
+					},
+					sqr100: {
+						price: 3000,
+						gift: "果篮一个,白兰地一瓶,荷花两朵",
+						percent: 7
+					},
+					sqr120: {
+						price: 5000,
+						gift: "停车场车位一个,体验三个月家政服务",
+						percent: 8
+					}
+				})
+			},3000)
+		</script>
+	</body>
+</html>

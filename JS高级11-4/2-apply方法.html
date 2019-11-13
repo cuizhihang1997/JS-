@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>2-apply方法</title>
+	</head>
+	<body>
+		<ul>
+			<li>li_1</li>
+			<li>li_2</li>
+			<li>li_3</li>
+			<li>li_4</li>
+			<li>li_5</li>
+			<li>li_6</li>
+			<li>li_7</li>
+			<li>li_8</li>
+		</ul>
+		
+		<script type="text/javascript">
+			/*
+				apply 方法
+				语法：`func.apply(thisObj,[argArray])`
+				定义：应用某一对象的一个方法，以另一个对象替换当前对象，第二个参数是数组或类数组
+				说明：如果第二个参数不是数组或类数组，那么将导致一个 typeError。如果没有提供 thisObj，那么 Global 对象将被用作 thisObj，并且无法被传递任何参数。
+			*/
+			var name = "张三";
+			
+			var user = {
+				name: "武则天"
+			}
+			var obj = {
+				name: "李白",
+				sayName (){
+					// 不定参函数: 需要使用arguments来使用传入的参数
+					// var str = '';
+					// for(var i = 0; i < arguments.length; i ++){
+					// 	str += ',' + arguments[i];
+					// }
+					
+					// window.showFriend.call(this,str.slice(1));
+					
+					
+					// console.log(this.name);
+					
+					// 如果在这个方法中调用 showFriend 方法,并且将showFriend方法中的this绑定成调用这个方法的对象,
+					// 且输入的朋友为这个方法的参数,因为是不知个数的参数,所以传入arguments
+					window.showFriend.apply(this,arguments);
+					// window.showFriend.apply(this,["狄仁杰", "唐玄宗"]);
+				}
+			}
+			
+			function showFriend(){
+				var str = '';
+				for(var i = 0; i < arguments.length; i++){
+					str += ',' + arguments[i];
+				}
+				console.log(this.name + "的朋友有: " + str.slice(1));
+			}
+			
+			// obj.sayName.call(user,'狄仁杰','唐玄宗','李元芳');
+			obj.sayName.apply(user,['狄仁杰','唐玄宗']);
+			
+			// 新的类型检测
+			// number/string/boolean/undefined/function/object typeof
+			// null ===
+			// array/object/function instanceof Array/Object/Function
+			var obj = {
+				name: "苏轼"
+			}
+			
+			console.log(obj.toString()); // 	[object Object]
+			// Object.prototype.toString  方法将对象的类型显示出来,调用call方法即可将其他数据类型显示出来
+			var op = Object.prototype;
+			console.log(op.toString.call([])); // [object Array]
+			console.log(op.toString.call(123)); // [object Number]
+			console.log(op.toString.apply('234')); // [object String]
+			// ...
+			
+			var lis = document.querySelectorAll("li");
+			for(var i = 0; i < lis.length; i ++){
+				console.log(lis[i].innerText);
+			}
+			
+			// lis.push(lis[0]);
+			
+			// 如何将一个伪数组变成一个数组
+			function add(){ // 计算所有形参的和
+				// arguments   slice
+				var n = 0;
+				[].push.call(arguments,'30');
+				console.log(arguments);
+				// var arr = [].slice.call(arguments);
+				// [].slice.call(arguments).forEach(item => {
+				// 	n += item;
+				// })
+				// console.log(n);
+			}
+			
+			add(1,2,3);
+			add(4,5,6,7,8);
+		</script>
+	</body>
+</html>

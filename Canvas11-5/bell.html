@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    	*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+    
+    </style>
+</head>
+<body>
+    
+
+    <canvas id="cvs" width="600" height="500">
+        你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+    </canvas>
+
+
+    <script>
+    
+    
+    
+    function Bell(zz){
+        
+
+     this.cvs = document.querySelector(id);
+     
+     this.cvd = this.cvs.getContext('2d');
+
+      this.x = this.y = this.r  = reR();
+
+      this.stepX = reStep();
+
+
+      this.stepY =reSteo();
+
+
+      this.color = reColor();
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    Bell.prototype = {
+       
+
+
+
+       init(){
+
+
+
+       },
+
+
+
+     creatBell(){
+           
+       var cvd =this.cvd;
+
+          cvd.begin
+       
+
+
+     },
+
+
+
+     move(){
+
+
+         setInterval(() => {
+             
+         }, 1000/60)
+     },
+
+      
+     reStep(){
+         return Math.floor(Math.random()*5)+3
+
+     },
+     reR(){
+         return Math.floor(Math.random()*14)+15
+
+     },
+     reColor(){
+         return Math.floor(Math.random()*361)+
+
+     }
+
+    }
+
+   
+
+
+    
+    </script>
+</body>
+</html>

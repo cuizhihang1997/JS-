@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>旋转木马</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			ul,ol{
+				list-style: none;
+			}
+			.swiper{
+				position: relative;
+				width: 1200px;
+				margin: 10px auto;
+			}
+			.swiper ul{
+				height: 500px;
+			}
+			li{
+				position: absolute;
+				/* left: 100px;
+				top: 0; */
+			}
+			.swiper li img{
+			    width:100%;
+			}
+			.arr{
+				position: absolute;
+				top: 50%;
+				left: 0;
+				margin-top: -35px;
+				display: block;
+				width: 30px;
+				height: 70px;
+				font-size: 20px;
+				color: #fff;
+				text-align: center;
+				line-height: 70px;
+				background-color: rgba(0,0,0,.7);
+				z-index: 999;
+				text-decoration: none;
+			}
+			.arr.arr-r{
+				left: auto;
+				right: 0;
+			}
+			ul li.li_1{
+				width:400px;
+				top:70px;
+				left:50px;
+				opacity:.2;
+				z-index:2;
+			}
+			ul li.li_2{
+				width:600px;
+				top:120px;
+				left:0px;
+				opacity:.8;
+				z-index:3;
+			}
+			ul li.li_3{
+				width:800px;
+				top:100px;
+				left:200px;
+				opacity:1;
+				z-index:4;
+			}
+			ul li.li_4{
+				width:600px;
+				top:120px;
+				left:600px;
+				opacity:.8;
+				z-index:3;
+			}
+			ul li.li_5{
+				 width:400px;
+				top:70px;
+				left:750px;
+				opacity:.2;
+				z-index:2;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="swiper">
+			<ul>
+			  <li class="li_1"><img src="../lib/image/banner/m1.jpg" alt=""/></li>
+		    <li class="li_2"><img src="../lib/image/banner/m2.jpg" alt=""/></li>
+		    <li class="li_3"><img src="../lib/image/banner/m3.jpg" alt=""/></li>
+		    <li class="li_4"><img src="../lib/image/banner/m4.jpg" alt=""/></li>
+		    <li class="li_5"><img src="../lib/image/banner/m5.jpg" alt=""/></li>
+			</ul>
+			<a href="javascript:;" class="arr arr-l"><</a>
+			<a href="javascript:;" class="arr arr-r">></a>
+		</div>
+		
+		<script type="text/javascript">
+			var btn1 = document.querySelector(".arr-l");
+			var btn2 = document.querySelector(".arr-r");		// 下一个
+			var lis = document.querySelectorAll("ul li"); // 获取所有的li
+			// 获取要改变元素的样式组成的数组
+			var arr = [		// 整体移动 tab 向后, shift + tab 向前		arr跟着循环变化的
+				{   //  0
+					width:400,
+					top:70,
+					left:50,
+					opacity:.2,
+					zIndex:2
+				},
+				{  // 1
+					width:600,
+					top:120,
+					left:0,
+					opacity:.8,
+					zIndex:3
+				},
+				{   // 2
+					width:800,
+					top:100,
+					left:200,
+					opacity:1,
+					zIndex:4
+				},
+				{  // 3
+					width:600,
+					top:120,
+					left:600,
+					opacity:.8,
+					zIndex:3
+				},
+				{   //4
+					width:400,
+					top:70,
+					left:750,
+					opacity:.2,
+					zIndex:2
+				}
+			];
+			
+			btn1.onclick = function (){
+				arr.unshift(arr.pop());
+				for(var i = 0; i < arr.length; i ++){
+					changeStyle(lis[i],arr[i]);
+				}
+			}
+			
+			var count = 0;
+			btn2.onclick = function (){
+				arr.push(arr.shift());
+				for(var i = 0; i < arr.length; i ++){
+					changeStyle(lis[i],arr[i]);
+				}
+				// count ++;
+				// for(var i = 0; i < arr.length; i ++){
+				// 	var n = i - count%5;
+				// 	n = n >= 0 ? n : arr.length + n;
+				// 	changeStyle(lis[i],arr[n]);
+				// }
+			}
+			
+			// 找到中心样式的坐标
+			var center = Math.floor(lis.length/2);
+			// 循环绑定点击事件
+			for(let i = 0; i < lis.length; i ++){
+				lis[i].onclick = function(){
+					// 判断被点击元素与中心样式之间的距离,然后做位移
+					var count = i - center;
+					// 为被点击元素赋上中心样式,同时重置中心样式的坐标
+					center = i;
+					for(var j = 0; j < Math.abs(count); j ++){
+						// 查看当前元素在中间元素的左边还是右边
+						if(count > 0){ // 右边 向左转
+							btn1.click();
+						}else{
+							// 左边 向右转
+							btn2.click();
+						}
+					}
+				}
+			}
+			
+			function changeStyle(ele,styleObj){
+				if(ele.timer) clearInterval(ele.timer);
+				ele.timer = setInterval(function (){
+					// 开始定时器的时候假设已经执行完毕
+					var flag = true;  // 表示是否都到终点的状态
+					
+					// 遍历所有样式属性
+					for(var i in styleObj){
+						// 获取起点  正常带px  透明度 . 放大倍数
+						var start,target;
+						if(i === "opacity"){
+							// 先放大,在parseInt
+							start = parseInt(getStyle(ele,'opacity') * 100);
+							target = styleObj[i] * 100;
+						}else if(i === "zIndex"){
+							// 层级没有变化 , 跳出当前循环
+							ele.style.zIndex = styleObj[i];
+							continue;
+						}else{
+							start = parseInt(getStyle(ele,i));
+							target = styleObj[i];
+						}
+						var step = (target - start) / 10;
+						if(Math.abs(step) < 1){
+							step = step > 0 ? 1 : Math.floor(step);
+						}
+						// 运动
+						if(i === "opacity"){
+							ele.style.opacity = (start + step) / 100;
+						}else{
+							ele.style[i] = start + step + 'px';
+						}
+						// 终点
+						
+						// 只要有一个到终点,就会停止
+						/*
+						if(start + step === target){
+							console.log("stop ...");
+							clearInterval(ele.timer);
+						}*/
+						// 当有一个没有到达终点,更改状态为false
+						if(start + step !== target){
+							flag = false;
+						}
+					}
+					
+					// 判断是否都到终点
+					if(flag){
+						clearInterval(ele.timer);
+					}
+				},1000/60)
+			}
+			
+			function getStyle(ele,styleName){
+				if(getComputedStyle){
+					return getComputedStyle(ele,null)[styleName];
+				}else{
+					return ele.currentStyle[styleName];
+				}
+			}
+			
+		</script>
+	</body>
+</html>

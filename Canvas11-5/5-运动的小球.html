@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>小球运动</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="500">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			// 小球 ==> 运动 ==> 碰撞
+			// [5,25]
+			var r = Math.floor(Math.random() * 21 ) + 5;
+			var c = Math.floor(Math.random() * 361);
+			
+			// 步长
+			var x = y = r;
+			var stepX = Math.floor(Math.random() * 5) + 1;
+			var stepY = Math.floor(Math.random() * 5) + 1;
+			move();
+			move();
+			move();
+			
+			function move(){
+				// 清除上一次的画
+				
+				ctx.clearRect(x-r-1,y-r-1,2*r+2,2*r+2);
+				ctx.beginPath();
+				
+				x += stepX;
+				y += stepY;
+				
+				// 判断碰壁,更改方向
+				if(x <= r){
+					x = r;
+					stepX = -stepX;
+				}else if(x >= cvs.width - r){
+					x = cvs.width - r;
+					stepX = -stepX;
+				}
+				
+				if(y <= r){
+					y = r;
+					stepY = -stepY;
+				}else if(y >= cvs.height - r){
+					y = cvs.height - r;
+					stepY = -stepY;
+				}
+				
+				ctx.arc(x,y,r,0,Math.PI*2,false);
+				ctx.fillStyle = 'hsla('+c+',70%,60%,1)';
+				ctx.closePath();
+				ctx.fill();
+				
+			
+				requestAnimationFrame(move);
+			}
+		</script>
+	</body>
+</html>

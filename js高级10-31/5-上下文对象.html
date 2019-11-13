@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>上下文对象</title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			// 全局环境 和 局部环境({})  找变量: 先从局部找 ==> 找全局
+			'use strict';  // 严格模式  变量必须声明
+
+			console.log(c); // c(){}
+			var c = 10;
+			function c(){}
+			console.log(c); // 10
+			
+			// var foo = 1;
+			function bar() {
+				console.log(!foo)
+			    if (!foo) {
+			        var foo = 10;
+			    }
+			    console.log(foo); // 10
+			}
+			bar();
+			
+			var arr = [1];
+			function b(arr) {
+				// 形参相当于var
+			    arr.push(10);
+			    return;
+			    // function a() {}
+					var arr = [];
+			}
+			b(arr);
+			// 函数外部访问不了内部变量
+			console.log(arr); // [1,10]
+		</script>
+	</body>
+</html>

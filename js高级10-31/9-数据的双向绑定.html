@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据的双向绑定</title>
+	</head>
+	<body>
+		
+		<input type="text" placeholder="请输入姓名" id="ipt">
+		
+	
+		<script type="text/javascript">
+			
+			var obj = {
+				name: ""
+			}
+			
+			// ipt.oninput = function (){
+			// 	obj.name = ipt.value;
+			// }
+			
+			// 双向绑定: 需要监听页面上的值发生改变;同时需要监听对象中的属性的值发生改变
+			Object.defineProperty(obj, 'name', {
+				get: function (){
+					return ipt.value;
+				},
+				set: function (v){
+					ipt.value = v;
+				}
+			})
+			
+			setTimeout(function (){
+				obj.name = '武则天';
+				setTimeout(function (){
+					obj.name = "王安石";
+				},2000)
+			},3000)
+		</script>
+	</body>
+</html>

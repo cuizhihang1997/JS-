@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        var arr = [
+            [1, 2, 2],
+            [3, 4, 5, 5],
+            [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10
+        ];
+
+
+        var newArr3 = [];
+
+        function flat(arr) {
+
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] instanceof Array || arr[i] == arr[i + 1]) {
+                    flat(arr[i])
+                } else {
+                    newArr3.push(arr[i])
+                }
+
+            }
+
+            for (var z = 0; z < newArr3.length; z++) {
+                for (var k = 0; k < newArr3.length; k++) {
+                    if (newArr3[k] > newArr3[k + 1]) {
+
+                        var temp = newArr3[k];
+
+
+                        newArr3[k] = newArr3[k + 1];
+                        newArr3[k + 1] = temp;
+
+
+
+                    }
+                }
+
+            }
+
+            return newArr3;
+        }
+        flat(arr);
+
+
+
+
+
+        // for(var z = 0; z < newArr3.length; z++) {
+        //     for(var k =0 ; k<newArr3.length;k++){
+        //        if(newArr3[k]>newArr3[k+1]){
+
+        //         var temp=newArr3[k];
+
+
+        //              newArr3[k]=newArr3[k+1];
+        //              newArr3[k+1]=temp;
+
+
+
+        //        }
+        //     }
+
+        //     }
+
+        console.log(newArr3)
+
+
+
+
+
+
+        var objPerson = function (name) {
+            this.name = name;
+        }
+
+        objPerson.prototype = {
+
+            say: function (delayTime) {
+                var t = delayTime
+                var _this = this;
+                setTimeout(function () {
+                    console.log(_this.name);
+                }, t * 1000);
+            },
+            /*
+            delay: function(t){
+                t = t || 0;
+            }
+            */
+        }
+
+        var c = new objPerson("hello");
+
+        c.say(5); 
+
+        //     let f1000 =delay(func,1000);
+        //     let f1500 = delay(func,1500);
+
+
+        // f1000('hello');
+        // f1500('world');
+
+        function fun(str) {
+            console.log(str);
+        }
+
+        function delay(fun, time) {
+            return function () {
+                // this.str = arguments[0];
+                // console.log(arguments[0]);
+                setTimeout(function () {
+                    fun(str);
+                }, time)
+            }
+        }
+        let f1000 = delay(fun, 100);
+        let f1500 = delay(fun, 300)
+        f1000('hellow');
+        f1500('aass');
+    </script>
+</body>
+
+</html>

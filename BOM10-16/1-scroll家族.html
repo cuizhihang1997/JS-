@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>scroll家族</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				height: 3000px;
+			}
+			.box{
+				width: 200px;
+				height: 200px;
+				margin: 40px;
+				background-color: orange;
+				overflow: auto;
+			}
+			.inner{
+				width: 400px;
+				height: 400px;
+				background-color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="inner"></div>
+		</div>
+		
+		<script type="text/javascript">
+			var box = document.querySelector(".box");
+			// var inner = document.querySelector(".inner");
+			
+			// scrollWidth/Height  获取元素的宽高属性 = 内容宽高 + padding
+			// 1. 内容未溢出   设定的宽高 + padding
+			// 2. 内容溢出,并且未设置 overflow属性  内容宽高 + 左/上padding
+			// 3. 内容溢出,并且设置了 overflow 属性   内容宽高 + 左/上下padding
+			
+			// scrollTop/Left  获取元素内容被遮挡的左上距离,元素有滚动条
+			
+			// 获取页面卷入高度
+			var h = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+			var l = document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
+			
+			
+			// 监听页面滚动
+			document.onscroll = function (){
+				console.log(sct())
+			}
+			
+			function sct(){
+				return document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+			}
+			
+			function scl(){
+				return document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
+			}
+		</script>
+	</body>
+</html>

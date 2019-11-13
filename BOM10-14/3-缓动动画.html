@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>缓动动画</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box,.box1{
+				position: relative;
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+			button{
+				padding: 10px 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+		<div class="box1"></div>
+		
+		<button>跳转到400px</button>
+		<button>跳转到800px</button>
+		
+		<button>跳转到400px</button>
+		<button>跳转到800px</button>
+		<script type="text/javascript">
+			'use strict'; // 使用严格模式
+			var box = document.querySelector(".box");
+			var box1 = document.querySelector(".box1");
+			var btns = document.querySelectorAll("button");
+			
+			// for(var i = 0; i < btns.length; i ++){
+			// 	// var => let
+			// 	// btns[i].index = i;
+			// 	btns[i].onclick = (function(i){
+			// 		// console.log(this.index);
+			// 		return function (){
+			// 			console.log(i)
+			// 		}
+			// 	})(i)
+			// }
+			/*
+				缓动动画计算方式：
+					leader = leader + (target - leader) / 10;
+					起点 = 起点 + (终点 - 起点) / 10;
+			*/
+			
+			btns[0].onclick = function (){
+				/*var timer = setInterval(function (){
+					// 起点
+					var start = box.offsetLeft;
+					// 步长
+					var step = (400 - start) / 10; 
+					// step 到最后会是一个 0-1 的小数 0.6  起点和终点的距离是一个<10的整数, step = 1一定会到终点
+					// [-1,0]  起点和终点的距离是一个<10的整数, step = -1一定会到终点
+					// if(start === 400) return;
+					if(Math.abs(step) < 1){  // [-1,1]
+						// [-1,0]  (0,1]
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					box.style.left = start + step + 'px';
+					// console.log("aaa")
+					// 终止条件
+					if(start + step === 400){
+						console.log("stop ...");
+						clearInterval(timer);
+					}
+				},17)*/
+				slowlyMove(box,400);
+			}
+			
+			btns[1].onclick = function (){
+				/*var timer = setInterval(function (){
+					// 起点
+					var start = box.offsetLeft;
+					// 步长
+					var step = (800 - start) / 10; 
+					// step 到最后会是一个 0-1 的小数 0.6  起点和终点的距离是一个<10的整数, step = 1一定会到终点
+					if(step < 1){
+						step = 1;
+					}
+					// 运动
+					box.style.left = start + step + 'px';
+					// 终止条件
+					if(start + step === 800){
+						console.log("stop ...");
+						clearInterval(timer);
+					}
+				},17)*/
+				slowlyMove(box,800);
+			}
+			
+			btns[2].onclick = function (){
+				slowlyMove(box1,400);
+			}
+			
+			// var timer = null;
+			
+			function slowlyMove(ele,target){
+				// 问题: 点400,直接点800  两个定时器同时作用于元素之上,左右摇摆
+				// 解决: 保证只有一个定时器,添加下一个定时器的时候清除上一个定时器
+				// 为了让不同元素拥有自己timer,将timer属性添加在元素上
+				clearInterval(ele.timer);
+				ele.timer = setInterval(function (){
+					// 起点
+					var start = ele.offsetLeft;
+					// 步长
+					var step = (target - start) / 10; 
+					// step 到最后会是一个 0-1 的小数 0.6  起点和终点的距离是一个<10的整数, step = 1一定会到终点
+					// [-1,0]  起点和终点的距离是一个<10的整数, step = -1一定会到终点
+					// if(start === 400) return;
+					if(Math.abs(step) < 1){  // [-1,1]
+						// [-1,0]  (0,1]
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ele.style.left = start + step + 'px';
+					// console.log("aaa")
+					// 终止条件
+					if(start + step === target){
+						console.log("stop ...");
+						clearInterval(ele.timer);
+					}
+				},17)
+			}
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>拖拽属性</title>
+		<style>
+			#box{
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+			#content{
+				width: 300px;
+				height: 200px;
+				border: 1px solid blue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box" draggable="true"></div>
+		<div id="content"></div>
+		<!-- 
+			draggable 拖拽属性
+			拖拽元素: 	页面中设置了draggable="true"属性的元素，不能省略 = "true"
+			目标元素:  页面中任何一个元素都可以成为目标元素
+			拖拽元素
+				ondrag 			应用于拖拽元素，整个拖拽过程都会调用
+				ondragstart	应用于拖拽元素，当拖拽开始时调用
+				ondragleave	应用于拖拽元素，当鼠标离开拖拽元素时调用
+				ondragend		应用于拖拽元素，当拖拽结束时调用
+			目标元素
+				ondragenter	应用于目标元素，当拖拽元素进入时调用
+				ondragover	应用于目标元素，当停留在目标元素上时调用
+				ondrop	应用于目标元素，当在目标元素上松开鼠标时调用，需要在ondragover上阻止浏览器的默认事件，因为浏览器默认是禁止元素堆叠的
+				ondragleave	应用于目标元素，当拖拽元素离开目标元素时调用
+		 -->
+		<script type="text/javascript">
+			// box.ondrag = function (){
+			// 	console.log("drag ...");
+			// }
+			var dragEle = null;
+			box.ondragstart = function(){
+				console.log("开始被拖拽");
+				dragEle = this;
+			}
+			box.ondragleave = function (){
+				console.log("鼠标离开拖拽元素");
+			}
+			box.ondragend = function (){
+				console.log("拖拽结束");
+			}
+			
+			content.ondragenter	= function (){
+				console.log("拖拽元素进入");
+			}
+			content.ondragover	= function (){
+				// 需要在ondragover上阻止浏览器的默认事件，因为浏览器默认是禁止元素堆叠的
+				console.log("停留在目标元素");
+				event.preventDefault();
+			}
+			content.ondrop	= function (){
+				console.log("在目标元素上松开鼠标时调用");
+				this.appendChild(dragEle);
+			}
+			content.ondragleave	= function (){
+				console.log("拖拽元素离开目标元素");
+			}
+		</script>
+	</body>
+</html>

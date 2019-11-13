@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ajax</title>
+	</head>
+	<body>
+		
+		<!-- <form action="/abc" method="post">
+			
+			<input type="text" name="user">
+			
+			<button type="submit">提交</button>
+		</form> -->
+		
+		
+		<script type="text/javascript">
+			
+			// 首先声明 XMLHttpRequest 实例
+			var xhr = new XMLHttpRequest();
+			// 设置请求相关信息 open方法  (请求方式(GET/POST),请求地址,是否异步) 
+			// get加参数  url?key1=value1&ke2=value2...  send(null)
+			/*xhr.onreadystatechange = function (){
+				// console.log(xhr.readyState);
+				// 表示请求完成
+				if(xhr.readyState === 4 && xhr.status === 200){
+					// responseText 服务器返回数据
+					// console.log(xhr.responseText);
+					var data = JSON.parse(xhr.responseText).data;
+					var str = "<ul>";
+					for(var i = 0; i < data.length; i ++){
+						str += `<li>${data[i].title + data[i].year}</li>`;
+					}
+					str += "</ul>";
+					
+					// // innerHTML 会将父元素所有内容覆盖  appendChild
+					document.body.insertAdjacentHTML('afterbegin',str);
+					
+				}else if(xhr.readyState === 4 && xhr.status !== 200){
+					
+					console.log("fail ...");
+				}
+				
+			}*/
+			// setTimeout(function (){
+			// 	console.log("取消了 ...");
+			// 	xhr.abort();
+			// },3000)
+			
+			// 超时函数  IE10 以上
+			xhr.timeout = 3000;
+			xhr.ontimeout = function (){
+				console.log("sorry, 你请求超时了...");
+			}
+			
+			// onreadystatechange 替代方案
+			xhr.onload = function (){
+				// 请求成功
+				// console.log(xhr.responseText);
+				var data = JSON.parse(xhr.responseText).data;
+				var str = "<ul>";
+				for(var i = 0; i < data.length; i ++){
+					str += `<li>${data[i].title + data[i].year}</li>`;
+				}
+				str += "</ul>";
+				
+				// // innerHTML 会将父元素所有内容覆盖  appendChild
+				document.body.insertAdjacentHTML('afterbegin',str);
+			}
+			
+			// 进度条
+			xhr.onprogress = function (){
+				console.log(event);
+				console.log("是否可用进度",event.lengthComputable)
+				console.log(event.loaded,event.total);
+			}
+			
+			xhr.onerror = function(){
+				// 失败原因需要自己调试
+				// console.log("http-status" , xhr.status, xhr.statusText, xhr);
+				console.log("失败了 ...");
+			}
+			
+			
+			xhr.open("GET","http://www.bufantec.com/api/douban/movie/in_theaters?start=1&limit=10");
+			// POST 主要用来提交表单数据
+			
+			// 发出请求  参数
+			xhr.send(null);
+			
+			console.log("aaa");
+		</script>
+	</body>
+</html>

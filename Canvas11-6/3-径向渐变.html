@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>径向渐变</title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+	</head>
+	<body>
+		<canvas id="cvs" width="800" height="500">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			/*
+				- context.createRadialGradient(x0,y0,r0,x1,y1,r1);  创建一个径向渐变的对象
+				- 参数详解：
+				  - x0: 渐变的开始圆的 x 坐标
+				  - y0: 渐变的开始圆的 y 坐标
+				  - r0: 开始圆的半径
+				  - x1: 渐变的结束圆的 x 坐标
+				  - y1: 渐变的结束圆的 y 坐标
+				  - r1: 结束圆的半径
+			*/
+			
+			// 正圆渐变  开始圆和结束圆的圆心在一起
+			// var crg = ctx.createRadialGradient(150,150,0,150,150,100);
+			// 椭圆渐变  开始圆的圆心在结束圆内部,但不和结束圆圆心重叠
+			// var crg = ctx.createRadialGradient(100,100,0,150,150,100);
+			// 超离渐变 开始圆的圆心在结束圆的外部
+			var crg = ctx.createRadialGradient(40,40,20,150,150,100);
+			
+			crg.addColorStop(0,"#ff0");
+			crg.addColorStop(1,"#f00");
+			
+			// ctx.arc(150,150,100,0,Math.PI*2,false);
+			
+			ctx.fillStyle = crg;
+			// ctx.fill();
+			ctx.fillRect(0,0,300,300);
+		</script>
+	</body>
+</html>

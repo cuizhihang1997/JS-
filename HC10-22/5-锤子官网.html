@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>锤子官网</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 600px;
+				height: 350px;
+				margin: 50px auto;
+				perspective: 1000px;
+				border: 1px solid red;
+			}
+			#banner{
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="box">
+			<img src="../lib/image/banner/m1.jpg" alt="" id="banner">
+		</div>
+		<script type="text/javascript">
+			/* 
+				元素沿Y轴的偏移量跟 鼠标与盒子中心点的水平距离有关系 鼠标离中心店越近,偏移量越小,反之,越大
+				元素沿X轴的偏移量跟 鼠标与盒子中心点的垂直距离有关系 鼠标离中心店越近,偏移量越小,反之,越大
+				所以关键点有：
+					1. 鼠标与盒子中心点的水平、垂直距离
+					2. 图片的旋转方向问题  distanceX > centerX  rotateY(正值)   反之负值
+															 distanceY > centerY  rotateX(负值)   反之正值
+			*/
+			// 最大旋转角
+			var max = 20;
+			// 盒子中心点
+			var centerX = box.offsetWidth/2;
+			var centerY = box.offsetHeight/2;
+			
+			box.onmousemove = function (){
+				banner.style.transition = '';
+				// 需要鼠标距离盒子中心点的距离 = 鼠标距离盒子的左上边距 - 盒子中心点坐标
+				// var distanceX = event.offsetX - centerX;
+				// var distanceY = event.offsetY - centerY;
+				var distanceX = event.pageX - box.offsetLeft - centerX;
+				var distanceY = event.pageY - box.offsetTop - centerY;
+				
+				// 旋转角度 = 需要鼠标距离盒子中心点的距离 / 盒子中心点坐标 * 最大旋转角
+				banner.style.transform = "rotateX("+ -distanceY/centerY * max +"deg) rotateY("+ distanceX/centerX * max +"deg)";
+				box.onmouseleave = function (){
+					banner.style.transition = "all .4s ease";
+					banner.style.transform = "rotateX(0) rotateY(0)";
+				}
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新的动画函数</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box,#box1{
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+			#box1{
+				top: 150px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<div id="box1"></div>
+		<script type="text/javascript">
+			// var start = Date.now();
+			// for(var i = 0; i < 100000; i ++){
+			// 	var divEle = document.createElement("div");
+			// 	divEle.className = "lalal";
+			// 	document.body.appendChild(divEle);
+			// }
+			// setTimeout(function (){
+			// 	console.log(Date.now() - start);
+			// },2000)
+			
+			// performance.now() 返回一个表示从性能测量时刻开始经过的毫秒数
+			// var timer = setInterval(function (){
+			// 	var target = box.offsetLeft + 5;
+			// 	box.style.left = target + "px";
+			// 	if(box.offsetLeft === 300){
+			// 		clearInterval(timer);
+			// 	}
+			// }, 1000/60)
+			
+			// dg();
+			// function dg(){
+			// 	requestAnimationFrame(function (){
+			// 		var target = box1.offsetLeft + 5;
+			// 		box1.style.left = target + "px";
+			// 		if(box1.offsetLeft < 300){
+			// 			dg();
+			// 		}
+			// 	})	
+			// }
+			
+			// window.onload = function (){
+			// 	var start = performance.now();
+			// 	var n = 0;
+			// 	var timer = setInterval(function (){
+			// 		n ++;
+			// 		var now = performance.now();
+			// 		console.log(now - start);
+			// 		start = now;
+			// 		if(n === 10){
+			// 			clearInterval(timer);
+			// 		}
+			// 	},1000/60)
+				
+				// function cb(time){
+				// 	n ++;
+				// 	console.log(time - start);
+				// 	start = time;
+				// 	if(n < 10) requestAnimationFrame(cb);
+				// }
+				// requestAnimationFrame(cb);
+				
+			// }
+			box.onclick=function(){
+			requestAnimationFrame(function move(){
+				if(box.offsetLeft < 400) box.style.left = 10 + box.offsetLeft + 'px';
+				requestAnimationFrame(move);
+			})}
+		</script>
+	</body>
+</html>

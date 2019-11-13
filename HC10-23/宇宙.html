@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <canvas width="800" height="800" style="background-color:#000;" id="em"></canvas>
+    <script>
+        var time = 0, gc = document.getElementById('em').getContext('2d');
+        //行星参数，days公转周期，incolor渐变内色，outcolor渐变外色，orbit轨道半径，planet行星半径，start起始位置（弧度）
+        var planets = [
+            { days: 87.7, incolor: 'rgb(166,150,151)', outcolor: 'rgb(93,62,64)', orbit: 50, planet: 2, start: 0 },
+            { days: 224.7, incolor: 'rgb(196,187,172)', outcolor: 'rgb(31,19,21)', orbit: 70, planet: 4, start: 0 },
+            { days: 365.24, incolor: 'rgb(120,177,232)', outcolor: 'rgb(5,12,18)', orbit: 90, planet: 5, start: 0 },
+            { days: 686.98, incolor: 'rgb(206,201,182)', outcolor: 'rgb(118,66,45)', orbit: 120, planet: 3, start: 0 },
+            { days: 4332.59, incolor: 'rgb(192,164,143)', outcolor: 'rgb(50,34,34)', orbit: 175, planet: 15, start: 0 },
+            { days: 10759.5, incolor: 'rgb(247,249,227)', outcolor: 'rgb(92,69,51)', orbit: 235, planet: 12, start: 0 },
+            { days: 30799.1, incolor: 'rgb(167,225,228)', outcolor: 'rgb(25,36,58)', orbit: 305, planet: 10, start: 0 },
+            { days: 60152, incolor: 'rgb(6,97,178)', outcolor: 'rgb(30,59,115)', orbit: 385, planet: 9, start: 0 }
+        ];
+        function drawSun() {
+            //绘制太阳
+            gc.beginPath();
+            gc.arc(400, 400, 30, 0, 360);
+    *
+            
+            gc.restore();
+        }
+
+        function drawSolar() {
+            gc.clearRect(0, 0, 800, 800);
+            drawSun();
+            for (var i = 0, len = planets.length; i < len; i++) {
+                drawPlanet(i);
+            }
+            time += 0.25;
+        }
+
+        setInterval(drawSolar, 25);
+    </script>
+</body>
+</html>

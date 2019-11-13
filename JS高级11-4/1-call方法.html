@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>call方法</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*call 方法
+			语法：`func.call(thisObj,arg1,arg2,arg3...)`
+			定义：调用一个对象的一个方法，以另一个对象替换当前对象
+			说明：它运行一个方法，提供的第一个参数作为 `this`，后面的作为参数。如果没有提供 thisObj 参数,且没有其它参数，那么 Global 对象被用作 thisObj
+			*/
+		 
+			var name = "张三";
+			
+			var obj = {
+				name: "李白",
+				sayName(){
+					console.log(this.name);
+				}
+			}
+			
+			var user = { name : "武则天" };
+			
+			// obj.sayName();
+			
+			// console.log(this);
+			// obj.sayName.call(window);
+			// obj.sayName.call(user,'hello '); // hello 武则天
+			obj.sayName.call();
+			
+			
+			// 第一个参数会被解析为 this 的指针对象
+		</script>
+	</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    /* body{
+       width:  100%;
+       height: 100%;
+      
+    } */
+.box{
+   width:  1080px;
+   height: 600px;
+   margin: 100px auto;
+   overflow: hidden;
+   position: relative;
+   
+   
+}
+.box3{
+    width: 200%;
+    height: 100%;
+    /* position: absolute; */
+    overflow: hidden;
+    transition-duration : 1s;
+}
+.box4{
+    width: 50%;
+    height: 100%;
+    /* position: absolute; */
+    float: left;
+}
+.box5{
+    /* display: inline-block ; */
+    width: 50%;
+    height: 100%;
+    /* position: absolute; */
+    float: left;
+    
+}
+ul{
+   
+float: left;
+width: 23%;
+height: 290px;
+/* background-color: red; */
+border: 3px solid white;
+
+
+}
+.ul2{
+    float: left;
+width: 23%;
+height: 290px;
+/* background-color: red; */
+border: 3px solid white;
+
+}
+
+span{
+    height: 10px;
+    /* background-color: green; */
+    display: inline-block;
+    width: 100%;;
+    
+}
+.sp1{
+    height: 10px;
+    background-color: green;
+    display: inline-block;
+    width: 100%;;
+    
+}
+button{
+      
+   margin-left: 300px;
+}
+.b1,.b2{
+    cursor:pointer;
+    z-index: 1000;
+    
+    
+}
+.b1{
+    height: 40px;
+    width: 40px;
+    font-size: 40px;
+    position: absolute;
+    left: 0;
+    top: 180px;
+    cursor:pointer;
+    
+}
+.b2{
+    height: 40px;
+    width: 40px;
+    font-size: 40px;
+    position: absolute;
+    right:  30px;
+    top: 180px;
+}
+ul:hover{
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .1);
+            transform: translate(0, -2px) ;
+           
+            /* color: red; */
+}
+/* .box :hover{
+    transform: translateX(-1000px);
+    transition-duration: 3s;
+} */
+</style>
+<body>
+        <button class="bt1">UI课程</button><button class="bt2">前端课程</button>
+        
+        
+    <div class="box">
+            <div class="b1"><</div>
+            <div class="b2">></div>
+        <div class="box3">
+            <div class="box4">
+            <ul><span></span> </ul>
+            <ul><span></span></ul>
+            <ul><span></span></ul>
+            <ul><span></span></ul>
+            <ul><span></span></ul>
+            <ul><span></span></ul>
+            <ul><span></span></ul>
+            <ul><span></span></ul>
+        </div>
+        <div class="box5">
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+            <ul class="ul2"><span class="sp1"></span></ul>
+        </div>
+        </div>
+        
+
+    </div>
+   
+
+       
+
+    <script src="../lib/data.js"></script>
+
+    
+    <script>
+    var uls = document.querySelectorAll('ul');
+    var btn1 = document.querySelector('.b1')
+    var btn2 = document.querySelector('.b2')
+    var bt2 = document.querySelector('.bt2')
+    var bt1 = document.querySelector('.bt1')
+    var box3El = document.querySelector('.box3')
+    var box4El = document.querySelector('.box4')
+var sz = data.course[0].details
+var sz2 = data.course[1].details
+// var ps = data.course[0].details[0].pcontent
+var spans =document.querySelectorAll('span');
+var spans1 =document.querySelectorAll('.sp1');
+var uls2 = document.querySelectorAll('.ul2')
+// console.log(ps)
+console.log(sz)
+ console.log(data.course[0].details[0].title);
+ 
+ var tittle = [];var pzz = [];
+    for(var i = 0 ; i<sz.length;i++ ){
+       var h1s =  document.createElement('h1')
+      tittle[i] = sz[i].title
+       console.log(tittle)
+       h1s.innerText = tittle[i]
+       uls[i].appendChild(h1s);
+       console.log(h1s[1])
+       spans[i].style.background = sz[i].color
+    //    this.style.color =spans[i].style.background;
+
+    pzz[i] = sz[i].pcontent
+       console.log(pzz)
+       for(var k= 0; k<pzz[i].length; k++){
+        var ps =  document.createElement('p')
+        ps.innerText = pzz[i][k]
+        console.log(pzz[i].length);
+        uls[i].appendChild(ps);
+       }
+    }
+    console.log(this);
+
+    // for(var i = 0 ; i<sz.length;i++ ){
+
+
+       
+     
+      
+    //    console.log(h1s[1])
+    // }
+    var tittle1 = [];var pzz1 = [];
+    for(var i = 0 ; i<sz2.length;i++ ){
+       var h1s =  document.createElement('h1')
+      tittle1[i] = sz2[i].title
+       console.log(tittle)
+       h1s.innerText = tittle1[i]
+       uls2[i].appendChild(h1s);
+       console.log(h1s[1])
+       spans1[i].style.background = sz[i].color
+       pzz1[i] = sz2[i].pcontent
+       console.log(pzz)
+       for(var k= 0; k<pzz1[i].length; k++){
+        var ps =  document.createElement('p')
+        ps.innerText = pzz1[i][k]
+        console.log(pzz[i].length);
+        uls2[i].appendChild(ps);
+       }
+    }
+
+    // for(var i = 0 ; i<sz2.length;i++ ){
+
+
+       
+     
+    //    }
+      
+    //    console.log(h1s[1])
+    // }
+    // for(var i = 0 ; i<pzz.length;i++){
+       
+    // }
+
+    btn2.onclick = function(){
+        add();
+    }       
+    
+    btn1.onclick = function(){
+        add1();
+    }       
+    bt1.onclick = function(){
+        add1();
+    }    
+    bt2.onclick = function(){
+        add();
+    }      
+    
+     function add(){
+         box3El.style.transform= 'translateX(-1080px)';
+        //  boxEl.style.transition+'-'+duration = '3s';
+       
+    }
+    function add1(){
+         box3El.style.transform= 'translateX(0px)';
+        //  boxEl.style.transition+'-'+duration = '3s';
+       
+    }
+    console.log(uls);
+
+    
+
+
+ for(var i= 0 ;i<uls.length;i++){
+    uls[i].onmouseover =function(){
+        // console.log(this.getElementsByTagName("span"))
+        this.style.color = this.getElementsByTagName("span")[0].style.background
+        // this.style.backgroundColor = 'red';
+        console.log(this.getElementsByTagName("span")[0].style.background);
+        // var zz =this
+        // console.log(zz);
+
+    }
+    uls[i].onmouseout =function(){
+        // console.log(this.getElementsByTagName("span"))
+        this.style.color = 'black'
+        // this.style.backgroundColor = 'red';
+        console.log(this.getElementsByTagName("span")[0].style.background);
+        // var zz =this
+        // console.log(zz);
+
+    }
+}
+    </script>
+</body>
+</html>

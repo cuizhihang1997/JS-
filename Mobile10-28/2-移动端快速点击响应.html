@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>移动端快速点击响应</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			width: 150px;
+			height: 150px;
+			background-color: darkorange;
+		}
+		.act{
+			background-color: red;
+		}
+		.change-width{
+			width: 270px;
+		}
+	</style>
+</head>
+<body>
+	<div class="box"><a href="#fff"></a></div>
+	
+	<script type="text/javascript">
+		// 在正常情况下 onclick时间是有延迟的,一般延迟300ms  在移动端会要求出现 fastClick 的需求
+		// 两种实现方式: 
+		// 1. 判断移动的距离 小于 30px
+		// 2. 判断时间 (优选)
+		var box = document.querySelector(".box");
+		
+		box.ontouchstart = function (){
+			console.log(event.touches,event.targetTouches);
+			//因为在移动端 可能同时触发多点触控 所以这里获取第一个事件
+			var first = event.touches[0];
+			//当触发开始的时候 获取当前时间戳;
+			var startTime = Date.now();
+			
+			// 触摸结束的时候获取一下时间,判断时间差是否<150ms
+			box.ontouchend = function (){
+				// 判断时间差 是否小于 150ms  小于:快速点击事件  大于:长按或者滑动
+				if(Date.now() - startTime < 150){
+					console.log("快速点击");
+				}else{
+					console.log("长按或者滑动");
+				}
+				// 快速点击事件后面需要加上阻止默认事件,防止click发生
+				event.preventDefault();
+			}
+		}
+		
+		box.onclick = function (){
+			console.log("click");
+		}
+					
+	</script>
+</body>
+</html>

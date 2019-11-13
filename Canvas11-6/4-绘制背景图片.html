@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>绘制背景图片</title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+	</head>
+	<body>
+		<canvas id="cvs" width="800" height="500">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			/*
+				- ctx.createPattern(image,repeat) 方法在指定的方向内重复指定的元素（了解）
+				- 方法返回一个背景图对象
+				- 第一参数：设置平铺背景的图片，第二个背景平铺的方式。
+				  - image ： 规定要使用的图片、画布或视频元素。
+				  - repeat ： 默认。该模式在水平和垂直方向重复。
+				  - repeat-x ： 该模式只在水平方向重复。
+				  - repeat-y ： 该模式只在垂直方向重复。
+				  - no-repeat： 该模式只显示一次（不重复）。
+			*/
+			
+			var imgEle = new Image();
+			imgEle.src = "../lib/image/HC/clos.png";
+			imgEle.onload = function (){
+				var cp = ctx.createPattern(imgEle,'repeat');
+				ctx.fillStyle = cp;
+				ctx.fillRect(0,0,300,300);
+			}
+			
+			
+		</script>
+	</body>
+</html>

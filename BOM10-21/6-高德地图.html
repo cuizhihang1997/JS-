@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>高德地图</title>
+		<style>
+			#container{
+				width: 800px;
+				height: 400px;
+				margin: 30px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+		
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=b420ce287b6d1e6280e5d0d3c6531ac5"></script>
+		<script type="text/javascript">
+			// 创建地图实例
+			var map = new AMap.Map('container');
+			// 创建中心点坐标
+			var pointer = [116.397428, 39.90923];
+			// zoom  级别 最大的级别为20 ; center 中心点坐标  viewMode 使用3D视图
+			var map = new AMap.Map('container', { zoom: 20, center: pointer, viewMode:'3D' });
+			
+			// 添加点标记
+			var marker = new AMap.Marker({
+				position: pointer, // 点的位置
+				draggable: true,  // 设置是否可拖拽
+				icon: "http://bufanui.com/pages/front/static/img_v3/ding.jpg", // 设置小点的图标
+			});
+			//添加到地图
+			map.add(marker);
+			// marker.setMap(map);
+			
+			// 添加弹跳动画
+			marker.setAnimation('AMAP_ANIMATION_BOUNCE');
+		</script>
+	</body>
+</html>

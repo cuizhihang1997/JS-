@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>注册页面</title>
+	<link rel="stylesheet" href="/lib/layui/css/layui.css">
+	<style>
+		h1{
+			text-align: center;
+			line-height: 100px;
+		}
+		.layui-form-item{
+			width: 400px;
+			margin: 0 auto 15px;
+		}
+		.suc{
+			border: 1px solid green;
+		}
+		.fail{
+			border: 1px solid red;
+		}
+	</style>
+</head>
+<body>
+	<div class="layui-container">
+		<h1>注册</h1>
+		<form class="layui-form">
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">用户名</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="uname" placeholder="请输入用户名" autocomplete="off" class="layui-input uname">
+		    </div>
+		  </div>
+			<div class="layui-form-item">
+			  <label class="layui-form-label">密码</label>
+			  <div class="layui-input-inline">
+			    <input type="password" name="password" value="12346567" lay-verify="required|password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+			  </div>
+			</div>
+			
+		  <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+		    </div>
+		  </div>
+		</form>
+	</div>
+	
+	<script src="/lib/layui/layui.all.js"></script>
+	<script src="javascripts/request.js"></script>
+	<script>
+		var layer = layui.layer;
+		var form = layui.form;
+		
+		var canJump = false; // 默认不能提交表单
+		
+		form.verify({
+			password: [
+				/^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
+			] 
+		})
+		
+		// 表单提交事件
+		form.on("submit(*)", function (data){
+			console.log(data.field);
+			var str = "";
+			// key ==> name  value ===> value
+			// { uname: "张三", password: "123456" }
+			// uname="张三"&password="123456"
+			for(var i in data.field){
+				str += "&" + i + "=" + data.field[i];
+			} 
+			str = str.slice(1);
+			// console.log(str);
+			if(canJump){
+				ajax({
+					url: "/doRegist",
+					method: "POST",
+					data: str,
+					success: function (res){
+						console.log(res);
+						if(res.code === "success"){
+							// 给出成功提示
+							layer.msg(res.msg,{anim: 6});
+							// 延时跳转
+							setTimeout(function (){
+								window.location.href = "/login";
+							},1600)
+						}
+					}
+				})
+			}else{
+				layer.msg("稍等,正在校验用户名",{anim: 6});
+			}
+			return false; //阻止表单跳转。
+		})
+		
+		
+		var uname = document.querySelector(".uname");
+		// 当用户名输入失去焦点,校验是否合格
+		uname.onblur = function (){
+			
+			ajax({
+				url: "/checkUserName",
+				method: "POST",
+				data: "uname="+this.value+"&time="+Date.now(),
+				success: function (res){
+					console.log(res);
+					if(res.code === 'fail'){
+						layer.msg(res.msg,{anim: 6});
+						uname.parentNode.classList.remove("suc");
+						uname.parentNode.classList.add("fail");
+						canJump = false;
+					}else{
+						uname.parentNode.classList.remove("fail");
+						uname.parentNode.classList.add("suc");
+						canJump = true;
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>

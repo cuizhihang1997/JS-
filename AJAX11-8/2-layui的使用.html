@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>layui的使用</title>
+	<!-- 引入css -->
+	<link rel="stylesheet" type="text/css" href="../lib/layui/css/layui.css"/>
+	<style>
+		#text{
+			width: 200px;
+			margin: 20px auto;
+		}
+	</style>
+</head>
+<body>
+	<!-- lay-skin 横线line  竖线row -->
+	<!-- <table class="layui-table" lay-even lay-skin="row">
+		<colgroup>
+			<col width="150">
+			<col width="150">
+			<col width="200">
+			<col>
+			<col width="300">
+			<col width="50">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>人物</th>
+				<th>民族</th>
+				<th>出场时间</th>
+				<th>格言</th>
+				<th>格言</th>
+				<th>格言</th>
+			</tr> 
+		</thead>
+		<tbody>
+			<tr>
+				<td>贤心</td>
+				<td>汉族</td>
+				<td>1989-10-14</td>
+				<td>人生似修行</td>
+			</tr>
+			<tr>
+				<td>张爱玲</td>
+				<td>汉族</td>
+				<td>1920-09-30</td>
+				<td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+			</tr>
+			<tr>
+				<td>Helen Keller</td>
+				<td>拉丁美裔</td>
+				<td>1880-06-27</td>
+				<td> Life is either a daring adventure or nothing.</td>
+			</tr>
+			<tr>
+				<td>岳飞</td>
+				<td>汉族</td>
+				<td>1103-北宋崇宁二年</td>
+				<td>教科书再滥改，也抹不去“民族英雄”的事实</td>
+			</tr>
+			<tr>
+				<td>孟子</td>
+				<td>华夏族（汉族）</td>
+				<td>公元前-372年</td>
+				<td>猿强，则国强。国强，则猿更强！ </td>
+			</tr>
+		</tbody>
+	</table> -->
+	<table id="demo"></table>
+	
+	<!-- <form action="" onsubmit="return false">
+		<input type="text" id="ipt" autocomplete="off">
+		<button type="submit">提交</button>
+	</form> -->
+	
+	<!-- 引入js文件 -->
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<script src="../lib/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		// 在基础功能上添加模块功能 使用use方法  单个使用layui.use('模块',回调函数)  多个模块 layui.use(['模块1','模块2'],回调)
+		layui.use(['layer','form','table'],function (){
+			var table = layui.table;
+			var layer = layui.layer;
+			
+			// 表格的渲染
+			table.render({
+				elem: '#demo' // 页面上表格元素的id
+				,height: 312
+				,url: 'http://59.110.138.169/api/test/user/list' //数据接口
+				,parseData: function(res){ //res 即为原始返回的数据
+					console.log(res); //0男 1女
+					res.data.list.forEach(item => {
+						item.sex = item.sex == 0 ? '男' : '女';
+					})
+					return {
+						"code": 0, // 解析接口状态
+						"count": res.data.totalRow, //解析数据长度
+						"data": res.data.list //解析数据列表
+					};
+				},
+				page: true //开启分页
+				,cols: [[ //表头
+				// 获取的数据在页面上显示对应的key值
+				// [ {name: "张三",age:24, tel: 123453253}, {...} ]
+					{title: '序号', width:80, type: 'numbers'}
+					,{field: 'name', title: '用户名', width:80}
+					,{field: 'sex', title: '性别', width:80}
+					,{field: 'age', title: '年龄', width:80} 
+					,{field: 'address', title: '地址', width: 177}
+					,{field: 'school', title: '学校', width: 80}// 工具栏内容写在div内部
+					,{title: '操作', width: 135, toolbar: `<div><button class="layui-btn layui-btn-sm">编辑</button></div>`}
+				]]
+			});
+				
+				
+			// layer.msg("hello world");
+			// 打开消息弹窗
+			// layer.open({
+			// 	// type: 0,
+			// 	type: 1,  // 页面层  content可以填写 jq对象或者html文本
+			// 	// type: 4, // tips层
+			// 	title: "hello world",
+			// 	// content: "这是一段内容文本"
+			// 	content: $("#text")
+			// 	// content: ['tips层','#text']
+			// })
+			
+			// confirm 里面成功后的回调里面接受一个当前弹窗的序号,用来关闭弹窗
+			// layer.confirm('小白兔喜欢吃苹果吗?', function(index){
+			//   //do something
+			// 	console.log("你选择了喜欢");
+			// 	// 主动关闭弹窗
+			//   layer.close(index);
+			// },function (){
+			// 	// 点击取消自动关闭
+			// 	console.log("你选择了不喜欢");
+			// });
+			
+			// layer.load(0) 加载层,默认0  可以跟time表示几秒后消失   layer.load(0,{time: 时间});
+			
+			// layer.closeAll(); //疯狂模式，关闭所有层
+			// layer.closeAll('type');  关闭相应类型的提示框
+		
+		})
+		
+	</script>
+</body>
+</html>

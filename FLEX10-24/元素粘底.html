@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>元素粘底</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				display: flex;
+				flex-direction: column;
+				width: 800px;
+				height: 600px;
+				border: 1px solid red;
+			}
+			.inner{
+				height: 500px;
+				font-size: 80px;
+				/* line-height: 300px; */
+			}
+			.bottom{
+				margin-top: auto;
+				width: 100%;
+				height: 100px;
+				background-color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 元素出现滚动条,子元素需要添加不缩小的属性 -->
+		<div class="box">
+			<div class="inner">container</div>
+			<box class="bottom"></box>
+		</div>
+	</body>
+</html>

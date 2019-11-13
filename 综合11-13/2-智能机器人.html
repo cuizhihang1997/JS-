@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能机器人</title>
+		<style>
+			.box{
+				position: relative;
+				margin: 30px auto;
+				width: 400px;
+				height: 400px;
+				background-color: orange;
+				border: 1px solid red;
+			}
+			p{
+				color: #fff;
+			}
+			.text-left{
+				text-align: left;
+			}
+			.text-right{
+				text-align: right;
+			}
+			#ipt{
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				line-height: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<input type="text" placeholder="请输入传话" id="ipt">
+		</div>
+		
+		<button id="btn">结束对话</button>
+		<script type="text/javascript">
+			var box = document.querySelector(".box");
+			var state = false;  // 链接状态
+			
+			var ws = new WebSocket("ws://192.168.0.173:8080");
+			// 建立连接
+			ws.onopen = function() {
+			  console.log("client：打开连接");
+				state = true; // 打开链接
+				// 向后台发送数据
+				box.insertAdjacentHTML('beforeEnd',`<p class="text-left">hello，服务端</p>`)
+			  ws.send("client：hello，服务端");
+			};
+			
+			ipt.onkeyup = function (){
+				// 监听回车
+				if(event.keyCode == "13"){
+					if(state){
+						ws.send(this.value);
+						box.insertAdjacentHTML('beforeEnd',`<p class="text-left">${this.value}</p>`);
+					}else{
+						alert("已经结束通话了");
+					}
+					this.value = "";						
+				}
+			}
+			
+			btn.onclick = function (){
+				// 关闭连接
+				ws.close();
+				state = false;
+			}
+			
+			// 监听后台返回数据
+			ws.onmessage = function(res) {
+			  // console.log("client：接收到服务端的消息 " + res.data);
+			 box.insertAdjacentHTML('beforeEnd',`<p class="text-right">${res.data}</p>`);
+			};
+			// 监听关闭事件
+			ws.onclose = function(params) {
+			  console.log("client：关闭连接");
+			};
+		</script>
+	</body>
+</html>

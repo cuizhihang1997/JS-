@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>flex</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				display: flex;
+				width: 700px;
+				height: 500px;
+				margin: 30px auto;
+				border: 1px solid red;
+				/* justify-content:flex-start | flex-end | center | space-between | space-around | space-evenly(实验属性); */
+				/* justify-content: center; */
+				 /* align-items: flex-start | flex-end | center | baseline | stretch; 控制主轴排列方式 */
+				/* align-items: center; 控制单根轴线的交叉轴排列 */
+				/* flex-wrap: wrap-reverse; 控制是否换行*/
+				/* align-content:  控制多根轴线的交叉轴排列;  space-around效果等同于align-items的center效果 */
+				/* flex-direction: row; */
+				/* flex-flow: row-reverse wrap; */
+			}
+			.inner{
+				width: 150px;
+				height: 150px;
+				font-size: 30px;
+				color: #fff;
+				text-align: center;
+				line-height: 150px;
+				background-color: orange;
+				/* flex-grow: 1; */
+				/* flex-shrink: 1; */
+				/* 只改变宽度 */
+				/* flex-basis: 50px; */
+				/* flex: 0 1 auto; */
+				/*flex: none; 0 0 auto */
+				/* flex: 2; */
+				/* flex: 5%; */
+				/* flex: 5 2; */
+			}
+			.inner_1{
+				/* order: 1; */
+				flex-grow: 1;
+				/* flex-shrink: 4; */
+			}
+			.inner_2{
+				background-color: blue;
+				/* align-self: flex-start; */
+			}
+			.inner_3{
+				background-color: green;
+				/* order: -1; */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="inner inner_1">1</div>
+			<div class="inner inner_2">2</div>
+			<div class="inner inner_3">3</div>
+			<div class="inner inner_4">4</div>
+			<!-- <div class="inner inner_5">5</div>
+			<div class="inner inner_6">6</div>
+			<div class="inner inner_7">7</div> -->
+		</div>
+		<!-- <div class="box"></div> -->
+	</body>
+</html>

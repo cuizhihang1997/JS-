@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>设置阴影</title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+	</head>
+	<body>
+		<canvas id="cvs" width="800" height="500">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			/*
+			- shadowColor ： 设置或返回用于阴影的颜色
+			- shadowBlur： 设置或返回用于阴影的模糊级别,大于1的正整数，数值越高，模糊程度越大
+			- shadowOffsetX： 设置或返回阴影距形状的水平距离
+			- shadowOffsetY： 设置或返回阴影距形状的垂直距离
+			*/
+			ctx.save(); // 保存的是空白环境
+			
+			ctx.shadowColor = 'green';
+			ctx.shadowBlur = 10;
+			ctx.shadowOffsetX = -20;
+			ctx.shadowOffsetY = 20;
+			ctx.fillStyle = 'orange';
+			ctx.fillRect(50,50,200,100);
+			
+			// ctx.save(); // 保存的有绿色阴影的环境
+			
+			// ctx.shadowColor = 'red';
+			// ctx.shadowBlur = 5;
+			// ctx.shadowOffsetX = -20;
+			// ctx.shadowOffsetY = 20;
+			
+			ctx.restore(); // 还原上一个保存的环境
+			// ctx.restore(); // 还原成空白的环境
+			
+			ctx.fillStyle = 'orange';
+			ctx.fillRect(400,300,200,100);
+			
+			// 阴影可以将透明图片显示出内容
+			var imgEle = new Image();
+			imgEle.src = "../lib/image/canvas/logo2.png";
+			imgEle.onload = function(){
+				ctx.drawImage(imgEle,50,300,200,80);
+			}
+		</script>
+	</body>
+</html>

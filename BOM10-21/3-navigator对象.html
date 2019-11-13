@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>navigator对象</title>
+	</head>
+	<body>
+		<button id="btn">打开百度</button>
+		<script type="text/javascript">
+			/*
+			在当前窗口打开，可后退
+			location.assign(url) => location.href=url => location=url
+			
+			在当前窗口打开，不会生成历史记录，即替换当前页面的地址
+			location.replace(url)
+			
+			重新加载页面
+			location.reload(false)
+			*/
+		 
+			btn.onclick = function(){
+				// location.assign("https://www.baidu.com");
+				// location.href = "https://www.baidu.com";
+				// location = 'https://www.baidu.com';
+				location.replace("https://www.baidu.com");
+			}
+		</script>
+	</body>
+</html>

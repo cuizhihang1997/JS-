@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>阻止冒泡和默认事件</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				width: 200px;
+				height: 200px;
+				background-color: green;
+			}
+			.inner{
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="inner"></div>
+		</div>
+		
+		<!-- 表单提交事件 onsubmit -->
+		<form action="/abc" id="form" onclick="return submit()">
+			<input type="text" name="uname">
+			<input type="text" name="age">
+			
+			<input type="submit" value="提交"/>
+		</form>
+		
+		<script type="text/javascript">
+			var box = document.querySelector(".box");
+			var inner = document.querySelector(".inner");
+			
+			box.onclick = function (){
+				console.log("box");
+			}
+			inner.onclick = function (){
+				console.log('inner');
+				// 阻止冒泡事件
+				// event.stopPropagation();
+				// IE 8 以下
+				// event.cancelBubble = true;
+				// 兼容写法
+				event.stopPropagation ? event.stopPropagation() : event.cancelBubble = true;
+				
+			}
+			
+			// 默认事件  a标签   form 表单提交
+			
+			
+			function submit(){
+				// 阻止默认事件
+				event.preventDefault ? event.preventDefault() : event.returnValue = false;
+			}
+			
+			// form.onsubmit = function (){
+			// 	// return false;
+			// 	event.preventDefault();
+			// }
+		</script>
+	</body>
+</html>

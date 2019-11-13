@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原型对象的方法</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 创建一个自定义的构造函数
+			function Person(name){
+				this.name = name;
+				this.sayName = function (){
+					console.log(this.name);
+				}
+			}
+
+			// 给Person的原型对象添加属性
+			Person.prototype.age = 24;
+			Person.prototype.run = function (){
+				console.log('running ...');
+			}
+			
+			// 创建Person构造函数的实例
+			var user = new Person('李白');
+			
+			
+			// 实例.hasOwnProperty(属性) 方法可以检测一个属性是存在于实例中，还是存在于原型中。只在给定属性存在于对象实例中时，才会返回 true  实例.hasOwnProperty(属性)
+			console.log("在实例中 name",user.hasOwnProperty('name'));  // true
+			console.log("在原型上 age",user.hasOwnProperty("age")); // false
+			
+			
+			// 原型对象.isPrototypeOf(实例) 判断一个对象是否是某个实例的原型对象
+			console.log("Person的原型对象是user的原型对象吗", Person.prototype.isPrototypeOf(user)); // true
+			
+			// Object.getPrototypeOf 获取一个实例的原型对象
+			console.log("user的原型对象是", Object.getPrototypeOf(user));
+			
+			// Object.keys(obj)获取所有对象可枚举的key
+			console.log("user所有可枚举的key",Object.keys(user));
+			console.log(Object.getOwnPropertyNames(user));
+		</script>
+	</body>
+</html>

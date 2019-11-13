@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>复习-城市选择</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			header{
+				position: fixed;
+				width: calc(100% - 30px);
+				padding-left: 30px;
+				color: #fff;
+				line-height: 80px;
+				background-color: grey;
+				z-index: 9;
+			}
+			.aside{
+				position: fixed;
+				top: 90px;
+				right: 30px;
+				list-style: none;
+				background-color: orange;
+			}
+			.aside li{
+				width: 20px;
+				height: 20px;
+				font-size: 13px;
+				color: #fff;
+				text-align: center;
+				line-height: 20px;
+				margin-bottom: 5px;
+			}
+			.aside li:last-child{
+				margin-bottom: 0;
+			}
+			.center{
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				width: 100px;
+				height: 100px;
+				font-size: 20px;
+				color: #fff;
+				text-align: center;
+				line-height: 100px;
+				background-color: rgba(0,0,0,.5);
+				transform: translate(-50%,-50%);
+			}
+			.sidebar{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100px;
+				height: 100%;
+			}
+			.city{
+				position: absolute;
+				top: 80px;
+				left: 0;
+				width: 100%;
+				list-style: none;
+			}
+			.city li{
+				font-size: 14px;
+				color: #fff;
+				text-align: center;
+				line-height: 25px;
+				background-color: #9000FF;
+				border-bottom: 1px solid #fff;
+			}
+			.city .title{
+				background-color: #333;
+			}
+			.city li.act{
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<header>当前选择城市: <span></span></header>
+		<div class="sidebar">
+			<ul class="city"></ul>
+		</div>
+		<ul class="aside"></ul>
+		<div class="center" hidden>A</div>
+		
+		<script src="../lib/data/city.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var choose = document.querySelector("header span");
+			var city = document.querySelector(".city");
+			var aside = document.querySelector(".aside");
+			var center = document.querySelector(".center");
+			// 获取左边字母li的集合
+			var cityEns = document.getElementsByClassName('title');
+			// 获取所有字母li的集合
+			var lis = aside.children;
+			// 原始city距离页面的上边距
+			var baseTop = city.offsetTop;
+			// 设置最大值
+			var max = 100;
+			
+			var str = "";
+			var cityStr = "";
+			
+			for(var i = 0; i < cityAll.length; i ++){
+				str += `<li>${cityAll[i].name}</li>`;
+				cityStr += `<li class="title">${cityAll[i].name}</li>`;
+				for(var j = 0; j < cityAll[i].citys.length; j ++){
+					cityStr += `<li class="${i === 0 && j === 0 ? 'act':''}">${cityAll[i].citys[j]}</li>`;
+				}
+			}
+			aside.innerHTML = str;
+			city.innerHTML = cityStr;
+			
+			// 点击选择城市
+			city.onclick = function (){
+				var targetEle = event.target;
+				if(targetEle.tagName === "LI" && !targetEle.classList.contains('title')){
+					choose.innerText = targetEle.innerText;
+					document.querySelector(".city .act").classList.remove("act");
+					targetEle.classList.add("act");
+					
+					// 点击: -被点击li距离ul的顶部距离 + 原始ul距离页面的上边距
+					if(-targetEle.offsetTop + baseTop < city.parentNode.offsetHeight - city.offsetHeight){
+						city.style.top = city.parentNode.offsetHeight - city.offsetHeight + "px";
+					}else{
+						city.style.top = -targetEle.offsetTop + baseTop + "px";
+					}
+				}
+			}
+			
+			// city滑动
+			city.ontouchstart = function (){
+				var startY = city.offsetTop;
+				var touchY = event.targetTouches[0].pageY;
+				city.ontouchmove = function (){
+					var targetY = event.targetTouches[0].pageY - touchY + startY;
+					if(targetY > baseTop + max){
+						targetY = baseTop + max;
+					}else if(targetY < city.parentNode.offsetHeight - city.offsetHeight - max){
+						targetY = city.parentNode.offsetHeight - city.offsetHeight - max;
+					}
+					city.style.top = targetY + "px";
+				}
+				
+				city.ontouchend = function(){
+					if(city.offsetTop > baseTop){
+						city.style.top = baseTop + "px";
+					}else if(city.offsetTop < city.parentNode.offsetHeight - city.offsetHeight){
+						city.style.top = city.parentNode.offsetHeight - city.offsetHeight + "px";
+					}
+				}
+			}
+			
+			// 滑动选择字母
+			// 选择字母:  判断手指在哪个li的范围内   通过手指在ul中的位置 = 手指距离页面的上边距 - ul距离页面的上边距
+			// 手指在ul中的位置 / 一个li的范围 = 手指当前所在li的下标
+			aside.ontouchstart = function (){
+				
+				setEn();
+				
+				// 滑动取字
+				aside.ontouchmove = setEn;
+				
+				// center消失
+				aside.ontouchend = function (){
+					center.hidden = true;
+				}
+			}
+			
+			function setEn(){
+				// 让center出现
+				center.hidden = false;
+				// 通过手指在ul中的位置
+				var touchY = event.targetTouches[0].pageY - aside.offsetTop;
+				var touchX = event.targetTouches[0].pageX - aside.offsetLeft;
+				// 添加边界
+				if(touchY > 0 && touchY < aside.offsetHeight && touchX > 0 && touchX < aside.offsetWidth){
+					// 求下标
+					var index = Math.floor(touchY / (lis[0].offsetHeight + getStyle(lis[0],'marginBottom')));
+					// 换动左边英文字母
+					if(-cityEns[index].offsetTop + baseTop < city.parentNode.offsetHeight - city.offsetHeight){
+						city.style.top = city.parentNode.offsetHeight - city.offsetHeight + "px";
+					}else{
+						city.style.top = -cityEns[index].offsetTop + baseTop + "px";
+					}
+					// 赋值
+					center.innerText = lis[index].innerText;					
+				}
+			}
+			
+			function getStyle(ele,styleName){
+				if(ele.currentStyle){
+					return parseInt(ele.currentStyle[styleName]);
+				}else{
+					return parseInt(getComputedStyle(ele,null)[styleName]);
+				}
+			}
+		</script>
+	</body>
+</html>

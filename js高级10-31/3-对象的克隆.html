@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>对象的克隆</title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			var user = {
+				name: "李白",
+				age: 23,
+				friend: ['杜甫','白居易'],
+				hobbies: {
+					food: "大米饭,面条",
+					fruit: "香蕉,猕猴桃"
+				},
+				say: function (){
+					console.log(this.name);
+				}
+			}
+			console.log (user);
+			
+			// 浅克隆  当克隆对象有引用类型值的时候,这两个对象的属性名指向的地址是同一个堆
+			// var user1 = user;
+			// var user1 = {};
+			// for(var i in user){
+			// 	user1[i] = user[i];
+			// }
+			var user1 = JSON.parse(JSON.stringify(user));	// 会把方法搞丢
+			user1.name = "武则天";
+			user1.friend.push("狄仁杰");
+			console.log("user1 ===> ",user1);
+			console.log("user ===> ",user);
+			
+			
+			/* 使用 Object.assign 来拷贝对象
+			Object.assign(dest[, src1, src2, src3...])
+				参数 dest 和 src1, ..., srcN（可以有很多个）是对象。
+				这个方法复制了 src1, ..., srcN 的所有对象到 dest。换句话说，从第二个参数开始，所有对象的属性都复制给了第一个参数对象，然后返回 dest
+				如果接收的对象已经有了同样属性名的属性，前面的会被覆盖
+				会更改第一个对象
+			*/
+			var user2 = Object.assign({},user);
+			user2.name = "武则天";
+			user2.friend.push("狄仁杰");
+			console.log("user2 ===> ",user2);
+			console.log("user ===> ",user);
+			
+			
+			// assign常用来合并对象
+			var obj1 = {name: "苏轼"},obj2 = {age: 25},obj3 = {say: function(){console.log(this.name)}};
+			
+			function contact(obj1,obj2){
+				for(var i in obj2){
+					// if(obj1[i] === undefined){
+					if(!(i in obj1)){
+						obj1[i] = obj2[i];
+					}
+				}
+			}
+			
+			Object.assign(obj1,obj2,obj3);
+			
+			
+			// 深克隆  递归
+			function clone(obj){
+				var newObj = {};
+				for(var i in obj){
+					newObj[i] = obj[i];
+				}
+				return newObj;
+			}
+			console.log(deepClone(user));
+			
+			function deepClone(obj){
+				// 如果对象是一个null直接返回
+				if(obj === null) return null;
+				// 如果对象是一个数组,返回一个新数组
+				if(obj instanceof Array) return obj.slice(0);
+				
+				var newObj = {};
+				for(var i in obj){
+					// 如果obj[i]是一个引用类型值,将引用类型值也进行克隆
+					// null array object
+					newObj[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i];
+				}
+				return newObj;
+			}
+		</script>
+	</body>
+</html>

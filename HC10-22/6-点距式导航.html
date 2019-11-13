@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>点距式导航</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: relative;
+				width: 30px;
+				height: 30px;
+				margin: 400px;
+				border-radius: 50%;
+				/* background-color: red; */
+			}
+			.circle,.home{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 30px;
+				height: 30px;
+				background-color: green;
+				/* border-radius: 50%; */
+				transition: all .4s ease;
+			}
+			.home{
+				background-color: brown;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="circle"></div>
+			<div class="circle"></div>
+			<div class="circle"></div>
+			<div class="circle"></div>
+			<div class="circle"></div>
+			<div class="home"></div>
+		</div>
+		
+		<script type="text/javascript">
+			var home = document.querySelector(".home");
+			var circles = document.querySelectorAll(".circle");
+			
+			// circle 对应的点的坐标 === >  R*Math.cos(弧度) , R*Math.sin(弧度)
+			/*
+				弧度名称 rad
+				弧长等于半径对应的角是1弧度  ==>  2π = 360°
+					1° = 2π / 360 * 弧度 ===> 1° = π/180
+				
+				旋转角度一份是 90/4 ==>  90/4* π/180 ===>  π/8
+			*/
+			// var oneDu = Math.PI/180;
+			var R = 200; // 声明一个半径
+			var one = Math.PI/8; // 一份circle旋转的弧度
+			var half = home.offsetWidth/2; // 圆圈的一半,为了让圆心在弧上
+			var isOpen = true; // 声明打开的状态
+			home.onclick = function (){
+				if(isOpen){
+					for(var i = 0; i < circles.length; i ++){
+						circles[i].style.transform = `translate(${-R*Math.cos(one*i)}px,${-R*Math.sin(one*i)}px) rotate(720deg)`;
+					}
+				}else{
+					for(var i = 0; i < circles.length; i ++){
+						circles[i].style.transform = `translate(0px,0px) rotate(0)`;
+					}
+				}
+				isOpen = !isOpen;
+			}
+		</script>
+	</body>
+</html>

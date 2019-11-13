@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="referrer" content="never">
+		<title>layui填充电影</title>
+		<link rel="stylesheet" href="../lib/layui/css/layui.css">
+		<style>
+			.layui-layer-page{
+				top: 100px !important;
+			}
+			.card-img{
+				width: 180px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="layui-container">
+			<table id="movieList" lay-filter="movieTable"></table>
+		</div>
+		
+		<script src="../lib/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/html" id="poster">
+		  <!-- <a href="/detail/{{d.id}}" class="layui-table-link">{{d.title}}</a> -->
+			<img src="{{ d.poster }}" alt="" onerror="changeSrc()">
+		</script>
+		<script type="text/html" id="headTool">
+		  <button class="layui-btn" lay-event="in_theaters">正在热映</button>
+		  <button class="layui-btn" lay-event="coming_soon">即将上映</button>
+		  <button class="layui-btn" lay-event="top250">top250</button>
+		</script>
+		<script type="text/javascript">
+			/*
+			电影api
+				host: http://www.bufantec.com/api/douban/movie/
+				type: in_theaters/coming_soon/top250
+				分页: start/limit
+				 \电影名称\电影类型\上映时间\导演列表\演员列表
+				 
+				作业: 弹窗显示具体数据 电影海报\电影名称\电影类型\上映时间\导演列表\演员列表
+							分页
+							分类切换
+			*/
+			var host = "http://www.bufantec.com/api/douban/movie/";
+			var type = "in_theaters";
+			
+			var table = layui.table;
+			var layer = layui.layer;
+				
+				
+			var tablelns = table.render({
+				elem: '#movieList'
+				,url: host + type, //数据接口
+				id: "tableDemo",
+				request: {
+				  pageName: 'start' //页码的参数名称，默认：page
+				},
+				parseData: function (res){
+					// console.log(res);
+					// 将电影类型变成字符串
+					res.data.forEach((item,index,arr) => {
+						item.genres = item.genres.join(",");
+						var str = "";
+						item.directors.forEach(item => {
+							str += item.name;
+						})
+						item.directors = str || "暂无导演数据";
+						
+						var castsStr = "";
+						item.casts.forEach(item => {
+							castsStr += item.name;
+						})
+						item.casts = castsStr || "暂无主演数据";
+						item.rating = item.rating.average || 0;
+						item.poster = item.images.small;
+						
+						// var imgEle = new Image();
+						// imgEle.src = poster;
+						// imgEle.onerror = function (){
+						// 	item.poster = 'error.jpg';
+						// }
+					})
+					return {
+						"code": 0, //解析接口状态
+						"count": res.count, //解析数据长度
+						"data": res.data //解析数据列表
+					}
+				},
+				page: {
+					limit: 5,
+					limits: [5,10],
+				},
+				toolbar: '#headTool',
+				defaultToolbar: [],
+				cols: [[ //表头
+					{title: '序号', width:80, type: "numbers"}
+					,{field: 'title', title: '电影名称'}
+					,{field: 'genres', title: '电影类型'}
+					,{field: 'year', title: '上映时间'} 
+					,{field: 'directors', title: '导演列表'}
+					,{field: 'casts', title: '演员列表'}
+					,{field: 'rating', title: '评分'}
+					,{field: 'poster', title: '电影海报', templet: '#poster'}
+				]]
+			})
+			
+			
+			// 监听type类型切换事件
+			table.on('toolbar(movieTable)', function(obj){
+				console.log(obj.event);
+				// 切换url,重载表格
+				// 使用id模式   table.reload("tableDemo", 基础参数)
+				// 不是用id
+				tablelns.reload({
+					url: host + obj.event
+				})
+			})
+			
+			//监听行双击事件
+			table.on('rowDouble(movieTable)', function(obj){
+				console.log(obj.data) // 得到当前行数据
+				layer.open({
+					type: 1,
+					title: "电影详情",
+					content: `
+						<div class="layui-card">
+							<div class="layui-card-header">${obj.data.title}</div>
+							<div class="layui-card-body">
+								<img src="${obj.data.poster}" class="card-img" alt="">
+								<div class="info">
+									<p>电影类型：${obj.data.genres}</p>
+									<p>电影时间：${obj.data.year}</p>
+									<p>电影导演：${obj.data.directors}</p>
+									<p>电影主演：${obj.data.casts}</p>
+									<p>电影评分：${obj.data.rating}</p>
+								</div>
+							</div>
+						</div>
+					`,
+					shade: true,
+					anim: 4,
+					shadeClose: true
+				})
+			});
+			
+			// 图片加载不出来执行的事件
+			function changeSrc(){
+				event.target.src = "error.jpg";
+			}
+			
+		</script>
+	</body>
+</html>

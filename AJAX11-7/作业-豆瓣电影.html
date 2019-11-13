@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>豆瓣电影</title>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			overflow: hidden;
+		}
+
+		ul {
+			width: 80%;
+			margin: 0 auto;
+			list-style: none;
+			overflow: hidden;
+		}
+
+		li {
+
+			width: 23%;
+			height: 135px;
+			float: left;
+			border: 1px solid black;
+			margin: 10px;
+		}
+
+		span {
+			display: block;
+			/* margin-left:  */
+			/* text-align: center; */
+            margin-left: 110px;
+
+		}
+
+		p {
+
+			font-size: 15px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		     overflow: hidden;
+			width: 150px;
+			/* height: 10px; */
+			display: block;
+			
+		}
+	</style>
+</head>
+
+<body>
+	<button class="b1">正在热映</button>
+	<button class="b2">即将上映</button>
+	<button class="b3">top250</button>
+	<div class="main"></div>
+	<script type="text/javascript">
+		/*
+				作业要求: 
+					1. 每页10条数据 : 电影海报 左右布局 \电影名称\电影类型\上映时间\导演列表\演员列表
+					2. 单行显示,多出来省略号
+					3. 响应式 4/3/2/1
+					4. 点击类型切换电影,切换分页
+					5. 添加分页,点击分页切换电影
+			*/
+		  var btn1 = document.querySelector('.b1');
+		  var btn2 = document.querySelector('.b2');
+		  var btn3 = document.querySelector('.b3');
+		  var btnz = document.querySelectorAll('button');
+		console.log(btnz)
+		 
+		 
+		  var mainz = document.querySelector('.main');
+		var host = "http://www.bufantec.com/api/douban/movie/";
+		console.log(host)
+
+		// var type = ['in_theaters','coming_soon','top250'];
+		// btn1.onclick = function (){  type = '...'  ajax({})}
+		// btn2.onclick = function (){  type = '...' }
+		// btn3.onclick = function (){  type = '...' }
+		var type = 'in_theaters';
+		
+		// var count = 0;
+		var sl ='?start=1&limit=10';
+
+		ajax({
+			url: host + type + '?start=1&limit=10',
+			
+			success(res) {
+				console.log(res);
+				count = res.count;
+				// console.log(count);
+				var data = res.data;
+
+				var str = '';
+				// console.log(data.count)
+				console.log(Math.ceil(count/10))
+				for(var b=0;b<Math.ceil(count/10);b++){
+					str +=` <button class='b${b+4}'>${b}</button>`
+					// console.log(data.cout/10)
+				}
+				 str += "<ul>";
+				// var namez = [[],[],[],[],[],['暂无相关演员信息'],[],[],[],[]];
+				var namez = [
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[]
+				];
+				// var nimm =[];
+				for (var i = 0; i < data.length; i++) {
+
+					// console.log(data[i].casts);
+					str +=
+						`<li style="background:url(${data[i].images.large}) no-repeat;background-size: 100px,100px;" ><span><p>电影名称:${data[i].title}</p><p>电影类型:${data[i].genres} </p><p>上映时间${data[i].year}</p><p>导演列表:${data[i].directors[0].name}</p>`
+					for (var k = 0; k < data[i].casts.length; k++) {
+
+
+
+						namez[i].push(data[i].casts[k].name);
+						// console.log(nimm)
+
+
+						// 	namez.push(nimm)
+
+
+
+					}
+
+					if (namez[i].length == 0) {
+						namez[i].push('暂无相关演员信息')
+					}
+
+					str += `<p>演员列表:${namez[i]}</p></span></li>`;
+
+
+				}
+				str += "</ul>";
+				console.log(namez[5]);
+				// if(namez[5]==''){
+				// 		name[5].push('nmsl')
+				// 	}
+				// console.log(data.length);
+				console.log(namez)
+				// // innerHTML 会将父元素所有内容覆盖  appendChild
+				// document.body.insertAdjacentHTML('afterend', str);
+				mainz.innerHTML=str;
+			}
+		})
+		
+		btn1.onclick = function (){
+		var type = 'in_theaters';
+		// var count = 0;
+
+		ajax({
+			url: host + type + '?start=1&limit=10',
+			success(res) {
+				console.log(res);
+				count = res.count;
+				console.log(count);
+				var data = res.data;
+				var str = '';
+				// console.log(data.count)
+				console.log(Math.ceil(count/10))
+				for(var b=0;b<Math.ceil(count/10);b++){
+					str +=` <button >${b}</button>`
+					// console.log(data.cout/10)
+				}
+				 str += "<ul>";
+				// var namez = [[],[],[],[],[],['暂无相关演员信息'],[],[],[],[]];
+				// var namez = [
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[],
+				// 	[]
+				// ];
+				var namez =[];
+				for(var p=0;p<10;p++){
+					p += '[],'
+				}
+				// var nimm =[];
+				for (var i = 0; i < data.length; i++) {
+
+					// console.log(data[i].casts);
+					str +=
+						`<li style="background:url(${data[i].images.large}) no-repeat;background-size: 100px,100px;" ><span><p>电影名称:${data[i].title}</p><p>电影类型:${data[i].genres} </p><p>上映时间${data[i].year}</p><p>导演列表:${data[i].directors[0].name}</p>`
+					for (var k = 0; k < data[i].casts.length; k++) {
+
+
+
+						namez[i].push(data[i].casts[k].name);
+						// console.log(nimm)
+
+
+						// 	namez.push(nimm)
+
+
+
+					}
+
+					if (namez[i].length == 0) {
+						namez[i].push('暂无相关演员信息')
+					}
+
+					str += `<p>演员列表:${namez[i]}</p></span></li>`;
+
+
+				}
+				str += "</ul>";
+				console.log(namez[5]);
+				// if(namez[5]==''){
+				// 		name[5].push('nmsl')
+				// 	}
+				// console.log(data.length);
+				console.log(namez)
+				// // innerHTML 会将父元素所有内容覆盖  appendChild
+				mainz.innerHTML=str;
+			}
+		})}
+		btn2.onclick = function (){
+		var type = 'coming_soon';
+		// var count = 0;
+
+		ajax({
+			url: host + type + '?start=1&limit=10',
+			success(res) {
+				console.log(res);
+				count = res.count;
+				console.log(count);
+				var data = res.data;
+				var str = '';
+				// console.log(data.count)
+				console.log(Math.ceil(count/10))
+				for(var b=0;b<Math.ceil(count/10);b++){
+					str +=` <button >${b}</button>`
+					// console.log(data.cout/10)
+				}
+				 str += "<ul>";
+				// var namez = [[],[],[],[],[],['暂无相关演员信息'],[],[],[],[]];
+				var namez = [
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[]
+				];
+				// var nimm =[];
+				for (var i = 0; i < data.length; i++) {
+
+					// console.log(data[i].casts);
+					str +=
+						`<li style="background:url(${data[i].images.large}) no-repeat;background-size: 100px,100px;" ><span><p>电影名称:${data[i].title}</p><p>电影类型:${data[i].genres} </p><p>上映时间${data[i].year}</p><p>导演列表:${data[i].directors[0].name}</p>`
+					for (var k = 0; k < data[i].casts.length; k++) {
+
+
+
+						namez[i].push(data[i].casts[k].name);
+						// console.log(nimm)
+
+
+						// 	namez.push(nimm)
+
+
+
+					}
+
+					if (namez[i].length == 0) {
+						namez[i].push('暂无相关演员信息')
+					}
+
+					str += `<p>演员列表:${namez[i]}</p></span></li>`;
+
+
+				}
+				str += "</ul>";
+				console.log(namez[5]);
+				// if(namez[5]==''){
+				// 		name[5].push('nmsl')
+				// 	}
+				// console.log(data.length);
+				console.log(namez)
+				// // innerHTML 会将父元素所有内容覆盖  appendChild
+				mainz.innerHTML=str;
+			}
+		})}
+		btn3.onclick = function (){
+		var type = 'top250';
+		// var count = 0;
+
+		ajax({
+			url: host + type + '?start=1&limit=10',
+			success(res) {
+				console.log(res);
+				count = res.count;
+				console.log(count);
+				var data = res.data;
+				var str = '';
+				// console.log(data.count)
+				console.log(Math.ceil(count/10))
+				for(var b=0;b<Math.ceil(count/10);b++){
+					str +=` <button >${b}</button>`
+					// console.log(data.cout/10)
+				}
+				 str += "<ul>";
+				// var namez = [[],[],[],[],[],['暂无相关演员信息'],[],[],[],[]];
+				var namez = [
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[],
+					[]
+				];
+				// var nimm =[];
+				for (var i = 0; i < data.length; i++) {
+
+					// console.log(data[i].casts);
+					str +=
+						`<li style="background:url(${data[i].images.large}) no-repeat;background-size: 100px,100px;" ><span><p>电影名称:${data[i].title}</p><p>电影类型:${data[i].genres} </p><p>上映时间${data[i].year}</p><p>导演列表:${data[i].directors[0].name}</p>`
+					for (var k = 0; k < data[i].casts.length; k++) {
+
+
+
+						namez[i].push(data[i].casts[k].name);
+						// console.log(nimm)
+
+
+						// 	namez.push(nimm)
+
+
+
+					}
+
+					if (namez[i].length == 0) {
+						namez[i].push('暂无相关演员信息')
+					}
+
+					str += `<p>演员列表:${namez[i]}</p></span></li>`;
+
+
+				}
+				str += "</ul>";
+				console.log(namez[5]);
+				// if(namez[5]==''){
+				// 		name[5].push('nmsl')
+				// 	}
+				// console.log(data.length);
+				console.log(namez)
+				// // innerHTML 会将父元素所有内容覆盖  appendChild
+				mainz.innerHTML=str;
+			}
+		})}
+
+		// 封装ajax函数
+		// url,method,success,fail
+		// 形参改为对象的好处: 不关心传参顺序/可以设置默认值
+		function ajax(params) {
+			params.method = params.method || "GET";
+			params.url = params.url || "http://www.bufantec.com/api/douban/movie/in_theaters?start=1&limit=10";
+			params.data = params.data || null;
+			params.success = params.success || function () {
+				console.log("success ...")
+			};
+			params.fail = params.fail || function () {
+				console.log("fail ...")
+			};
+
+			// 实例化xhr对象
+			var xhr = new XMLHttpRequest();
+			// 成功/失败后的回调
+			xhr.onload = function () {
+				// 将服务器返回值传入,让回调函数处理
+				var data = JSON.parse(xhr.responseText);
+				params.success(data);
+			}
+			xhr.onerror = function () {
+				params.fail();
+			}
+			// open
+			xhr.open(params.method, params.url);
+			// 发送
+			xhr.send(params.data);
+		}
+	</script>
+</body>
+
+</html>

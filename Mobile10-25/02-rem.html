@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- 在chrome中  默认的html字体大小是16px -->
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		
+		
+		/*rem是基于html节点的font-size大小的比例  1rem = 1*html的fontSize */
+		#box{
+			width: 10rem;
+			height: 10rem;
+			background-color: red;
+		}
+		
+		
+		/*em 相对单位 基于当前字体大小*/
+		#inner{
+			width: 10em;
+			height: 10em;
+			background-color: blue;
+		}
+		
+		
+		/* em通常被用在首行缩进的地方 当然在特殊情况下可以用在适配方面的处理*/
+		p{
+			text-indent: 2em;
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="box"></div>
+	<div id="inner"></div>
+	<p>我欲乘风归去,又恐琼楼玉宇.</p>
+	
+	<script type="text/javascript">
+		box.onclick = function (){
+			console.log("width ===>",box.offsetWidth," height ===>",box.offsetHeight);
+			console.log(getComputedStyle(box,null).fontSize);
+		}
+	</script>
+</body>
+</html>

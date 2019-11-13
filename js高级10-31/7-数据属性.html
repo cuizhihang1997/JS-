@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据属性</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			'use strict';
+			
+			/* 
+				writable — 如果为 true，则可以修改，否则它是只读的。
+				enumerable — 如果是 true，则可在循环中列出，否则不列出。
+				configurable — 如果是 true，则此属性可以被删除，相应的特性也可以被修改，否则不可以。
+				value: 属性的值
+				注意:
+					1. 使属性不可配置是一条单行道。我们不能把它改回去，因为 `defineProperty` 不适用于不可配置的属性。
+					2. 设置不可用的属性时，只在使用严格模式时才会出现错误。在非严格模式下，写入只读属性等时不会发生错误。但操作仍然不会成功。非严格模式下违反标志的行为只是默默地被忽略
+			*/
+			
+			var obj = {
+				name: "李白",
+				age: 24,
+				friend: ['杜甫','白居易']
+			};
+			
+			
+			/*
+			修改属性的特性的方法:
+				Object.defineProperty(obj, propertyName, descriptor)
+				obj，propertyName   要处理的对象和属性。
+				descriptor   要应用的属性描述符。
+			*/
+			Object.defineProperty(obj, 'tel', {
+				value: "121345678911",
+				configurable: true
+			})
+			Object.defineProperty(obj,'tel',{
+				enumerable: true
+			})
+			// obj.name = "武则天";
+			Object.defineProperty(obj, 'name',{
+				value: "武则天"
+			})
+			
+			for(var i in obj){
+				console.log("i ===>",i,'obj[i] ===>', obj[i]);
+			}
+		</script>
+	</body>
+</html>

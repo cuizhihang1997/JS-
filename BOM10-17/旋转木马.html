@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>旋转木马</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul,
+		ol {
+			list-style: none;
+		}
+
+		.swiper {
+			position: relative;
+			width: 1200px;
+			margin: 10px auto;
+		}
+
+		.swiper ul {
+			height: 500px;
+		}
+
+		li {
+			position: absolute;
+			/* left: 100px;
+				top: 0; */
+		}
+
+		.swiper li img {
+			width: 100%;
+		}
+
+		.arr {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			margin-top: -35px;
+			display: block;
+			width: 30px;
+			height: 70px;
+			font-size: 20px;
+			color: #fff;
+			text-align: center;
+			line-height: 70px;
+			background-color: rgba(0, 0, 0, .7);
+			z-index: 999;
+			text-decoration: none;
+		}
+
+		.arr.arr-r {
+			left: auto;
+			right: 0;
+		}
+
+		ul li.li_1 {
+			width: 400px;
+			top: 70px;
+			left: 50px;
+			opacity: .2;
+			z-index: 2;
+		}
+
+		ul li.li_2 {
+			width: 600px;
+			top: 120px;
+			left: 0px;
+			opacity: .8;
+			z-index: 3;
+		}
+
+		ul li.li_3 {
+			width: 800px;
+			top: 100px;
+			left: 200px;
+			opacity: 1;
+			z-index: 4;
+		}
+
+		ul li.li_4 {
+			width: 600px;
+			top: 120px;
+			left: 600px;
+			opacity: .8;
+			z-index: 3;
+		}
+
+		ul li.li_5 {
+			width: 400px;
+			top: 70px;
+			left: 750px;
+			opacity: .2;
+			z-index: 2;
+		}
+	</style>
+</head>
+.
+
+<body>
+
+	<div class="swiper">
+		<ul>
+			<li class="li_1"><img src="../lib/image/banner/m1.jpg" alt="" /></li>
+			<li class="li_2"><img src="../lib/image/banner/m2.jpg" alt="" /></li>
+			<li class="li_3"><img src="../lib/image/banner/m3.jpg" alt="" /></li>
+			<li class="li_4"><img src="../lib/image/banner/m4.jpg" alt="" /></li>
+			<li class="li_5"><img src="../lib/image/banner/m5.jpg" alt="" /></li>
+		</ul>
+		<a href="javascript:;" class="arr arr-l">
+			< </a> <a href="javascript:;" class="arr arr-r">>
+		</a>
+	</div>
+
+	<script type="text/javascript">
+		var btn1 = document.querySelector(".arr-l");
+		var btn2 = document.querySelector(".arr-r"); // 下一个
+		var lis = document.querySelectorAll("ul li"); // 获取所有的li
+		// 获取要改变元素的样式组成的数组
+		var json = [ // 整体移动 tab 向后, shift + tab 向前		arr跟着循环变化的
+			{ //  0
+				width: 400,
+				top: 70,
+				left: 50,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ // 1
+				width: 600,
+				top: 120,
+				left: 0,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ // 2
+				width: 800,
+				top: 100,
+				left: 200,
+				opacity: 1,
+				zIndex: 4
+			},
+			{ // 3
+				width: 600,
+				top: 120,
+				left: 600,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ //4
+				width: 400,
+				top: 70,
+				left: 750,
+				opacity: .2,
+				zIndex: 2
+			}
+		];
+		var json1 = [ // 整体移动 tab 向后, shift + tab 向前		arr跟着循环变化的
+
+			{ // 2
+				width: 800,
+				top: 100,
+				left: 200,
+				opacity: 1,
+				zIndex: 4
+			},
+			{ // 3
+				width: 600,
+				top: 120,
+				left: 600,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ //4
+				width: 400,
+				top: 70,
+				left: 750,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ //  0
+				width: 400,
+				top: 70,
+				left: 50,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ // 1
+				width: 600,
+				top: 120,
+				left: 0,
+				opacity: .8,
+				zIndex: 3
+			}
+		];
+		var json2 = [ // 整体移动 tab 向后, shift + tab 向前		arr跟着循环变化的
+
+			{ // 1
+				width: 600,
+				top: 120,
+				left: 0,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ // 2
+				width: 800,
+				top: 100,
+				left: 200,
+				opacity: 1,
+				zIndex: 4
+			},
+			{ // 3
+				width: 600,
+				top: 120,
+				left: 600,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ //4
+				width: 400,
+				top: 70,
+				left: 750,
+				opacity: .2,
+				zIndex: 2
+			}, { //  0
+				width: 400,
+				top: 70,
+				left: 50,
+				opacity: .2,
+				zIndex: 2
+			},
+		];
+		
+		var json4 = [ // 整体移动 tab 向后, shift + tab 向前		arr跟着循环变化的
+			{ //4
+				width: 400,
+				top: 70,
+				left: 750,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ //  0
+				width: 400,
+				top: 70,
+				left: 50,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ // 1
+				width: 600,
+				top: 120,
+				left: 0,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ // 2
+				width: 800,
+				top: 100,
+				left: 200,
+				opacity: 1,
+				zIndex: 4
+			},
+			{ // 3
+				width: 600,
+				top: 120,
+				left: 600,
+				opacity: .8,
+				zIndex: 3
+			},
+
+		];
+		var json5 = [ // 整体移动 tab 向后, shift + tab 向前		arr跟着循环变化的
+			{ // 3
+				width: 600,
+				top: 120,
+				left: 600,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ //4
+				width: 400,
+				top: 70,
+				left: 750,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ //  0
+				width: 400,
+				top: 70,
+				left: 50,
+				opacity: .2,
+				zIndex: 2
+			},
+			{ // 1
+				width: 600,
+				top: 120,
+				left: 0,
+				opacity: .8,
+				zIndex: 3
+			},
+			{ // 2
+				width: 800,
+				top: 100,
+				left: 200,
+				opacity: 1,
+				zIndex: 4
+			},
+
+		];
+		var liArr = document.getElementsByTagName('li');
+		// var next = document.getElementById('next');
+		// var prev = document.getElementById('prev');
+		function animate(element, json, fn) {
+			clearInterval(element.timeId); //清理定时器
+			element.timeId = setInterval(function () {
+				var flag = true; //假设默认为当前值已经等于目标值
+				for (var arrt in json) {
+					if (arrt == "opacity") { //如果属性值为opacity
+						var current = getStyle(element, arrt) * 100; //current和target先扩大100倍
+						target = json[arrt] * 100;
+						var step = (target - current) / 10;
+						step = step > 0 ? Math.ceil(step) : Math.floor(step);
+						current += step;
+						element.style[arrt] = current / 100; //运算完后缩小100倍
+					} else if (arrt == "zIndex") { //如果属性值为zindex
+						element.style[arrt] = json[arrt];
+					} else { //普通属性
+						var current = parseInt(getStyle(element, arrt));
+						target = json[arrt];
+						var step = (target - current) / 10;
+						step = step > 0 ? Math.ceil(step) : Math.floor(step); //step大于零向上取整，小于零向下取整
+						current += step;
+						element.style[arrt] = current + "px";
+					}
+					if (current != target) {
+						flag = false;
+					}
+				}
+				if (flag) { //只有所有属性的当前值已经等于目标值，才清理定时器
+					clearInterval(element.timeId);
+					if (fn) { //回调函数
+						fn();
+					}
+				}
+				// console.log("当前位置：" + current + "目标位置：" + target + " 移动步数：" + step); //测试函数
+			}, 20);
+		}
+
+		function getStyle(ele, styleName) {
+			if (getComputedStyle) {
+				return getComputedStyle(ele, null)[styleName];
+			} else {
+				return ele.currentStyle[styleName];
+			}
+		}
+
+		function move() {
+			for (var i = 0; i < lis.length; i++) {
+			animate(lis[i], json[i]);
+			}
+		}
+
+		function move1() {
+			for (var i = 0; i < lis.length; i++) {
+				animate(lis[i], json1[i]);
+			}
+		}
+
+		function move2() {
+			for (var i = 0; i < lis.length; i++) {
+				animate(lis[i], json2[i]);
+			}
+		}
+
+		function move3() {
+			for (var i = 0; i < lis.length; i++) {
+				animate(lis[i], json4[i]);
+			}
+		}
+
+		function move4() {
+			for (var i = 0; i < lis.length; i++) {
+				animate(lis[i], json5[i]);
+			}
+		}
+		var index;
+		var count = 2;
+		for (var i = 0; i < liArr.length; i++) {
+
+			liArr[i].index = i;
+
+			liArr[i].onclick = function () {
+
+				// console.log(this.index);
+				index = this.index;
+				count=index;
+				console.log(index);
+				if(index==0)
+				{count = 0-index}
+				if(index==1)
+				{count = 2-index}
+				if(index==2)
+				{count = 4-index}
+				if(index==3)
+				{count = 6-index}
+				if(index==4)
+				{count = 8-index}
+				
+				
+				if(count<0){
+
+					count =4;
+				}
+				if(count>4){
+					count=0
+				}
+				console.log(index);
+				
+				
+				console.log(count);
+			
+				if (index == 0) {
+
+					move1();
+
+				}
+				if (index == 1) {
+
+					move2();
+
+				}
+				if (index == 2) {
+
+					move();
+
+				}
+				if (index == 3) {
+
+					move3();
+
+				}
+				if (index == 4) {
+
+					move4();
+
+				}
+
+			}
+		}
+
+		btn2.onclick = function () {
+			if (count == 0) {
+				
+				move2()
+			
+			
+			}
+			if (count == 1) {
+				move()
+			}
+			if (count == 2) {
+				move3()
+			}
+			if (count == 3) {
+				move4()
+			}
+			if (count == 4) {
+				count=-1;
+				move1()
+				
+			}
+		
+			count++;
+			console.log(count);
+		}
+		btn1.onclick = function () {
+			if (count == 0) {
+				count=5;
+				move4()
+			
+			
+			}
+			if (count == 1) {
+				move1()
+			}
+			if (count == 2) {
+				move2()
+			}
+			if (count == 3) {
+				move()
+			}
+			if (count == 4) {
+				// count=-1;
+				move3()
+			}
+			// if(count==-1){
+			// 	count=4
+
+			// }
+			count--;
+			console.log(count);
+		}
+
+	
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #cvs {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="cvs" width="600" height="500">
+        你的浏览器不支持canvas，请升级浏览器.浏览器不支持
+    </canvas>
+
+
+
+    <script>
+        function Ball(id, number) {
+
+            this.cav = document.querySelector(id);
+            this.cad = this.cav.getContext("2d");
+            this.number = number;
+
+            //   this.x=this.y=this.r=rdR();
+
+
+
+            this.list = [];
+
+            this.init();
+
+
+
+        }
+
+
+        Ball.prototype = {
+
+
+            init() {
+
+                this.creartAll();
+                this.move();
+
+
+            },
+
+            creatBall(ball) {
+                var cad = this.cad;
+                //   var ball =this.ball;
+
+                //   ctx.beginPath();
+                cad.beginPath();
+                cad.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI, false);
+                cad.fillStyle = ball.color;
+                cad.fill();
+
+                cad.closePath();
+
+
+
+            },
+
+            creartAll() {
+
+                for (var i = 0; i < this.number; i++) {
+
+
+                    var ball = {
+
+                        x: this.rdPosition(),
+                        y: this.rdPosition(),
+                        r: this.rdR(),
+                        stepX: this.rdStep(),
+                        stepY: this.rdStep(),
+                        color: `hsla(${this.rdColor()},70%, 60%, 1)`,
+
+
+
+
+
+
+
+                    }
+
+
+
+
+                    this.list.push(ball);
+                    this.creatBall(ball);
+
+                    
+
+
+
+                }
+
+
+
+            },
+
+
+
+
+            move() {
+
+                setInterval(() => {
+                    this.cad.clearRect(0,0,this.cav.width, this.cav.height);
+                    for (var i = 0; i < this.list.length; i++) {
+
+                        var ball = this.list[i];
+
+                        ball.x += ball.stepX;
+                        ball.y += ball.stepY;
+                      if(ball.x<=ball.r){
+                          ball.x=ball.r;
+                           ball.stepX=- ball.stepX
+                      }else if(ball.x>=this.cav.width-ball.r){
+                        ball.x=this.cav.width-ball.r;
+                        ball.stepX=- ball.stepX
+                      }
+
+                      if(ball.y<=ball.r){
+                          ball.y=ball.r;
+                           ball.stepY=- ball.stepY
+                      }else if(ball.y>=this.cav.height-ball.r){
+                        ball.Y=this.cav.height-ball.r;
+                        ball.stepY=- ball.stepY
+                      }
+
+                      for(var j = i+1; j < this.list.length; j ++){
+								if(this.judge(ball,this.list[j])){
+									// 连线
+									this.cad.beginPath();
+									this.cad.moveTo(ball.x,ball.y);
+									this.cad.lineTo(this.list[j].x,this.list[j].y);
+									this.cad.strokeStyle = 'black';
+									this.cad.stroke();
+									this.cad.closePath();
+								}
+							}
+
+
+
+
+
+                        this.creatBall(ball);
+
+                    }
+
+          
+
+
+
+                   
+
+
+                }, 1000/60);
+
+
+
+
+
+            },
+
+            judge(ball1,ball2){
+
+                var maxDistance = Math.pow(ball1.r + ball2.r + 100,2);
+					// 两个球之间的距离的平方
+					var distance = Math.pow(ball1.x - ball2.x,2) + Math.pow(ball1.y - ball2.y,2);
+					return distance <= maxDistance;
+
+
+
+            },
+
+            rdPosition() {
+                return Math.floor(Math.random() * 20) * 25;
+            },
+
+
+
+            rdColor() {
+
+            
+                return Math.floor(Math.random() * 361);
+            },
+            rdR() {
+
+
+                return Math.floor(Math.random() * 14) + 15;
+            },
+            rdStep() {
+
+
+                return Math.floor(Math.random() * 5) + 3;
+            },
+
+            // rdColor() {
+
+
+            //     Math.floor(Math.random() * 361);
+            // }
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var ball = new Ball("#cvs", 20);
+    </script>
+</body>
+
+</html>

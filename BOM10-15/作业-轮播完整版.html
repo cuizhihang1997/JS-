@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>轮播完整版</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: relative;
+				width: 1000px;
+				height: 375px;
+				margin: 20px auto;
+				border: 1px solid red;
+				overflow: hidden;
+			}
+			.imgs {
+				position: absolute;
+				list-style: none;
+				width: 500%;
+				height: 100%;
+			}
+			.imgs li{
+				float: left;
+				width: 20%;
+				height: 100%;
+			}
+			.imgs li img{
+				width: 100%;
+				height: 100%;
+			}
+			button {
+				padding: 10px 20px;
+				margin-left: 30px;
+			}
+			.arrowLeft,.arrowRight{
+				position: absolute;
+				right: 0;
+				top: 130px;
+				width: 50px;
+				height: 80px;
+				background-color: orangered;
+			}
+			.arrowLeft{
+				left: 0;
+			}
+			.dots{
+				position: absolute;
+				bottom: 30px;
+				right: 30px;
+				list-style: none;
+			}
+			.dots li{
+				float: left;
+				margin-right: 15px;
+				width: 10px;
+				height: 10px;
+				background-color: #0000EE;
+				border-radius: 50%;
+			}
+			.dots li.act{
+				background-color: green;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul class="imgs">
+				<li><img src="../lib/image/banner/m1.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m2.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m3.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m4.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m1.jpg" alt=""></li>
+			</ul>
+			<div class="arrowLeft"></div>
+			<div class="arrowRight"></div>
+			<ul class="dots">
+				<li class="act"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript">
+			/*
+				获取节点  imgs/左右箭头/小圆点
+				封装运动函数
+				添加左右箭头的事件
+				添加小圆点的事件
+			*/
+			var imgs = document.querySelector(".imgs"),  // 图片父类<ul>
+				  arrowL = document.querySelector(".arrowLeft"),
+				  arrowR = document.querySelector(".arrowRight"),
+				  dots = document.querySelector(".dots"),
+				  lis = imgs.children, // 图片数组
+				  dotArr = dots.children, // 小圆点的数组
+				  liw = lis[0].offsetWidth, // 一张图片的宽度
+				  count = 0; // 轮播计数器,当前显示第几张图片
+					
+			// 右箭头的点击事件
+			arrowR.onclick = function (){
+				if(count === lis.length - 1){
+					// 将图片定位至第一张,往第二章走
+					count = 0;
+					imgs.style.left = '0px';
+				}
+				count ++;
+				slowlyMove(imgs,-liw * count);
+				
+				// 更改小点的样式
+				changeDot(count);
+			}
+			
+			// 左箭头点击事件
+			arrowL.onclick = function (){
+				// 临界条件  第一张图片,定位至最后一张,往前走
+				if(count === 0){
+					count = lis.length - 1;
+					imgs.style.left = -liw * (lis.length - 1) + "px";
+				}
+				count --;
+				slowlyMove(imgs,-liw * count);
+				
+				// 更改小点的样式
+				changeDot(count);
+			}
+			
+			// 小点的点击事件
+			for(let i = 0; i < dotArr.length; i ++){
+				dotArr[i].onclick = function (){
+					// 更改激活样式  清除之前的激活的小点样式,给当前小点添加样式
+					// document.querySelector(".dots li.act").classList.remove("act");
+					// this.classList.add("act");
+					changeDot(i);
+					
+					// 更改图片   为了跟箭头保持同步
+					count = i;
+					slowlyMove(imgs,-liw * count);
+					
+				}
+			}
+			
+			// 更改小点的样式
+			function changeDot(index){
+				
+				if(index === lis.length - 1){
+					index = 0;
+				}
+				// 更改激活样式  清除之前的激活的小点样式,给当前小点添加样式
+				document.querySelector(".dots li.act").classList.remove("act");
+				dotArr[index].classList.add("act");
+			}
+			
+				 
+			// 封装运动函数
+		  function slowlyMove(ele,target){
+				// 防止定时器冲突
+				clearInterval(ele.timer);
+				// 设置定时器
+				ele.timer = setInterval(function (){
+					// 获取起始位置
+					var start = ele.offsetLeft;
+					// 设置步长
+					var step = (target - start) / 10;
+					// 判断步长区间
+					if(Math.abs(step) < 1){  // [-1,1]
+						// 细分区间 [-1,0] ==> -1||0   (0,1] ==> 1
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ele.style.left = start + step + "px";
+					// 判断是否停止
+					if(start + step === target){
+						console.log("stop ...");
+						// 清除定时器
+						clearInterval(ele.timer);
+					}
+				},17)
+			}
+		</script>
+	</body>
+</html>

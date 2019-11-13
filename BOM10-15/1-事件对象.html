@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>事件对象</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: fixed;
+				top: 50px;
+				left: 300px;
+				width: 200px;
+				height: 200px;
+				background-color: red;
+			}
+			.inner{
+				margin-left: 20px;
+				width: 100px;
+				height: 100px;
+				background-color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="box">
+			<div class="inner"></div>
+		</div>
+		
+		<input type="text" placeholder="请输入姓名" class="ipt">
+		
+		<script type="text/javascript">
+			
+			var box = document.querySelector('.box');
+			var ipt = document.querySelector('.ipt');
+			
+			box.onclick = function (){
+				console.log(event);
+				
+				// console.log("event.pageX ===>",event.pageX);
+				// console.log("event.pageY ===>",event.pageY);
+				// console.log("event.screenX ===>",event.screenX);
+				// console.log("event.screenY ===>",event.screenY);
+				// console.log("event.clientX ===>",event.clientX);
+				// console.log("event.clientY ===>",event.clientY);
+				console.log("event.offsetX ===>",event.offsetX);
+				console.log("event.offsetY ===>",event.offsetY);
+				
+				console.log("event.target ===> " , event.target);
+				console.log("event.currentTarget ===>" , event.currentTarget);
+			}
+			
+			// ipt.oninput = function (){
+			// 	console.log(event);
+			// }
+			// ipt.onfocus = function (){}
+			ipt.onkeyup = function (){
+				console.log(event);
+				if(event.keyCode === 13){
+					console.log("用户提交 ===>",this.value);
+				}
+			}
+			// ipt.onblur = function (){
+				
+			// }
+			
+			box.onmousedown = function (){
+				console.log("event.button",event.button)
+			}
+			
+			// addEventListener(type,handleEvent,isCapture)
+		</script>
+	</body>
+</html>

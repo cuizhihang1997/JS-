@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>帧动画</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				width: 516px;
+				height: 273px;
+				margin: 30px auto;
+				border: 1px solid red;
+				background: url("../lib/image/HC/shark2.png") 0 0/cover;
+				animation: move 1s steps(4) infinite;
+			}
+			@keyframes move{
+				0%{
+					background-position: 0 0;
+				}
+				100%{
+					background-position: 0 -1092px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+	</body>
+</html>

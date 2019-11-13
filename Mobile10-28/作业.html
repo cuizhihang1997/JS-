@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+
+    <style>
+    
+    
+    *{
+			margin: 0;
+			padding: 0;
+        }
+        /* body{
+            height: 100%;
+        } */
+		.header{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 70px;
+            background-color: white;
+            opacity: 0.5;
+			z-index: 9;
+		}
+		.sidebar{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 150px;
+			height: 100%;
+			overflow: hidden; 
+			background-color: blue;
+		}
+		ul{
+		 position: absolute;
+			 top: 70px; 
+            width: 100%;
+            /* height: 100%; */
+            list-style: none;
+            transition: .8s;
+		}
+		li{
+			width: 100%;
+			height: 30px;
+			margin-bottom: 10px;
+			font-size: 10px;
+			color: #fff;
+			text-align: center;
+			line-height: 30px;
+			background-color: #9000FF;
+		}
+		.act{
+			background-color: #f00;
+		}
+    
+        p{
+            width: 100%;
+			height: 30px;
+			margin-bottom: 10px;
+			font-size: 20px;
+			/* color: #fff; */
+			text-align: center;
+			line-height: 50px;
+			/* background-color: #9000FF; */
+        }
+     .dbzz{
+         position: absolute;
+         top: 0;
+         left: 0;
+         background-color: blue;
+         height: 100%;
+         width: 150px;
+
+     }
+     .aside{
+				position: fixed;
+				top: 80px;
+				right: 20px;
+				list-style: none;
+				/* border: 1px solid red; */
+			}
+			.aside span{
+                display: block;
+				width: 20px;
+				height: 20px;
+				margin-bottom: 5px;
+				font-size: 13px;
+				text-align: center;
+				line-height: 20px;
+				background-color: green;
+			}
+			.aside li:last-child{
+				margin-bottom: 0;
+			}
+			.center{
+				position: fixed;
+				top: 50%;
+				left: 70%;
+				/* display: none; */
+				width: 100px;
+				height: 100px;
+				font-size: 30px;
+				color: #fff;
+				text-align: center;
+				line-height: 100px;
+				background-color: rgba(0,0,0,.4);
+				transform: translate(-50%, -50%);
+			}
+    .zi{
+        font-size: 30px;
+    }
+    </style>
+</head>
+<body>
+
+  <script src="city.js"></script>
+
+ <div class="header"><div class="zi">已选择城市:阿坝</div></div>
+
+ <div class="sidebar">
+     <ul></ul>
+ </div>
+  <div class="aside">
+			<!-- li -->
+		</div>
+		<!-- 中间的字母遮罩 -->
+		<div class="center" hidden>A</div>
+      <script>
+       
+       ulEle = document.querySelector("ul");
+      
+      var originTop = ulEle.offsetTop;
+		var sidebar = document.querySelector(".sidebar");
+        // var dbzz  = document.querySelector('.dbzz')
+        var max = 150;
+        
+        // console.log(namz)
+
+      
+        for(var i=0; i<cityAll.length;i++){
+            var namz =cityAll[i].name;
+            var cityz =cityAll[i].citys
+            // console.log(namz);
+            // console.log(cityz);
+            // var uls = document.createElement('ul')
+
+            // sidebar.appendChild(uls);
+            var ps =document.createElement('p')
+
+            ps.innerHTML = namz
+             
+            ulEle.appendChild(ps);
+           for(var k= 0 ;k<cityz.length;k++){
+            var lis = document.createElement('li');
+            lis.innerHTML = cityz[k];
+            ulEle.appendChild(lis);
+        }
+        
+       
+        // var lEle=document.querySelectorAll('li')
+        }
+        var lisz = document.querySelectorAll('li');
+        var ziz = document.querySelector('.zi')
+        lisz[0].classList.add('act');
+       console.log(lis);
+       
+       
+        ulEle.onclick = function (){
+			// li距离ul的上边距 - ul起始距离sidebar的顶部距离
+			if(event.target.tagName === "LI"){
+				var targetY = -event.target.offsetTop + originTop;
+				
+				// ul的底部与页面底部重合的时候,ul的top值 = ul的高度 - 可视区域的高度
+				if(Math.abs(targetY) > Math.abs(ulEle.offsetHeight - sidebar.offsetHeight)){
+					targetY = sidebar.offsetHeight - ulEle.offsetHeight;
+				}
+				
+                this.style.top = targetY + "px";
+                var ztiText = event.target.innerText;
+               
+                console.log(ztiText)
+                ziz.innerText ='已选择城市:'+ztiText+''
+                
+				// 交换激活
+				document.querySelector(".act").classList.remove("act");
+				event.target.classList.add("act");
+			}
+		}
+    
+		// 拖拽
+		ulEle.ontouchstart = function (){
+			// 获取起点
+			var startY = ulEle.offsetTop;
+			// 获取移动的起点
+			var eventY = event.targetTouches[0].pageY;
+			ulEle.ontouchmove = function (){
+				var endY = startY + event.targetTouches[0].pageY - eventY;
+				// 边界  顶部边界 originTop + max,底部边界 sidebar.offsetHeight - ulEle.offsetHeight - max
+				if(endY >= originTop + max){
+					endY = originTop + max;
+				}else if(endY < sidebar.offsetHeight - ulEle.offsetHeight - max){
+					endY = sidebar.offsetHeight - ulEle.offsetHeight - max;
+                }
+                ulEle.style.transition = '0s'
+				ulEle.style.top = endY + "px";
+			}
+			
+			// 松手判断 ul的top值是否是临界值
+			ulEle.ontouchend = function (){
+				if(ulEle.offsetTop > originTop){
+					ulEle.style.top = originTop + "px";
+				}else if(ulEle.offsetTop < sidebar.offsetHeight - ulEle.offsetHeight){
+					ulEle.style.top = sidebar.offsetHeight - ulEle.offsetHeight + "px";
+				}
+				ulEle.style.transition = '0.8s'
+			}
+		}
+      
+      
+        var aside = document.querySelector(".aside");
+            var center = document.querySelector(".center");
+            var pzz = document.querySelectorAll("p")
+			var lis = aside.children;
+			
+			var str = "";
+			for(var i = 0; i < cityAll.length; i ++){
+				str += `<span>${cityAll[i].name}</span>`;
+			}
+			aside.innerHTML = str;
+            aside.ontouchstart = function (){
+				// 出现遮罩  一般不直接操作 block
+				// center.style.display = 'block';
+				center.hidden = false;
+				/*
+					要知道鼠标在哪个li中: 鼠标距离ul的上边距/一个li的间隔
+					鼠标距离ul的上边距 = 鼠标距离页面的高度 - ul距离页面的高度
+					一个li的间隔 = li的高度 + margin-bottom
+				*/
+				// var touchTop = event.targetTouches[0].pageY - aside.offsetTop;
+				// var liH = lis[0].offsetHeight + getStyle(lis[0],"marginBottom");
+				// var index = Math.floor(touchTop/liH);
+				// 	console.log(index,liH,touchTop)
+				// center.innerText = lis[index].innerText;
+				choose();
+                
+				aside.ontouchmove = choose;
+				
+				aside.ontouchend = function (){
+                    center.hidden = true;
+                    ulEle.style.top=-pzz[index].offsetTop+80+'px';
+                    console.log(index)
+                }
+                console.log(pzz)
+                console.log(pzz[2].offsetTop-82)
+                console.log(ulEle.offsetTop)
+			}
+			var index=null;
+			function choose(){
+				// 限定边界,就不会出现 -1/22
+				var tch = event.targetTouches[0];
+				// console.log(event.targetTouches[0].pageY,aside.offsetTop + aside.offsetHeight)
+				if(tch.pageY > aside.offsetTop && tch.pageY < aside.offsetTop + aside.offsetHeight && tch.pageX > aside.offsetLeft && tch.pageX < aside.offsetLeft + aside.offsetWidth){
+					var touchTop = event.targetTouches[0].pageY - aside.offsetTop;
+					var liH = lis[0].offsetHeight + getStyle(lis[0],"marginBottom");
+					// move出边界
+                    index = Math.floor(touchTop/liH);
+                   
+                    // console.log(ulEle.style.top);
+                    console.log(pzz[index])
+					console.log(index,liH,touchTop)
+					// if(index <= 0){
+					// 	index = 0;
+					// }else if(index >= lis.length - 1){
+					// 	index = lis.length - 1;
+					// }
+                    center.innerText = lis[index].innerText;
+                    
+					
+				}else{
+					return false;
+				}
+            }
+           
+            // function movez{
+
+            // }
+			
+			function getStyle(ele,styleName){
+				if(ele.currentStyle){
+					return parseInt(ele.curentStyle[styleName]);
+				}else{
+					return parseInt(getComputedStyle(ele,null)[styleName]);
+				}
+			}
+      
+      </script>
+</body>
+</html>

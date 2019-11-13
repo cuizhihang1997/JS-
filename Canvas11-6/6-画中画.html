@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>画中画</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				border: 1px solid red;
+			}
+			#cvs1{
+				border: 1px solid green;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="400" height="200">您的浏览器不支持</canvas>
+		<canvas id="cvs1" width="800" height="400">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var cvs1 = document.querySelector("#cvs1");
+			var ctx = cvs.getContext('2d');
+			var ctx1 = cvs1.getContext('2d');
+			
+			// 使用drawImage将一个canvas中的图显示在另一个canvas中  canvas1.drawImage(canvas,width,height);
+			
+			ctx.fillRect(30,30,100,80);
+			
+			ctx1.drawImage(cvs,50,50,200,160);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>饼图</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="500">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			// 画一个饼图  [55° 蓝色,105° 棕色,40° 绿色,60° 红色,100° 黄色]
+			var arr = [
+				{ color: 'blue', deg: 55 },
+				{ color: 'brown', deg: 105 },
+				{ color: 'green', deg: 40 },
+				{ color: 'red', deg: 60 },
+				{ color: 'yellow', deg: 100 },
+			]
+			
+			var start = 0;
+			for(var i = 0; i < arr.length; i ++){
+				var rad = arr[i].deg * Math.PI/180;
+				// 开始路径
+				ctx.beginPath();
+				// 画扇形
+				ctx.moveTo(300,200);
+				ctx.arc(300,200,150,start,start + rad,false);
+				ctx.fillStyle = arr[i].color;
+				ctx.fill();
+				start += rad;
+				// 闭合路径
+				ctx.closePath();
+			}
+		</script>
+	</body>
+</html>

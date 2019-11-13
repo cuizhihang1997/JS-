@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>广告跟随</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				height: 3000px;
+			}
+			#advance{
+				position: absolute;
+				top: 260px;
+				right: 50px;
+				width: 50px;
+				height: 160px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="advance"></div>
+		
+		<script type="text/javascript">
+			// 广告当前距离页面顶部的距离 = 滚动条的高度 + 初始广告距离页面顶部的距离
+			var originY = advance.offsetTop;
+			
+			window.onscroll = function (){
+				// advance.style.top = originY + sct() + "px";
+			
+				move(advance, originY+sct() );
+				console.log(sct())
+			}
+			
+			function move(ele,t){
+				t = Math.floor(t);
+				if(ele.timer) clearInterval(ele.timer);
+				ele.timer = setInterval(function(){
+					// 起点
+					var start = ele.offsetTop;
+					// 步长
+					var step = (t - start) / 10;
+					if(Math.abs(step) < 1){
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ele.style.top = start + step + "px";
+					// console.log(start,step,t);
+					if(start + step === t){
+						console.log("stop ...");
+						clearInterval(ele.timer);
+					}
+				},17)
+			}
+			
+			function sct(){
+				return document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+			}
+		</script>
+	</body>
+</html>

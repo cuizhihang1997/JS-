@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+		<title>城市字母选择</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.aside{
+				position: fixed;
+				top: 30px;
+				right: 20px;
+				list-style: none;
+				/* border: 1px solid red; */
+			}
+			.aside li{
+				width: 20px;
+				height: 20px;
+				margin-bottom: 5px;
+				font-size: 13px;
+				text-align: center;
+				line-height: 20px;
+				background-color: orange;
+			}
+			.aside li:last-child{
+				margin-bottom: 0;
+			}
+			.center{
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				/* display: none; */
+				width: 100px;
+				height: 100px;
+				font-size: 30px;
+				color: #fff;
+				text-align: center;
+				line-height: 100px;
+				background-color: rgba(0,0,0,.4);
+				transform: translate(-50%, -50%);
+			}
+		</style>
+	</head>
+	<body>
+		
+		<ul class="aside">
+			<!-- li -->
+		</ul>
+		<!-- 中间的字母遮罩 -->
+		<div class="center" hidden>A</div>
+		
+		<script src="city.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var aside = document.querySelector(".aside");
+			var center = document.querySelector(".center");
+			var lis = aside.children;
+			
+			var str = "";
+			for(var i = 0; i < cityAll.length; i ++){
+				str += `<li>${cityAll[i].name}</li>`;
+			}
+			aside.innerHTML = str;
+			
+			// 滑动选字母
+			aside.ontouchstart = function (){
+				// 出现遮罩  一般不直接操作 block
+				// center.style.display = 'block';
+				center.hidden = false;
+				/*
+					要知道鼠标在哪个li中: 鼠标距离ul的上边距/一个li的间隔
+					鼠标距离ul的上边距 = 鼠标距离页面的高度 - ul距离页面的高度
+					一个li的间隔 = li的高度 + margin-bottom
+				*/
+				// var touchTop = event.targetTouches[0].pageY - aside.offsetTop;
+				// var liH = lis[0].offsetHeight + getStyle(lis[0],"marginBottom");
+				// var index = Math.floor(touchTop/liH);
+				// 	console.log(index,liH,touchTop)
+				// center.innerText = lis[index].innerText;
+				choose();
+				
+				aside.ontouchmove = choose;
+				
+				aside.ontouchend = function (){
+					center.hidden = true;
+				}
+			}
+			
+			function choose(){
+				// 限定边界,就不会出现 -1/22
+				var tch = event.targetTouches[0];
+				// console.log(event.targetTouches[0].pageY,aside.offsetTop + aside.offsetHeight)
+				if(tch.pageY > aside.offsetTop && tch.pageY < aside.offsetTop + aside.offsetHeight && tch.pageX > aside.offsetLeft && tch.pageX < aside.offsetLeft + aside.offsetWidth){
+					var touchTop = event.targetTouches[0].pageY - aside.offsetTop;
+					var liH = lis[0].offsetHeight + getStyle(lis[0],"marginBottom");
+					// move出边界
+					var index = Math.floor(touchTop/liH);
+					console.log(index,liH,touchTop)
+					// if(index <= 0){
+					// 	index = 0;
+					// }else if(index >= lis.length - 1){
+					// 	index = lis.length - 1;
+					// }
+					center.innerText = lis[index].innerText;
+					
+				}else{
+					return false;
+				}
+			}
+			
+			function getStyle(ele,styleName){
+				if(ele.currentStyle){
+					return parseInt(ele.curentStyle[styleName]);
+				}else{
+					return parseInt(getComputedStyle(ele,null)[styleName]);
+				}
+			}
+		</script>
+	</body>
+</html>

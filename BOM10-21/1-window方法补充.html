@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>window方法补充</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			button{
+				margin: 40px;
+				padding: 10px 20px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<button>在当前页面打开百度</button>
+		<button>在新页面打开百度,默认值</button>
+		<button>给新页面添加打开属性</button>
+		
+		
+		<iframe src="" width="400" height="400" name="ifr"></iframe>
+		<script type="text/javascript">
+			var btns = document.querySelectorAll("button");
+			
+			btns[0].onclick = function (){
+				// 第二个参数 可以是 页面嵌套框架的name属性值
+				window.open("https://www.baidu.com","ifr");
+			}
+			btns[1].onclick = function (){
+				// window.open("https://www.baidu.com");
+				window.open("https://www.baidu.com","_blank");
+			}
+			var newW;
+			btns[2].onclick = function (){
+				// window.open方法返回一个控制新窗口的window对象;
+				newW = window.open("https://www.baidu.com/","_blank","height=400,width=400,top=10,left=10,resizable=yes");
+			}
+			
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>回顾-js动画</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				list-style: none;
+			}
+			li{
+				float: left;
+				width: 150px;
+				height: 150px;
+				margin: 300px;
+				background-color: orangered;
+				transition: all ease .4s;
+			}
+			.fade-down{
+				transform: translate(-50px);
+			}
+		</style>
+	</head>
+	<body>
+		<ul class="box">
+			<li data-coa="fade-down"></li>
+			<li data-coa="fade-up"></li>
+			<li data-coa="fade-left"></li>
+			<li data-coa="fade-right"></li>
+			<li data-coa="fade-up-right"></li>
+			<li data-coa="fade-up-left"></li>
+		</ul>
+		<script type="text/javascript">
+			var lis = document.querySelector("li[data-coa]");
+			
+			window.onscroll = function(){
+				var h = document.documentElement.clientHeight;
+				for(var i = 0; i < lis.length; i ++){
+					
+				}
+			}
+			
+		</script>
+	</body>
+</html>

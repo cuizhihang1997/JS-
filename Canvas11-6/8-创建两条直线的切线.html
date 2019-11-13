@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>创建两条直线的切线</title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+	</head>
+	<body>
+		<canvas id="cvs" width="800" height="500">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			/*
+				context.arcTo(x1,y1,x2,y2,r); //类比：css3中的圆角。
+					- x1: 弧的端点1的 x 坐标
+					- y1: 弧的端点1的 y 坐标
+					- x2: 弧的端点2(终点)的 x 坐标
+					- y2: 弧的端点2(终点)的 y 坐标
+					- r : 弧的半径
+			*/
+			
+			ctx.lineWidth = 20;
+			ctx.moveTo(50,150);
+			ctx.lineTo(200,150);
+			ctx.arcTo(240,150,240,154,40); // 添加圆弧连线
+			ctx.lineTo(240,300);
+			ctx.stroke();
+		
+		</script>
+	</body>
+</html>

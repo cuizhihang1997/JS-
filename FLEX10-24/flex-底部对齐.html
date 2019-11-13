@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>底部对齐</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				display: flex;
+				width: 830px;
+				height: 350px;
+				margin: 30px auto;
+				border: 1px solid red;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: center;
+			}
+			.inner{
+				width: 150px;
+				height: 130px;
+				font-size: 30px;
+				color: #fff;
+				text-align: center;
+				line-height: 130px;
+				background-color: orange;
+			}
+			/* 假设列数为 col，添加 col-2 个空元素，给样式 nth-last-child(-n + col-2) 去除高度效果*/
+			.inner:nth-last-child(-n + 3){
+				height: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="inner">1</div>
+			<div class="inner">2</div>
+			<div class="inner">3</div>
+			<div class="inner">4</div>
+			<div class="inner">5</div>
+			<div class="inner">6</div>
+			<div class="inner">7</div>
+			<div class="inner"></div>
+			<div class="inner"></div>
+			<div class="inner"></div>
+		</div>
+	</body>
+</html>

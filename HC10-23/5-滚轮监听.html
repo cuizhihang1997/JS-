@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>滚轮监听</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			window.onmousewheel = function () {
+				// wheelDelta可以测试滚动
+				// 可以判断滚动方向 但是无法判断滚动幅度.
+				// 方向: -120 往下滚动  ; 120 往上滚动
+				// 有兼容问题,也可能是 -150 150
+				// console.log(event.wheelDelta);	
+				if(event.wheelDelta > 0){
+					console.log("滚轮向上滚动");
+				}else{
+					console.log("向下滚动");
+				}
+			}
+			
+			if(window.onmousewheel){
+				window.onmousewheel = function () {
+					// wheelDelta可以测试滚动
+					// 可以判断滚动方向 但是无法判断滚动幅度.
+					// 方向: -120 往下滚动  ; 120 往上滚动
+					// 有兼容问题,也可能是 -150 150
+					console.log(event.wheelDelta);	
+				}  
+			}else{
+				// 火狐监听的滚轮事件
+				window.addEventListener("DOMMouseScroll",function(){
+					// 火狐
+					// 方向: 3 往下; -3 往上 
+					console.log(event.detail)
+				});
+			}
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>多球</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="500">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		<script type="text/javascript">
+			
+			function Ball(id,number){
+				this.cvs = document.querySelector(id);
+				this.ctx = this.cvs.getContext("2d");
+				this.list = []; // 小球的数组
+				this.number = number;
+				this.init();
+			}
+			
+			Ball.prototype = {
+				init(){
+					this.createAll();
+					this.move();
+				},
+				// 生成单个小球
+				createBall(ball){
+					var ctx = this.ctx;
+					ctx.beginPath();
+					ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2,false);
+					ctx.fillStyle = ball.color;
+					ctx.fill();
+					ctx.closePath();
+				},
+				// 循环生成
+				createAll(){
+					for(var i = 0; i < this.number; i ++){
+						var ball = {
+							x: this.rdPosition(),
+							y: this.rdPosition(),
+							r: this.rdR(),
+							stepX: this.rdStep(),
+							stepY: this.rdStep(),
+							color: `hsla(${this.rdColor()},70%,60%,1)`
+						}
+						this.list.push(ball);
+						this.createBall(ball);
+					}
+				},
+				// 循环运动
+				move(){
+					setInterval(() => {
+						// 清除画布
+						this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+						for(var i = 0; i < this.list.length; i ++){
+							var ball = this.list[i];
+							ball.x += ball.stepX;
+							ball.y += ball.stepY;
+							
+							if(ball.x <= ball.r){
+								ball.x = ball.r;
+								ball.stepX = - ball.stepX;
+							}else if(ball.x >= this.cvs.width - ball.r){
+								ball.x = this.cvs.width - ball.r;
+								ball.stepX = - ball.stepX;
+							}
+							
+							if(ball.y <= ball.r){
+								ball.y = ball.r;
+								ball.stepY = - ball.stepY;
+							}else if(ball.y >= this.cvs.height - ball.r){
+								ball.y = this.cvs.height - ball.r;
+								ball.stepY = - ball.stepY;
+							}
+							
+							this.createBall(ball);
+						}
+					},1000/60)
+				},
+				// 随机坐标
+				rdPosition(){
+					return Math.floor(Math.random() * 20) * 25; 
+				},
+				// 随机步长
+				rdStep(){
+					// [3,7]
+					return Math.floor(Math.random() * 5) + 3; 
+				},
+				// 随机颜色
+				rdColor(){
+					return Math.floor(Math.random() * 361);
+				},
+				// 随机半径
+				rdR(){
+					// [15-28]
+					return Math.floor(Math.random() * 14) + 15;
+				}
+			}
+			
+			var ball = new Ball("#cvs", 100);
+			
+			// balls ball1 ball2 ball3  ===> x,y,stepX,stepY,color   ==> [ball1,ball2,ball3...]
+		</script>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新增的属性</title>
+		<style>
+			#box{
+				width: 200px;
+				height: 200px;
+				background-color: red;
+			}
+			/* 不能给全屏元素添加样式,只能给他的子类添加样式 */
+			#avatar:fullscreen img{
+				width: 100px;
+				height: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- <div id="box" contentEditable="true"></div> -->
+		<div id="box"></div>
+		<p>两个黄鹂鸣翠柳,一行白鹭去西天</p>
+		
+		<div id="avatar">
+			<img src="../lib/image/HC/avatar.jpg" alt="">
+		</div>
+		
+		<script type="text/javascript">
+			window.onload = function() {
+				document.designMode = "on";
+			}
+			
+			avatar.onclick = function (){
+				if(ifFullscreen()){
+					// 关闭全屏
+					if (document.exitFullscreen) {
+						document.exitFullscreen();
+					}else if (document.webkitCancelFullScreen) {
+						document.webkitCancelFullScreen();
+					}else if (document.mozCancelFullScreen) {
+						document.mozCancelFullScreen();
+					}
+				}else{
+					// 开启全屏
+					if (avatar.requestFullscreen) {
+						avatar.requestFullscreen();
+					}else if (E.webkitRequestFullscreen) {
+						avatar.webkitRequestFullscreen();
+					}else if (E.mozRequestFullscreen) {
+						avatar.mozRequestFullscreen();
+					}else{
+						alert("sorry,无法全屏");
+					}
+				}
+			}
+			
+			// 判断是否是全屏
+			function ifFullscreen(){
+				return document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen || false;
+			}
+		</script>
+	</body>
+</html>

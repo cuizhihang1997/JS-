@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>经典继承</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 借用构造函数继承 又称经典继承/伪造对象
+			function Animal(color){
+				this.color = color;
+				this.friend = ["小草","萝卜"];
+			}
+			
+			Animal.prototype.jump = function (){
+				console.log("jumping ...");
+			}
+			
+			function Rabbit(name,color){
+				this.name = name;
+				Animal.call(this,color); // 将animal的this绑定在new 出来的实例上
+			}
+			
+			// Rabbit.prototype = new Animal('white');
+			
+			// 不能共享原来在animal原型上的属性和方法
+			
+			var rabbit = new Rabbit("流氓","white");
+			var rabbit1 = new Rabbit("小黑","black");
+			
+			console.log(rabbit.friend === rabbit1.friend);
+			
+		</script>
+	</body>
+</html>

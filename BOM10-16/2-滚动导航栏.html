@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>滚动导航栏</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.header,.container,.footer{
+				width: 600px;
+				height: 1500px;
+				margin: 0 auto;
+			}
+			.red{
+				background-color: red;
+			}
+			.yellow{
+				background-color: yellow;
+			}
+			.blue{
+				background-color: blue;
+			}
+			nav{
+				position: fixed;
+				top: 50px;
+				left: 100px;
+			}
+			nav div{
+				float: left;
+				width: 100px;
+				height: 50px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<nav>
+			<div class="red"></div>
+			<div class="yellow"></div>
+			<div class="blue"></div>
+		</nav>
+		<div class="header red"></div>
+		<div class="container yellow"></div>
+		<div class="footer blue"></div>
+		
+		<script type="text/javascript">
+			// 点击相应颜色: 获取对应元素距离页面顶部的距离,  赋值给页面被遮挡的滚动条高度
+			var red = getEl(".red");
+			var yellow = getEl(".yellow");
+			var blue = getEl(".blue");
+			
+			var redT = 0;
+			var yellowT = getEl(".container").offsetTop;  // 黄色距离页面顶部的距离
+			var blueT = getEl(".footer").offsetTop;  // 蓝色距离页面顶部的距离
+			
+			red.onclick = function (){
+				// window.scroll(0,redT);
+				move(redT);
+			}
+			
+			yellow.onclick = function (){
+				// window.scroll(0,yellowT);
+				move(yellowT);
+			}
+			
+			blue.onclick = function (){
+				// window.scroll(0,blueT);
+				move(blueT);
+			}
+			
+			function move(t){
+				clearInterval(window.timer);
+				window.timer = setInterval(function (){
+					// 起点:   当前滚动条的高度
+					// console.log(sct());
+					var start = sct();
+					var step = (t - start) / 10;
+					if(Math.abs(step) < 1){
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					window.scroll(0,start + step);
+					if(start + step === t){
+						console.log("stop ...");
+						clearInterval(window.timer);
+					}
+				},17)
+			}
+			
+			
+			function sct(){
+				return document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+			}
+			
+			// .className #id tagName
+			function getEl(str){
+				return document.querySelector(str);
+			}
+		</script>
+	</body>
+</html>

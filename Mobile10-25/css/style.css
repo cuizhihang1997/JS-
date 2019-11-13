@@ -1,0 +1,17 @@
+html {
+  font-size: 37.5;
+}
+
+#box {
+  width: 2.6666666667rem;
+  height: 2.6666666667rem;
+  background-color: red;
+}
+
+#inner {
+  width: 5.3333333333rem;
+  height: 5.3333333333rem;
+  background-color: blue;
+}
+
+/*# sourceMappingURL=style.css.map */

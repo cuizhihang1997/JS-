@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>柱状图排序</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				position: relative;
+				width: 950px;
+				height: 350px;
+				margin: 30px auto;
+				border: 1px solid red;
+				list-style: none;
+			}
+			li{
+				position: absolute;
+				bottom: 0;
+				width: 50px;
+				height: 40px;
+				background-color: limegreen;
+			}
+			button{
+				margin-left: 100px;
+				padding: 10px 24px;
+			}
+			.change{
+				background-color: brown;
+			}
+			.done{
+				background-color: darkgreen;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="box"></ul>
+		
+		<button id="create">生成柱状图</button>
+		<button id="order">开始排序</button>
+		
+		<script type="text/javascript">
+			// 生成柱状图  随机高度 10 / left
+			create.onclick = function (){
+				// [20,330]  [20,331)
+				// 随机公式 [min,max]  Math.floor(Math.random() * (max-min+1)) + min
+				var str = '';
+				var arr = [];
+				for(var i = 0; i < 10; i ++){
+					// 高度要差异化   将个数分成 两个因数相乘
+					var h = Math.floor(Math.random() * 10) * 31 + 20;
+					// 不重复生成一样的高度  数组 ===> 遍历数组/判断某元素是否有
+					if(arr.indexOf(h) === -1){
+						// 不存在
+						arr.push(h);
+						// li添加left  每个li间隔  40  li宽度 50
+						// 40  40+50+40   40+50+40+50+40   40+50+40+50+40+50+40 ...
+						// 
+						str += '<li style="left: ' + (40 + 90 * i) + 'px;height: ' + h + 'px;"></li>';
+					}else{
+						// 如果存在,重新生成
+						i --;
+					}
+					
+				}
+				box.innerHTML = str;
+			}
+			
+			// 排序   比较的是li的高度
+			order.onclick = function (){
+				// 获取所有的li
+				var lis = box.children;
+				// 排序  for循环太快,move动画来不及执行
+				/*for(var i = 0; i < lis.length - 1; i ++){
+					for(var j = 0; j < lis.length - 1 - i; j ++){
+						// 比较高度,交换left
+						if(lis[j].offsetHeight > lis[j+1].offsetHeight){
+							var temp = lis[j+1].offsetLeft;
+							move(lis[j+1],lis[j].offsetLeft);
+							move(lis[j],temp);
+						}
+					}
+				}*/
+				// 使用 setInterval 模拟for循环
+				var i = 0;
+				var j = 0;
+				var flag = true;
+				var timer = setInterval(function (){
+					// for循环判断
+					if(j === lis.length - 1 - i){
+						// clearaInterval(timer);
+						// 已经是有序数列的时候,停止定时器,给所有元素添加颜色;
+						if(flag){
+							clearInterval(timer);
+							for(var k = 0; k < lis.length - i; k ++){
+								lis[k].classList.add("done");
+							}
+							return;
+						}
+						console.log('aaa');
+						
+						// 添加完成颜色
+						lis[lis.length - 1 - i].classList.add("done");
+						i ++;
+						j = 0;
+						flag = true;
+					}
+					
+					if(i === lis.length - 1){
+						clearaInterval(timer);
+					}
+					
+					// for循环体
+					if(lis[j].offsetHeight > lis[j+1].offsetHeight){
+						// 假设 70 0   40 1  60 2     40 1   70 0   60  2
+						// 交换了左边距,但是没有交换在lis数组中的位置 ===>  改变li在页面上的位置  先交换位置,再交换left   appendChild/inserBefore(要插入的元素,参考位置)
+						lis[j+1].parentNode.insertBefore(lis[j+1],lis[j]);
+						var temp = lis[j+1].offsetLeft;
+						move(lis[j+1],lis[j].offsetLeft);
+						move(lis[j],temp);
+						// 如果交换位置,更改状态
+						flag = false;
+					}
+					
+					// for循环增量
+					j ++;
+					
+					
+				},600)
+			}
+			
+			function move(ele,target){
+				// 添加颜色
+				ele.classList.add("change");
+				if(ele.timer) clearInterval(ele.timer);
+				ele.timer = setInterval(function (){
+					// 改变的left
+					var start = ele.offsetLeft;
+					var step = (target - start) / 10;
+					if(Math.abs(step) < 1){
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					ele.style.left = start + step + "px";
+					if(start + step === target){
+						console.log("stop ...");
+						// 清除颜色
+						ele.classList.remove("change");
+						clearInterval(ele.timer);
+					}
+				},1000/60) 
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>函数防抖</title>
+		<style>
+			#box{
+				width: 400px;
+				height: 400px;
+				margin: 20px auto;
+				font-size: 80px;
+				color: #fff;
+				line-height: 400px;
+				text-align: center;
+				background-color: dodgerblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">0</div>
+		
+		<script type="text/javascript">
+			var n = 0;
+			var timer;
+			/*window.onmousemove = function (){
+			
+				// if(timer) clearTimeout(timer);
+				// timer = setTimeout(function (){
+				// 	box.innerText = ++n;
+				// },1000)
+				
+				// 先执行: 没有timer执行,有就不执行
+				if(timer) clearTimeout(timer);
+				var immediately = !timer;
+				
+				timer = setTimeout(function (){
+					// 每个1s还原timer
+					timer = null;
+				},1000)
+				
+				if(immediately) box.innerText = ++n;
+			}*/
+			
+			// window.onmousemove = debounce(add,1000);
+			window.onmousemove = debounce1(function (){
+				box.innerText = ++n;
+			},1000)
+			function add(){
+				box.innerText = ++n;
+			}
+			
+			// 节约性能的方式   在单位时间内,不断触发事件,不执行,直到不触发事件,才执行事件 设定时间为1000
+			// 非立即执行
+			function debounce(func, wait){
+				return function (){
+					if(func.timer) clearTimeout(func.timer);
+					func.timer = setTimeout(function (){
+						func();
+					},wait)
+				}
+			}
+			
+			// 立即执行
+			function debounce1(func, wait){
+				return function (){
+						if(func.timer) clearTimeout(func.timer);
+					// console.log(func.timer); 
+					var immediately = !func.timer;
+					console.log(immediately);
+					func.timer = setTimeout(function (){
+						// 每个1s还原timer
+						func.timer = null;
+					},1000)
+					
+					if(immediately) func();
+				}
+			}
+		</script>
+	</body>
+</html>

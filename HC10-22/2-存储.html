@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>存储</title>
+	</head>
+	<body>
+		<!-- 
+		- `setItem(key, value)` 设置存储内容
+		- `getItem(key)` 读取存储内容
+		- `removeItem(key)` 删除键值为key的存储内容
+		- `clear()` 清空所有存储内容
+		- `key(n)` 以索引值来获取对应的键
+		-->
+		<input type="text" id="uname" placeholder="请输入名字">
+		<input type="text" id="age" placeholder="请输入年龄">
+		<button>session存储</button>
+		<button>local存储</button>
+		<!-- <button>获取名字的值</button> -->
+		<button>获取存储的值</button>
+		<button>删除session的name,local的age</button>
+		<button>清空所有存储</button>
+		<button>获取key(1)对应的键</button>
+		<script type="text/javascript">
+			var btns = document.querySelectorAll("button");
+			btns[0].onclick = function(){
+				sessionStorage.setItem('name',uname.value);
+				sessionStorage.setItem("age",age.value);
+			}
+			
+			btns[1].onclick = function(){
+				localStorage.setItem('name',uname.value);
+				localStorage.setItem("age",age.value);
+			
+			}
+			
+			btns[2].onclick = function (){
+				console.log("sessionStorage: name===>",sessionStorage.getItem("name"),"age ==>",sessionStorage.getItem("age"));
+				console.log("localStorage: name===>",localStorage.getItem("name"),"age ==>",localStorage.getItem("age"));
+			}
+			
+			btns[3].onclick = function (){
+				sessionStorage.removeItem("name");
+				localStorage.removeItem("age");
+			}
+			
+			btns[4].onclick = function(){
+				sessionStorage.clear();
+				localStorage.clear();
+			}
+			
+			btns[5].onclick = function (){
+				console.log("sessionStorage",sessionStorage.key(1));
+				console.log("localStorage",localStorage.key(1));
+			}
+// 			var a = 100;
+// function fn(){
+// 	console.log(a);
+// 	a = 10;
+// 	console.log(a);
+// }
+// fn();
+// console.log(a);
+console.log(/^(\d)-$/.test(2018-02-06))
+			// 存储引用类型值要使用 JSON.stringify()   取值 JSON.parse();
+		</script>
+	</body>
+</html>

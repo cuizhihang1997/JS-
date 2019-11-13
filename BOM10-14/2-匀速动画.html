@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>匀速动画</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: relative;
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+			button{
+				padding: 10px 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+		
+		<button>跳转到400px</button>
+		<button>跳转到800px</button>
+		<script type="text/javascript">
+			'use strict'; // 使用严格模式
+			
+			/*
+				动画原理
+					物体运动： 起点，终点，速度（距离/时间）
+					盒子的位置 = 盒子本身所在的位置 + 步长
+			*/
+		 
+			var box = document.querySelector(".box");
+			var btns = document.querySelectorAll("button");
+			
+			
+			
+			/*btns[0].onclick = function (){
+				box.style.left = '400px';
+			}
+			
+			btns[1].onclick = function (){
+				box.style.left = '800px';
+			}*/
+			
+			
+			
+			// 匀速动画   均匀的移动   start / end  速度
+			// 定时器   setInterval setTimeout(递归)
+			
+			btns[0].onclick = function (){
+				// start offsetLeft
+				// end 400
+				// 速度   单位距离/时间
+				
+				/*var timer = setInterval(function (){
+					// 获取起点
+					var start = box.offsetLeft;
+					// 设置步长  需要判断终点在起点的左右方向
+					if(start > 400){ // end < start
+						step = -13;
+					}else if(start === 400){
+						var step = 0;
+					}else{
+						step = 13;
+					}
+					// 运动
+					box.style.left = start + step + "px";
+					
+					// 会抖动原因: 不能被400整除,无法正确抵达400位置, 步长在 +-13之间变幻
+					// 超出400的条件  终点和起点的距离<13
+					
+					// 判断停止条件
+					// if(start + step === 400){
+					// 	console.log("stop ...");
+					// 	clearInterval(timer);
+					// }
+					// 改进
+					if(Math.abs(400 - start) < step){
+						// 直接定位到终点
+						box.style.left = '400px';
+						console.log("stop ...");
+						clearInterval(timer);
+					}
+				},17)*/
+				
+				// 1000 / 60 === 16.66666
+				move(box,400,14);
+			}
+			
+			btns[1].onclick = function (){
+				// start offsetLeft
+				// end 800
+				// 速度   单位距离/时间
+				
+				/*var timer = setInterval(function (){
+					// 获取起点
+					var start = box.offsetLeft;
+					// 设置步长
+					var step = 10;
+					// 运动
+					box.style.left = start + step + "px";
+					
+					// 判断停止条件
+					if(start + step === 800){
+						console.log("stop ...");
+						clearInterval(timer);
+					}
+				},17)*/
+
+				move(box,800,-14);
+			}
+			
+			
+			function move(ele,target,step){
+				clearInterval(ele.timer);
+				// 问题: 点400,直接点800  两个定时器同时作用于元素之上,左右摇摆
+				// 解决: 保证只有一个定时器,添加下一个定时器的时候清除上一个定时器
+				// 为了让不同元素拥有自己timer,将timer属性添加在元素上
+				ele.timer = setInterval(function (){
+					// 获取起点
+					var start = ele.offsetLeft;
+					// 设置步长  需要判断终点在起点的左右方向
+					/*if(start > target){ // end < start
+						step = -13;
+					}else if(start === target){
+						var step = 0;
+					}else{
+						step = 13;
+					}*/
+					// 判断
+					if(start === target) return;
+					step = start > target ? -Math.abs(step) : Math.abs(step);
+					// 运动
+					ele.style.left = start + step + "px";
+					
+					if(Math.abs(target - start) < step){
+						// 直接定位到终点
+						ele.style.left = target + 'px';
+						console.log("stop ...");
+						clearInterval(ele.timer);
+					}
+				},17)
+			}
+		</script>
+	</body>
+</html>

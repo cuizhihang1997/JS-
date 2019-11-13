@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>有趣的时序函数</title>
+		<style>
+			#box{
+				width: 500px;
+				margin: 50px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="box">白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。白日依山尽，黄河入海流。欲穷千里目，更上一层楼。</div>
+		
+		<script type="text/javascript">
+			var start = 0;
+			// box 字符总长度
+			var end = box.innerText.length;
+			var str = box.innerText;
+			box.onclick = function (){
+				animate(bounce,function (per){
+					// 跟进度一样的字符长度
+					var leng = per * end;
+					box.innerText = str.substr(0,Math.floor(leng));
+				},4000);
+			}
+			
+			// timeFraction 表示时间百分比
+			function linear(timeFraction){
+				return timeFraction;
+			}
+			
+			// 弹跳动画
+			function bounce(timeFraction){
+				for(var a = 0,b = 1, result; 1; a += b, b/= 2){
+					if(timeFraction >= (7 - 4 * a) / 11){
+						return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2);
+					}
+				}
+			}
+			
+			function animate(timing, draw, duration){
+				// 获取开始时间
+				var start = performance.now();
+				function loop(time){
+					// 设置当前执行时间和总时长的比例
+					var timeFraction = (time - start)/duration;
+					
+					// 判断停止条件
+					if(timeFraction >=1 ) timeFraction = 1;
+					
+					// 使用时序函数处理时间的比例关系
+					var per = timing(timeFraction);
+					
+					// 动画执行函数接受一个时间比例,根据比例处理动画
+					draw(per);
+					
+					// 循环执行动画  时间到终点
+					if(timeFraction < 1) requestAnimationFrame(loop);
+				}
+				requestAnimationFrame(loop);
+			}
+			
+			
+		</script>
+	</body>
+</html>

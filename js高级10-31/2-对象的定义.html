@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>对象的定义</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var user = {
+				'name': "李白",
+				age: 24,
+				hobbies: ["喝酒","吟诗","旅游"],
+				say: function (){
+					console.log(this.name);
+				},
+				'scope.userInfo': {
+					tel: 1352384924
+				}
+			}
+			
+			console.log(user.name);
+			var str = "age";
+			console.log(user[str]);
+			console.log("user.scope.userInfo",user['scope.userInfo']);
+			
+			// JSON
+			// 对象=>JSON   JSON.stringify(obj)
+			// JSON=>对象   JSON.parse(json);
+			
+			// 如何判断对象是否含有某个属性
+			function judge(obj,str){
+				// return obj[str] === undefined;
+				// in 操作符 判断对象中是否含有某属性
+				return str in obj;
+			}
+			
+			// 删除对象属性
+			function del(obj,str){
+				var newObj = {};
+				for(var i in obj){
+					if(i !== str){
+						newObj[i] = obj[i];
+					}
+				}
+				return newObj;
+			}
+			
+			delete user.name;
+			delete user.age;
+			console.log(user);
+		</script>
+	</body>
+</html>

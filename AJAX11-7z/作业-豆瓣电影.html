@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="referrer" content="never">
+		<title>豆瓣电影</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			
+			.container{
+				width: calc(100% - 200px);
+				margin: 20px auto;
+			}
+			nav{
+				display: flex;
+			}
+			
+			.type{
+				width: 150px;
+				margin-right: 20px;
+				font-size: 20px;
+				text-align: center;
+				line-height: 50px;
+				border: 1px solid red;
+				border-radius: 5px;
+			}
+			.type.act{
+				color: #fff;
+				background-color: red;
+			}
+			.pagination{
+				display: flex;
+				align-self: center;
+				list-style: none;
+			}
+			.pagination li{
+				width: 20px;
+				text-align: center;
+				line-height: 20px;
+				margin-left: 20px;
+				border: 1px solid #333;
+			}
+			.pagination li.act{
+				color: #fff;
+				background-color: red;
+				border: none;
+			}
+			.movies{
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				margin-top: 20px;
+				border-top: 2px solid red;
+			}
+			.item{
+				width: 100%;
+				height: 200px;
+				margin-top: 10px;
+				display: flex;
+				justify-content: space-between;
+				border: 1px solid #eee;
+			}
+			.item:nth-last-child(-n + 2){
+				height: 0;
+				border: none;
+			}
+			.item img{
+				width: 40%;
+			}
+			.info{
+				width: 55%;
+				padding-top: 10px;
+				line-height: 30px;
+			}
+			p{
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+			
+			@media (min-width: 700px){
+				.item{
+					width: 48%;
+				}
+			}
+			
+			@media (min-width: 980px) {
+				.item{
+					width: 31%;
+				}
+			}
+			
+			@media (min-width: 1280px) {
+				.item{
+					width: 23%;
+				}
+			}
+			.mark{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-image: linear-gradient(to right top,#e60f0f,#0d39bd);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 加载动画的样式  mask -->
+		<div class="mark">
+			<canvas id="cvs" width="500" height="500"></canvas>
+		</div>
+		
+		
+		<div class="container">
+			<nav>
+				<div class="type act" data-type="in_theaters">正在热映</div>
+				<div class="type" data-type="coming_soon">即将上映</div>
+				<div class="type" data-type="top250">top250</div>
+				<ul class="pagination">
+					<!-- <li class="act">1</li>
+					<li>2</li>
+					<li>3</li> -->
+				</ul>
+			</nav>
+			<div class="movies">
+				<!-- <div class="item">
+					<img src="./1.jpg" alt="">
+					<div class="info">
+						<p>电影海报</p>
+						<p>电影海报</p>
+						<p>电影海报</p>
+						<p>电影海报</p>
+						<p>电影海报</p>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		
+		<script src="cvs.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			/*
+				作业要求: 
+					1. 每页10条数据 : 电影海报 左右布局 \电影名称\电影类型\上映时间\导演列表\演员列表
+					2. 单行显示,多出来省略号
+					3. 响应式 4/3/2/1
+					4. 点击类型切换电影,切换分页
+					5. 添加分页,点击分页切换电影
+			*/
+			var host = 'http://www.bufantec.com/api/douban/movie/';
+			
+			var movies = document.querySelector(".movies");
+			var navEle = document.querySelector("nav");
+			var pagination = document.querySelector(".pagination");
+			var mark = document.querySelector(".mark");
+			
+			getMovie();
+			
+			// 切换类型
+			navEle.onclick = function (){
+				var ele = event.target;
+				if(ele.classList.contains("type")){
+					// 点击的是类型
+					// 切换激活样式
+					document.querySelector(".type.act").classList.remove("act");
+					ele.classList.add("act");
+					getMovie();
+				}
+			}
+			
+			// 切换分页
+			pagination.onclick = function (){
+				var ele = event.target;
+				if(ele.tagName === "LI"){
+					document.querySelector(".pagination .act").classList.remove("act");
+					ele.classList.add("act");
+					
+					// 切换电影
+					getMovie(ele.innerText);
+				}
+			}
+			
+			// 获取电影
+			function getMovie(start){
+				// 获取的电影类型是当前激活的类型的自定义type
+				var type = document.querySelector(".type.act").dataset.type;
+				
+				// 添加遮罩
+				mark.style.display = "flex";
+				
+				if(start) var init = true;
+				start = start || 1;
+				ajax({
+					url: host + type + "?start=" + start + "&limit=10",
+					success: function (res){
+						// 添加分页  切换类型时执行
+						 
+						
+						var data = res.data; // 电影数据列表
+						// console.log(data);
+						var str = "";
+						for(var i = 0; i < data.length; i ++){
+							// 所有的导演列表
+							var directorStr = "";
+							data[i].directors.forEach(item => {
+								directorStr += item.name;
+							})
+							// 所有主演
+							var castStr = "";
+							data[i].casts.forEach(item => {
+								castStr += item.name;
+							})
+							console.log(castStr.length)
+							if(castStr.length==0){
+								castStr +=('暂时没有演员');
+							}
+							str += `
+								<div class="item">
+									<img src="${data[i].images.small}" alt="">
+									<div class="info">
+										<p>电影名称：${data[i].title}</p>
+										<p>电影类型：${data[i].genres.toString()}</p>
+										<p>电影时间：${data[i].year}</p>
+										<p>电影导演：${directorStr}</p>
+										<p>电影主演：${castStr}</p>
+									</div>
+								</div>
+							`;
+						}
+						movies.innerHTML = str + `<div class="item"></div><div class="item"></div>`;
+						
+						// 图片的加载函数 onload  ==>  onerror
+						var movieArr = movies.children;
+						var n = 0; // 记录加载成功的图片数量
+						
+						// Array.prototype.slice.call(movieArr).forEach(item => {
+						[].slice.call(movieArr).forEach((item,i,arr) => {
+							if(i < arr.length - 2){
+								// 图片加载完成,关闭遮罩
+								item.children[0].onload = function (){
+									n ++;
+									if(n === arr.length - 2){
+										mark.style.display = 'none';
+									}
+								}
+								item.children[0].onerror = function (){
+									this.src = './error.jpg';
+								}
+							}
+						})
+					}
+				})
+			}
+			
+			// 添加分页  接受总页数 n
+			function addPagination(n){
+				var str = "";
+				for(var i = 0; i < n; i ++){
+					str += `<li class="${i === 0 ? 'act' : '' }">${i + 1}</li>`;
+				}
+				pagination.innerHTML = str;
+			}
+			
+		 
+			// 封装ajax函数
+			// url,method,data,success,fail
+			// 函数的健壮性  1. 函数执行一定有一个理想值  2. 规定输入类型,提知
+			// 形参改为对象的好处: 不关心传参顺序/可以设置默认值
+			function ajax(params){
+				if(!params.url){
+					console.log("url 是必填项!!!");
+					return;
+				}
+				// params.method = parms.method || "GET";
+				// params.success = params.success || function (){ console.log("success") };
+				// params.fail = params.fail || function (){ console.log("fail") };
+				// params.data = params.data || null;
+				var obj = {
+					method: "GET",
+					data: null,
+					success(){ console.log("success") },
+					fail(){ console.log("fail") }
+				}
+				params = Object.assign(obj,params);
+				
+				// 实例化请求对象
+				var xhr = new XMLHttpRequest();
+				// 成功
+				xhr.onload = function (){
+					// 服务器返回的数据
+					var response = JSON.parse(xhr.responseText);
+					params.success(response);
+				}
+				xhr.onerror = function (){
+					params.fail();
+				}
+				// open(method,url,是否异步,默认异步)
+				xhr.open(params.method,params.url);
+				// 发送参数
+				xhr.send(params.data);
+			}
+				
+		</script>
+	</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原型对象</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			// 对象的创建方式  var obj = {};  / var obj = new Object(); __proto__ 顶级对象
+			var obj = new Object();
+			
+			// 使用new关键字创建的 原生对象 Object/Array/Date/Number/String/Boolean/Function..  通过构造函数形式
+			/* new 操作符的作用
+			(1) 创建一个新对象；
+			(2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）；
+			(3) 执行构造函数中的代码（为这个新对象添加属性）；
+			(4) 返回新对象。
+			*/
+			
+			// 每创建一个函数,都会被js编译器自动添加一个 prototype 属性,这个属性指向 这个构造函数的原型对象
+			var name = "李白",age = 24;
+			function Person(name,age){
+				// new 做的事情
+				// var obj = {};
+				// obj.name = name;
+				// obj.age = age;
+				// obj.sayName = function (){ console.log(this.name) };
+				// return obj;
+				this.name = name;
+				this.age = age;
+				this.sayName = function (){
+					console.log(this.name);
+				}
+			}
+			
+			// 原型对象  每一个function都自带一个 prototype
+			console.log('Person.prototype',Person.prototype);
+			Person.prototype.tel = '123456789';
+			
+			// Person(name,age); // window  sayName(李白)
+			// 实例
+			var user = new Person("杜甫",30);
+			var user1 = new Person("武则天",21);
+			// 每一个实例的 [[prototype]] 属性都指向 构造函数的原型对象
+			// 构造函数的原型对象 constructor 属性指向 构造函数本身
+			// 构造函数的 prototype 指向它的原型对象
+			console.log(user.__proto__ === Person.prototype) // true
+		</script>
+	</body>
+</html>

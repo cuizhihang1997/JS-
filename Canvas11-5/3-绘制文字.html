@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>绘制文字</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="300">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		<script type="text/javascript">
+			/*
+				语法：context.fillText(text,x,y,maxWidth);  strokeText(text, x, y, maxWidth)
+				在指定的(x,y)位置填充指定的文本，绘制的最大宽度是可选的
+				
+				- font 设置或返回文本内容的当前字体属性
+					font 属性使用的语法与 CSS font 属性相同。例如：ctx.font = "18px '微软雅黑'";
+				- textAlign 设置或返回文本内容的当前对齐方式
+				- - start : 默认。文本在指定的位置开始
+					- end : 文本在指定的位置结束
+					- center: 文本的中心被放置在指定的位置
+					- left : 文本左对齐
+					- right : 文本右对齐
+				- 例如：`ctx.textAlign = 'left';`    
+				- textBaseline 设置或返回在绘制文本时使用的当前文本基线
+				- - alphabetic： 默认。文本基线是普通的字母基线
+					- top： 文本基线是 em 方框的顶端
+					- hanging： 文本基线是悬挂基线
+					- middle： 文本基线是 em 方框的正中
+					- ideographic： 文本基线是em基线
+					- bottom： 文本基线是 em 方框的底端
+				*/
+			  var cvs = document.querySelector("#cvs");
+			  var ctx = cvs.getContext("2d");
+				
+				ctx.font = 'bold 60px "微软雅黑"';
+				ctx.strokeText('不凡学院',50,100);
+				ctx.fillText('不凡学院',50,200,50);
+				// ctx.font = 'fontstyle fontweight fontsize/lineheight font-family'
+			 
+		</script>
+	</body>
+</html>

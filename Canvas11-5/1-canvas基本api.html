@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas基本api</title>
+		<style>
+			canvas{
+				/* width: 600px;
+				height: 600px; */
+				display: block;
+				margin: 30px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas width="600" height="400">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持
+		</canvas>
+		
+		<script type="text/javascript">
+			// 获取canvas,设置上下文
+			var cvs = document.querySelector("canvas");
+			var ctx = cvs.getContext("2d"); // 获取操作canvas的对象
+			
+			// 开始绘制
+			ctx.beginPath();
+			// 绘制起点
+			ctx.moveTo(100,100);
+			// 绘制直线的落脚点
+			ctx.lineTo(100,240);
+			// 设置线的样式
+			ctx.lineWidth = 20;
+			ctx.lineCap = 'square';
+			// 描边颜色,写在描边之前
+			ctx.strokeStyle = 'red';
+			// 描边
+			ctx.stroke();
+			// 闭合绘制
+			ctx.closePath();
+			
+			ctx.moveTo(140,100);
+			ctx.lineTo(140,240);
+			ctx.lineCap = 'round';
+			ctx.stroke();
+			
+			// ctx.moveTo(180,100);
+			// ctx.lineTo(180,240);
+			// ctx.lineTo(240,160);
+			// ctx.lineCap = 'butt';
+			/*lineJoin 设置或返回两条线相交时，所创建的拐角类型
+			
+			- bevel: 创建斜角。
+			- round: 创建圆角。
+			- miter: 默认。创建尖角 */
+			// ctx.lineJoin = 'bevel';
+			// - setLineDash(segments)    设置当前虚线样式，segments 是一个数组表示段
+			// - lineDashOffset = value     设置虚线样式的起始偏移量。
+			
+			// ctx.setLineDash([12]);
+			// ctx.lineDashOffset = 12;
+			
+			var n = 0;
+			drawLine();
+			function drawLine(){
+				// 清除内容
+				ctx.clearRect(160, 0, 600, 400);
+				ctx.moveTo(180,100);
+				ctx.lineTo(180,240);
+				ctx.lineTo(240,160);
+				ctx.lineCap = 'butt';
+				/*lineJoin 设置或返回两条线相交时，所创建的拐角类型
+				
+				- bevel: 创建斜角。
+				- round: 创建圆角。
+				- miter: 默认。创建尖角 */
+				ctx.lineJoin = 'bevel';
+				// - setLineDash(segments)    设置当前虚线样式，segments 是一个数组表示段
+				// - lineDashOffset = value     设置虚线样式的起始偏移量 正向上。
+				
+				ctx.setLineDash([12]);
+				ctx.lineDashOffset = n;
+				ctx.stroke();
+				n ++;
+				
+				if(n === 200) n = 0;
+				requestAnimationFrame(drawLine);
+			}
+			
+			
+			
+		</script>
+	</body>
+</html>

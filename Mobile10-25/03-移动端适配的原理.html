@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html{
+			/* font-size: 75px; */
+		}
+		/*通常情况下,ui设计师在设计移动端的时候 一般会按照375/750px的宽度取做适配.
+		在实现的时候 假设屏幕宽度是750px
+		通常在移动端实现的时候,font-size基本会按照设计稿的1/10宽度
+		在不同的设备下,再通过js动态的修改 html-font-size即可适配*/
+		
+		/*如果按照设计稿100%呈现,而且代码中使用rem处理,那么适配的问题的关键即
+		需要动态根据移动端手机的屏幕宽度来修改html的font-size大小
+		*/
+	 
+	 /* 375  37.5    50/37.5
+		 50px * 50px;  设置为多少rem？*/
+		
+		/* 750  100*100 */
+		/* 375  50/37.5 ===> 100/75  rem */
+		/* 500 rem */
+		
+		/* rem 根据页面的根字体大小 === > 屏幕宽度(当前	#box{
+			float: left;
+			width: 1.5625rem;
+			height: 50px;
+			background-color: red;
+		})/10 */
+	/*  */
+		
+		/* #inner{
+			float: left;
+			width: 8.4375rem;
+			height: 40px;
+			background-color: blue;
+		} */
+		.d1{
+			width: 2.666666rem;
+			height: 5.333333rem;
+		}
+	</style>
+		
+</head>
+<body>
+	
+	<div id="box"></div>
+	<div id="inner"></div>
+	<script type="text/javascript">
+		window.onload = initFont;
+		// window.onresize
+		window.onresize = initFont;
+			
+		function initFont(){
+			document.documentElement.style.fontSize = document.documentElement.clientWidth/10 + "px";
+		}
+	</script>
+</body>
+</html>

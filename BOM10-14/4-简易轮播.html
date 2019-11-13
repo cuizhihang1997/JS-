@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>简易轮播</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: relative;
+				width: 1000px;
+				height: 375px;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+			ul{
+				position: absolute;
+				list-style: none;
+				width: 500%;
+				height: 100%;
+			}
+			li{
+				float: left;
+				width: 20%;
+				height: 100%;
+			}
+			li img{
+				width: 100%;
+				height: 100%;
+			}
+			button {
+				padding: 10px 20px;
+				margin-left: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul>
+				<li><img src="../lib/image/banner/m1.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m2.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m3.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m4.jpg" alt=""></li>
+				<li><img src="../lib/image/banner/m5.jpg" alt=""></li>
+			</ul>
+		</div>
+		
+		<button>上一个</button>
+		<button>下一个</button>
+		<script type="text/javascript">
+			var box = document.querySelector(".box");
+			var btns = document.querySelectorAll("button");
+			var ulEle = document.querySelector("ul");
+			var lis = ulEle.children;
+			// 声明一张图片的宽度
+			var liw = lis[0].offsetWidth; //offsetWidth = 设置的width + paddingLeft/Right + borderLeft/Right
+			// 声明一个计数器
+			var count = 0;
+			
+			btns[0].onclick = function (){
+				// 书写顺序影响了判断
+				if(count === 0){
+					count = lis.length;
+				}
+				count --;
+				slowlyMove(ulEle,-liw * count);
+			}
+			// 下一张图片
+			btns[1].onclick = function (){
+				// -第一张图片的宽度
+				if(count === lis.length - 1){
+					count = -1;
+				}
+				count ++;
+				slowlyMove(ulEle,-liw * count);
+			}
+			
+			function slowlyMove(ele,target){
+				// 防止定时器冲突,清除上一个
+				clearInterval(ele.timer);
+				// 设置定时器
+				ele.timer = setInterval(function (){
+					// 获取起点
+					var start = ele.offsetLeft;
+					// 设置步长
+					var step = (target - start) / 10;
+					// 判断步长区间
+					if(Math.abs(step) < 1){ // [-1,1]
+						// [-1,0] 取地板  (0,1]  取1
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ele.style.left = start + step + 'px';
+					// 停止条件
+					if(start + step === target){
+						console.log("stop ...");
+						// // 清除定时器
+						clearInterval(ele.timer);
+					}
+				},17)
+			}
+		</script>
+	</body>
+</html>

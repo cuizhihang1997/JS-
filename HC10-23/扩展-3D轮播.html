@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>3D轮播</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			ul{
+				position: relative;
+				width: 620px;
+				height: 230px;
+				margin: 50px auto;
+				border: 1px dotted red;
+				list-style: none;
+				transform-style: preserve-3d;
+			}
+			
+			li{
+				position: relative;
+				float: left;
+				height: 230px;
+				/* perspective-origin: 1000px; */
+				transform-style: preserve-3d;
+				/* transition: all 1s ease; */
+			}
+			li div{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+			li div:first-child{
+				transform: translateZ(115px);
+			}
+			li div:nth-child(2){
+				transform: translateZ(-115px) rotateX(180deg);
+			}
+			li div:nth-child(3){
+				transform: translateY(115px) rotateX(-90deg);
+			}
+			li div:last-child{
+				transform: translateY(-115px) rotateX(90deg);
+			}
+			
+			button{
+				padding: 10px 15px;
+				
+				margin-left: 30px;
+			}
+			
+			@keyframes round1{
+				0%{
+					transform: rotateX(0) rotateY(0);
+				}
+				50%{
+					transform: rotateX(45deg) rotateY(15deg);
+				}
+				100%{
+					transform: rotateX(90deg) rotateY(0);
+				}
+			}
+			@keyframes round2{
+				0%{
+					transform: rotateX(90deg) rotateY(0);
+				}
+				50%{
+					transform: rotateX(135deg) rotateY(15deg);
+				}
+				100%{
+					transform: rotateX(180deg) rotateY(0);
+				}
+			}
+			@keyframes round3{
+				0%{
+					transform: rotateX(180deg) rotateY(0);
+				}
+				50%{
+					transform: rotateX(225deg) rotateY(15deg);
+				}
+				100%{
+					transform: rotateX(270deg) rotateY(0);
+				}
+			}
+			@keyframes round4{
+				0%{
+					transform: rotateX(270deg) rotateY(0);
+				}
+				50%{
+					transform: rotateX(315deg) rotateY(15deg);
+				}
+				100%{
+					transform: rotateX(360deg) rotateY(0);
+				}
+			}
+			
+		</style>
+	</head>
+	<body>
+		<!-- li 表示份数 li>div 表示立方体的面 -->
+		<ul>
+			
+		</ul>
+		
+		<div class="operate">
+			<button class="prev">上一个</button>
+			<button class="next">下一个</button>
+		</div>
+		
+		<script type="text/javascript">
+			var ulEle = document.querySelector("ul");
+			var prev = document.querySelector(".prev");
+			var next = document.querySelector(".next");
+			/*
+				1. 将 ul 分成 n 份, 求出一份的宽
+				2. 声明变量表示当前在立方体的哪一面
+				3. 加载li的函数, 传入个数和宽度, 生成li;  在li内部声明四个盒子表示立方体的四个面,添加背景图,设置尺寸和定位
+				4. 添加点击事件, 为li添加不同的动画效果和延时;  在css中声明四种动画效果旋转一周
+			*/
+			var n = 20;
+			var w = ulEle.clientWidth/n;
+			initLi(n,w);
+			
+			// 初始化页面,添加图片,传入份数和每一份的宽度
+			function initLi(n,w){
+				var str = '';
+				for(var i = 0; i < n; i ++){
+					str += `<li style="width: ${w}px;">`
+					for(var j = 0; j < 4; j ++){
+						str += `<div style="background: url('../lib/image/banner/m${j+1}.jpg') ${-i*w}px 0/cover"></div>`;
+					}
+					str += `</li>`;
+				}
+				ulEle.innerHTML = str;
+			}
+			
+			var m = 0;
+			next.onclick = function (){
+				var lis = ulEle.children
+				console.log(lis)
+
+				m ++;
+				for(var i = 0; i < lis.length; i ++){
+					// lis[i].style.transitionDelay = `${.1 * i}s`;
+					// lis[i].style.transform = `rotateX(${m*90}deg) rotateY(${m%3*15}deg)`;
+					if(m === 5){
+						m = 1;
+					}
+					lis[i].style.animation = `round${m} 2s linear ${.1 * i}s alternate both`;
+				}
+			}
+		</script>
+	</body>
+</html>

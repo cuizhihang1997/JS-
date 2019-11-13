@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>offset家族</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				position: absolute;
+				top: 30px;
+				left: 200px;
+				width: 300px;
+				height: 200px;
+				background-color: red;
+			}
+			.inner{
+				width: 100px;
+				height: 100px;
+				margin: 20px auto;
+				padding: 20px 30px 10px 50px;
+				border: 15px solid orange;
+				background-color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			
+			<div class="inner"></div>
+		</div>
+		
+		<script type="text/javascript">
+			// ` offset宽/高  =  盒子自身的宽/高(width/height) + padding +border`
+			var box = document.querySelector(".box");
+			var inner = document.querySelector(".inner");
+			
+			// offsetLeft/Top 求元素距离最近的有定位的父类的左上边距
+			// 如果父级都没有定位则以 `body` 为准, `offsetLeft` 从父亲的 `padding` 开始算,父亲的 `border` 不算。
+			// 在父盒子有定位的情况下，`offsetLeft == style.left`(去掉 px)
+			
+			// 返回该对象的父级 （带有定位）
+			/*> 1、如果当前元素的父级元素没有进行 CSS 定位(absolute,relative,fixed) `offsetParent` 为 `body`
+			> 	
+			> 2、如果当前元素的父级元素中有 CSS 定位 `offsetParent` 取最近的那个父级元素。
+			*/
+		 
+			// style.xxx 和 offsetxx的区别
+			// 1. style 只能获取行内
+			// 2. style.top/left 获取是带单位的字符串,是设置的值    offsetxx  是数字,获取的实际距离
+			// 3. style.xx 可以读写值   offsetxx 只读
+			// 4. style.xx 获取的值是小数点后一位(四舍五入)   offset.xx 获取的是一个整数(四舍五入)
+		</script>
+	</body>
+</html>

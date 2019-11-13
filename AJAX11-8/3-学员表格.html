@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>2-学员表格</title>
+		<link rel="stylesheet" type="text/css" href="../lib/layui/css/layui.css"/>
+		<style>
+			.add{
+				margin-top: 30px;
+			}
+			.self-form{
+				padding: 10px 20px;
+			}
+			.self-form input{
+				margin-top: 10px;
+			}
+			.sex-input{
+				display: flex;
+				align-items: center;
+				width: 200px;
+				margin-top: 10px;
+				padding: 0 10px;
+				border: 1px solid #ddd;
+			}
+			.sex-input div:first-child{
+				margin-right: 14px;
+				color: grey;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-container">
+			<button class="layui-btn add">添加学员</button>
+			<table id="demo" lay-filter="tableDemo"></table>
+		</div>
+		
+		<form class="layui-form self-form" hidden lay-filter="formDemo">
+			<input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输入登录名" class="layui-input">
+			<input type="password" name="password" lay-verify="required" value="123456" autocomplete="off" placeholder="请输入登陆密码" class="layui-input">
+			<input type="text" name="name" lay-verify="required" autocomplete="off" value="李元芳" placeholder="请输入用户名" class="layui-input">
+			<input type="text" name="age" lay-verify="required" autocomplete="off" value="24" placeholder="请输入年龄" class="layui-input">
+			<div class="sex-input">
+				<div>性别</div>
+				<input type="radio" name="sex" value="男" title="男" checked="">
+				<input type="radio" name="sex" value="女" title="女">
+			</div>
+			<input type="text" name="address" lay-verify="required" autocomplete="off" value="老庙区南墙头" placeholder="请输入地址" class="layui-input">
+			<input type="text" name="school" lay-verify="required" autocomplete="off" value="忽悠人学校" placeholder="请输入学校" class="layui-input">
+			<div class="layui-input-block">
+			  <button class="layui-btn" lay-submit lay-filter="test">立即提交</button>
+			</div>
+		</form>
+		
+		<script src="../lib/qs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../lib/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			/*
+			获取学员列表 api: 'http://59.110.138.169/api/test/user/list';
+			更改学员信息 api: 'http://59.110.138.169/api/test/user/updateUserInfo';
+			删除学员信息 api: 'http://59.110.138.169/api/test/user/del';  传 id: userId
+			添加学员信息 api: 'http://59.110.138.169/api/test/user/save';
+			检查username是否存在 api: 'http://59.110.138.169/api/test/user/checkUserName';  传username: xxx
+			
+			用户登陆填写项: username/password/name/age/sex (0: 男; 1: 女)/tel/address/school
+			用户修改信息填写项: userId/name/age/sex/address/school
+			*/
+		 
+			var host = 'http://59.110.138.169/api/test/user/';
+			var api = {
+				add: host + 'save',
+				del: host + 'del',
+				edit: host + 'updateUserInfo',
+				list: host + 'list',
+				checkName: host + 'checkUserName',
+			}
+		 
+			// 使用all.js  不需要分模块加载,即不需要使用use方法
+			var add = document.querySelector(".add"); // 添加学员的按钮
+			var formEle = document.querySelector(".layui-form"); // 表单元素
+			var table = layui.table; // table模块
+			var layer = layui.layer; // 弹窗模块
+			var form = layui.form; // 表单模块
+			var ifEdit = null; // 是否是编辑的变量
+			
+			// 添加学员的事件
+			var layerIndex = null;
+			add.onclick = function (){
+				ifEdit = null;
+				openMask();
+			}
+			// 打开弹窗
+			function openMask(data){
+				
+				layerIndex = layer.open({
+					type: 1, // 页面层
+					title: "添加学员",
+					content: formEle.outerHTML.replace(`hidden=""`,"")
+				})
+				form.render();  // 重新加载,启用功能
+				if(data){ // 有数据,是编辑
+					form.val("formDemo", data);
+				}
+			}
+			
+			// 表单提交数据
+			form.on('submit(test)', function(data){
+			  // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+			  // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+			  // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+				// 将性别改成数字
+				data.field.sex = data.field.sex === "男" ? 0 : 1;
+				if(ifEdit){
+					delete data.field.username;
+					delete data.field.password;
+					data.field.userId = ifEdit;
+				}
+				checkName(data.field.username,function (){
+					ajax({
+						url: ifEdit? api.edit : api.add,
+						method: "POST",
+						data: Qs.stringify(data.field),
+						success(res){
+							// console.log(res);
+							if(res.code === 'success'){
+								// 关闭弹窗
+								layer.close(layerIndex);
+								// layer.closeAll();
+								// 提交数据成功
+								table.reload('tableData');
+							}
+						}
+					})
+				});
+				
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+			
+			// 检查名字的函数
+			function checkName(str,callback){
+				ajax({
+					url: api.checkName,
+					method: "POST",
+					data: JSON.stringify({ username: str}),
+					success: function (res){
+						console.log(res);
+
+						if(res.code === "success"){
+							// layer.msg("名字可用");
+							callback();
+						}else{
+							layer.msg("请重新输入名字");
+						}
+					}
+				})
+			}
+			
+				//   var cnm = null;
+				  
+			// 绑定table工具条事件
+			table.on('tool(tableDemo)', function (obj){
+				var data = obj.data; //获得当前行数据
+				var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+				var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+				
+				// console.log(layEvent,tr,data);
+				if(layEvent === 'del'){
+					// 删除
+					layer.confirm('是否删除',function(index){
+						//do something
+						ajax({
+							url: api.del + `?id=` + data.userId,
+							success(res){
+								if(res.code === "success"){
+									layer.msg("恭喜删除成功");
+									table.reload("tableData");
+								}
+							}
+						})
+						layer.close(index);
+					})
+				}else if(layEvent === 'edit'){
+					// 编辑  把当前行内的数据赋值给form表单
+					ifEdit = data.userId;
+					openMask(data);
+				}
+			})
+			
+			table.render({
+				elem: '#demo' ,// 页面上表格元素的id
+				id: 'tableData',
+				url: api.list, //数据接口
+				request: {
+					pageName: 'start', //页码的参数名称，默认：page
+					// limitName: 'nums' //每页数据量的参数名，默认：limit
+				},
+				parseData: function(res){ //res 即为原始返回的数据
+					console.log(res); //0男 1女
+					res.data.list.forEach(item => {
+						item.sex = item.sex == 0 ? '男' : '女';
+					})
+					return {
+						"code": 0, // 解析接口状态
+						"count": res.data.totalRow, //解析数据长度
+						"data": res.data.list //解析数据列表
+					};
+				},
+				page: {
+					limit: 5,
+					limits: [5,10]
+				} //开启分页
+				,cols: [[ //表头
+				// 获取的数据在页面上显示对应的key值
+				// [ {name: "张三",age:24, tel: 123453253}, {...} ]
+					{title: '序号', width:80, type: 'numbers'}
+					,{field: 'name', title: '用户名', width:80}
+					,{field: 'sex', title: '性别', width:80}
+					,{field: 'age', title: '年龄', width:80} 
+					,{field: 'address', title: '地址'}
+					,{field: 'school', title: '学校'}// 工具栏内容写在div内部
+					,{title: '操作', toolbar: `<div>
+						<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="edit">编辑</button>
+						<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="del">删除</button>
+					</div>`}
+				]]
+			})
+			
+			function ajax(params){
+				// 判断是否有url传递
+				if(!params.url){
+					console.log("记得传递url");
+					return;
+				}
+				var obj = {
+					method: "GET",
+					data: null,
+					success: function () { console.log("success"); },
+					fail: function () { console.log("fail"); }
+				}
+				// 合并实参和默认参
+				params = Object.assign(obj,params);
+				
+				// 实例化xhr
+				var xhr = new XMLHttpRequest();
+				// 成功或失败
+				xhr.onload = function (){
+					// 拿取成功后的数据
+					var data = JSON.parse(xhr.responseText);
+					params.success(data);
+				}
+				xhr.onerror = params.onerror;
+				 
+				 
+				// open(method,url,是否异步)
+				xhr.open(params.method,params.url);
+				if(params.method === 'POST'){
+					xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+				}
+				// 发送参数
+				xhr.send(params.data);
+			}
+		</script>
+	</body>
+</html>

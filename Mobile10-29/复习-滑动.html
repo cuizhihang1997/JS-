@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>滑动</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.header{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100px;
+				background-color: rgba(0,0,255,.5);
+				z-index: 9;
+			}
+			.sidebar{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100px;
+				height: 100%;
+				overflow: hidden;
+				background-color: orange;
+			}
+			ul{
+				position: absolute;
+				top: 100px;
+				width: 100%;
+				list-style: none;
+			}
+			li{
+				width: 100%;
+				height: 50px;
+				margin-bottom: 10px;
+				font-size: 20px;
+				color: #fff;
+				text-align: center;
+				line-height: 50px;
+				background-color: #9000FF;
+			}
+			.act{
+				background-color: #f00;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header"></div>
+		<div class="sidebar">
+			<ul>
+				<li class="act">li_1</li>
+				<li>li_2</li>
+				<li>li_3</li>
+				<li>li_4</li>
+				<li>li_5</li>
+				<li>li_6</li>
+				<li>li_7</li>
+				<li>li_8</li>
+				<li>li_9</li>
+				<li>li_10</li>
+				<li>li_11</li>
+				<li>li_12</li>
+				<li>li_13</li>
+				<li>li_14</li>
+				<li>li_15</li>
+				<li>li_16</li>
+				<li>li_17</li>
+				<li>li_18</li>
+				<li>li_19</li>
+				<li>li_20</li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript">
+			var ulEle = document.querySelector("ul");
+			var sidebar = document.querySelector(".sidebar");
+			
+			var baseTop = ulEle.offsetTop;//header的高度
+			// 声明回弹效果的最大值
+			var max = 100;
+			
+			ulEle.onclick = function (){
+				// 将被点击的li移动到最上面(ul元素移动: ul的起点+点击事件的移动距离),换激活样式
+				// 最上面的位置: 距离页面顶部一个header的高度
+				// 点击事件的移动距离: 被点击li的offsetTop - 原来ul的offetTop
+				
+				if(event.target.tagName === "LI"){
+					var targetY = -event.target.offsetTop + baseTop;
+					if(Math.abs(targetY) > Math.abs(ulEle.offsetHeight - sidebar.offsetHeight)){
+						targetY = sidebar.offsetHeight - ulEle.offsetHeight;
+					}
+					
+					ulEle.style.top = targetY + "px";
+					
+					// 更换样式
+					document.querySelector("li.act").classList.remove("act");
+					event.target.classList.add("act");
+				}
+			}
+			
+			// 滑动
+			// ul元素滑动: ul的起点+手指滑动距离
+			// 手指滑动的距离: 手指滑动的距离 = 当前距离页面的上边距 - 起始距离页面的上边距
+			ulEle.ontouchstart = function (){
+				// 开始滑动,记录ul的起始top值
+				var startY = ulEle.offsetTop;
+				// 手指的起点
+				var touchY = event.targetTouches[0].pageY;
+				ulEle.ontouchmove = function (){
+					// 当前ul的top = 起点 + 手指移动
+					var targetY = startY + event.targetTouches[0].pageY - touchY;
+					// 添加回弹区域: 1.在最上面向下拉  2.在最下面向上拉
+					if(targetY > baseTop + max){
+						targetY = baseTop + max;
+					}else if(targetY < sidebar.offsetHeight - ulEle.offsetHeight - max){
+						targetY = sidebar.offsetHeight - ulEle.offsetHeight - max;
+					}
+					
+					ulEle.style.top = targetY + "px";
+				}
+				
+				// 停止的时候还原效果
+				ulEle.ontouchend = function (){
+					if(ulEle.offsetTop > baseTop){
+						ulEle.style.top = baseTop + "px";
+					}else if(ulEle.offsetTop < sidebar.offsetHeight - ulEle.offsetHeight){
+						ulEle.style.top = sidebar.offsetHeight - ulEle.offsetHeight + "px";
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

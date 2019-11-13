@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>获取元素样式</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 200px;
+				height: 200px;
+				padding: 30px;
+				border: 20px solid blue;
+				background-color: red;
+			}
+			#box::after{
+				display: block;
+				width: 100px;
+				height: 100px;
+				content: "asfsafas";
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		
+		<script type="text/javascript">
+			// var str = getComputedStyle(box,"::after").width;
+			// var str = getComputedStyle(box,null).width;
+			var obj = {
+				name: "李白",
+				"userInfo.name": "李白"
+			};
+			// var a = 'name';
+			// console.log(obj.a)
+			// obj[a]  使用: 当属性是一个变量或者字符串表示的时候
+			
+			function getStyle(ele,styleName){
+				if(ele.currentStyle){
+					return ele.currentStyle[styleName];
+				}else{
+					return getComputedStyle(ele,null)[styleName];
+				}
+			}
+		</script>
+	</body>
+</html>

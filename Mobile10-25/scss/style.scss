@@ -1,0 +1,22 @@
+$base: 37.5;
+
+html{
+	font-size: $base;
+}
+
+@function p2r($px){
+	@return $px/$base+rem;
+}
+
+
+#box{
+	width: p2r(100);
+	height: p2r(100);
+	background-color: red;
+}
+
+#inner{
+	width: p2r(200);
+	height: p2r(200);
+	background-color: blue;
+}

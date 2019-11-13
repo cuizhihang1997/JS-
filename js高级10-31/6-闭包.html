@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>闭包</title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			
+			// 闭包: 是一个可以引用另一个函数作用域中的变量的函数, 让外部引用内部的变量
+			// 引用另一个函数作用域中的变量: 必须是在另一个函数中
+			// 需要return 出来
+			/*
+			var c = 10;
+			function fn(){
+				var a = 10;
+				return function (){
+					a ++;
+					c ++;
+					console.log(a);
+					console.log(c);
+				}
+			}
+			
+			var f1 = fn();
+			f1(); // 11 11
+			f1(); // 12 12
+			var f2 = fn();
+			f2(); // 11 13
+			
+			// 取消闭包捆绑函数
+			f1 = null;
+			f2 = null;
+			
+			
+			var arr = [];  // 添加10个函数,调用函数会输出相应的下标
+			for(var i = 0; i < 10; i ++){
+				var fn = (function (i){
+					return function (){
+						console.log(i);
+					}
+				})(i)
+				arr.push(fn);
+			}
+			
+			arr[0]() // 0
+			
+			;(function fn(){
+				var add = 10;
+				window.add = add;
+				setTimeout(function (){
+					console.log(add); // 10
+				},2000)
+			})()
+			add = 20;
+			console.log(add); // 20
+			
+			*/
+			// 题目
+			function fun(n,o){
+				console.log(n);
+			  console.log(o);
+			  return {
+			   fun: function(m){
+			      return fun(m,n);
+			    }
+			  }; 
+			}
+			
+			var a = fun(0);  // ? undefined
+			a.fun(1);        // ? 0  { function (1) {return fun(1,0) } };
+			a.fun(2);        // ? 0	 { function (1) {return fun(2,0) } };
+			a.fun(3);        // ? 0  { function (1) {return fun(3,0) } };
+			
+			var b = fun(0).fun(1).fun(2).fun(3);
+			console.log(b)  // ? undefined 0 1 2
+			// fun(0)  n==>0 o==>un  return {fun: (m) {reutrn fun(m,0)}};
+
+			
+			// m = 1 fn(1,0) => {fun: (m) {reutrn fun(m,1)}}
+			// m = 2 fn(2,1) => {fun: (m) {reutrn fun(m,2)}}
+			// m = 3 fn(3,2) => {fun: (m) {reutrn fun(m,3)}}
+			
+			
+			var c = fun(0).fun(1);  // ? console.log(undenfined)  0  c: { fun: function(m) { return fun(m,1)} }
+			c.fun(2);        // ? 1
+			c.fun(3);        // ? 1
+		</script>
+	</body>
+</html>

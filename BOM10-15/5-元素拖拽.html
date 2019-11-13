@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>元素拖拽</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.container{
+				width: 800px;
+				height: 400px;
+				margin: 20px auto;
+				border: 1px solid blue;
+			}
+			.box{
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="container">
+			<div class="box"></div>
+		</div>
+		
+		<script type="text/javascript">
+			var box = document.querySelector(".box");
+			var container = document.querySelector(".container");
+			
+			// 声明边界最小值
+			var minT = container.offsetTop;
+			var maxT = minT + container.offsetHeight - box.offsetHeight;
+			var minL = container.offsetLeft;
+			var maxL = minL + container.offsetWidth - box.offsetWidth;
+			
+			// 鼠标按下开始拖动
+			/*box.onmousedown = function (){
+				// 1. 盒子原来距离页面的距离 + 鼠标移动的距离
+				var originX = box.offsetLeft;
+				var originY = box.offsetTop;
+				
+				// 获取鼠标按下时距离页面的位置
+				var mouseX = event.pageX;
+				var mouseY = event.pageY;
+				
+				window.onmousemove = function (){
+					// 鼠标移动的距离 = 当前鼠标距离页面的距离 - 鼠标按下时距离页面的距离
+					var distanceX = event.pageX - mouseX;
+					var distanceY = event.pageY - mouseY;
+					box.style.left = originX + distanceX + "px";
+					box.style.top = originY + distanceY + "px";
+				}
+				
+				// 松开鼠标取消window上的移动事件
+				box.onmouseup = function (){
+					window.onmousemove = null;
+				}
+			}*/
+			
+			// 2. 鼠标距离盒子的上左边距 + 盒子距离页面的上左边距 = 鼠标距离页面的上左边距
+			box.onmousedown = function (){
+				// 获取鼠标距离盒子的上左边距
+				var mouseX = event.offsetX;
+				var mouseY = event.offsetY;
+				
+				window.onmousemove = function (){
+					
+					// 加边界
+					var targetX = event.pageX - mouseX;
+					var targetY = event.pageY - mouseY;
+					
+					if(targetX <= minL){
+						targetX = minL;
+					}else if(targetX >= maxL){
+						targetX = maxL;
+					}
+						
+					if(targetY <= minT){
+						targetY = minT;
+					}else if(targetY >= maxT){
+						targetY = maxT;
+					}
+					
+					
+					box.style.left = targetX + "px";
+					box.style.top = targetY + "px";
+				}
+				
+				window.onmouseup = function (){
+					window.onmousemove = null;
+				}
+			}
+		</script>
+	</body>
+</html>

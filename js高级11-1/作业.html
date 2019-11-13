@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>面向对象的轮播封装</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			position: relative;
+			width: 1226px;
+			height: 460px;
+			margin: 30px auto;
+			border: 1px solid red;
+		}
+		ul {
+			position: absolute;
+			left: 0;
+			/* width: 200%; */
+			height: 100%;
+			list-style: none;
+		}
+		li {
+			float: left;
+			
+			height: 100%;
+			background-color: red;
+		}
+		li:last-child{
+			background-color: blue;
+		}
+		.arrow{
+			position: absolute;
+			top: 160px;
+			/* 定位: 左权高于右权 */
+			right: 0;
+			width: 40px;
+			height: 80px;
+			background-color: rgba(0,0,0,.5);
+		}
+		.arrow-l{
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<!-- <ul>
+			<li></li>
+			<li></li>
+		</ul> -->
+	</div>
+	
+	<script type="text/javascript">
+		// var swiper = new Swiper("swiper-content");
+		
+		// 需要父类元素,需要li个数(生成图片张数),左右箭头是否要,小点是否要
+		function MySwiper(obj){
+			// this.ele = ele;
+			this.ele = document.querySelector(obj.el);
+            this.ifDots =obj.ifDots;
+            this.ifArrow= obj.ifArrow;
+			this.arr = obj.arr;
+			this.count = 0; // 计数器
+            this.w = this.ele.clientWidth; // 一个li的宽度
+            this.id =null;
+			// 组合使用构造函数和原型方法 原型上的方法初始化都写在init里面
+			
+			this.init();
+		}
+		// extend方法 保险
+		MySwiper.prototype = {
+			// contructor 在这里用不到
+			init: function (){
+				this.createLi(); // 生成li
+				// 绑定右点击事件
+				this.rightClick();
+			},
+			rightClick: function(){
+                var right = document.querySelector(".arrow-r");
+                var left = document.querySelector(".arrow-l");
+                var that = this;
+                if(that.ifArrow){
+				right.onclick = function(){
+                    if(that.count === that.arr.length - 1){
+					that.count = 0;
+					}
+                    that.count ++;
+                    console.log(this.w);
+                    console.log(that.w);
+                    that.move(that.count * -that.w);
+                    console.log(that.count);
+                }
+                left.onclick = function(){
+                    that.count --;
+                    console.log(that.w);
+                    that.move(that.count * -that.w);
+                    
+                    console.log(that.count);
+                    
+                }
+              
+            
+            }
+			},
+			createLi: function (){
+                var str = '';
+                str +=`<ul style="width:${this.arr.length}00%">`
+				for(var i = 0; i < this.arr.length; i ++){
+					str += `<li style="background:url(${this.arr[i]}) no-repeat; width:${100/this.arr.length}%"></li>`;
+                }
+                if(this.ifArrow){
+				str += `</ul><div class="arrow arrow-l"></div><div class="arrow arrow-r"></div>`};
+				this.ele.innerHTML = str;
+			},
+			move: function (target){
+				// 作为参数的函数中的this会指向调用它的函数的作用域
+                var ulEle = this.ele.children[0];
+                
+                    
+				requestAnimationFrame(function fn(){
+                    if(this.id) cancelAnimationFrame(this.id);
+					var start = ulEle.offsetLeft;
+					// 步长
+					var step = (target - start) / 10;
+					if(Math.abs(step) < 1){ [-1,1]
+						step = step > 0 ? 1 : Math.floor(step);
+					}
+					// 运动
+					ulEle.style.left = start + step + "px";
+					// 停止条件
+					if(start + step !== target){
+						this.id=requestAnimationFrame(fn);
+					}
+				})
+			}
+		}
+		
+		// var box = document.querySelector(".box");
+		var swiper = new MySwiper({
+            
+          el:'.box', 
+         arr:['img/m1.jpg','img/m2.jpg','img/m3.jpg','img/m4.jpg','img/m5.jpg','img/m6.jpg','img/m7.jpg'],
+         ifDots:true,       
+         ifArrow:true,
+         autoPlay:true,
+        //  duration:
+    }  
+        );
+	</script>
+</body>
+</html>

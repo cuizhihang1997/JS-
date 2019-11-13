@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>百度地图的应用</title>
+		<style type="text/css">
+			#container{
+				width: 800px;
+				height: 500px;
+				margin: 30px auto;
+				border: 1px solid red;
+			}
+		</style> 
+	</head>
+	<body>
+		<div id="container"></div>
+		<!-- <input type="text" id="start" placeholder="请输入起点">
+		<input type="text" id="end" placeholder="请输入终点">
+		<input type="text" id="way" placeholder="请输入方式: 最少时间/最短距离/避开高速">
+		<button id="btn111">开始查询</button> -->
+		
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=rQa3trYourokp3400qLM8PYylTaSvbkz"></script>
+		<script type="text/javascript">
+			
+			
+			
+			var map = new BMap.Map("container");
+			// 第一个值 经度/纬度
+			var point = new BMap.Point(113.7746736667,34.7758927261);
+			// var point = new BMap.Point(116.404, 39.915);
+			// 缩放级别 最高21
+			map.centerAndZoom(point, 21);
+			
+			
+			
+			// 添加控件
+			map.addControl(new BMap.NavigationControl());    
+			map.addControl(new BMap.ScaleControl());    
+			map.addControl(new BMap.OverviewMapControl());    
+			map.addControl(new BMap.MapTypeControl());    
+			map.setCurrentCity("郑州"); // 仅当设置城市信息时，MapTypeControl的切换功能才能可用 
+			
+			/* 
+			var marker = new BMap.Marker(point);  // 创建标注
+			map.addOverlay(marker);               // 将标注添加到地图中
+			marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			*/
+		 
+			var myIcon = new BMap.Icon("http://bufanui.com/pages/front/static/img_v3/ding.jpg", new BMap.Size(100,100));
+			var marker2 = new BMap.Marker(point,{icon:myIcon, draggable: true});  // 创建标注
+			marker2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			map.addOverlay(marker2);
+			
+			
+			
+			// 点击任意一点,重置小点的位置
+			map.addEventListener("click",function (info){
+				// console.log(info.point);
+				// console.log(marker2);
+				marker2.point = info.point;
+				map.addOverlay(marker2); 
+			})
+			
+			
+			
+				
+				
+				
+		</script>
+	</body>
+</html>

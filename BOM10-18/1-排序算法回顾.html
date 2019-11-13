@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>排序算法回顾</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var arr = [9,4,8,2,7,1,6,3,5,35,12];
+			// 冒泡 插入 选择
+			/*
+				冒泡: 两两相较,将最大的放在数组的末尾
+					外层控制循环次数, 里面比较次数
+				冒泡排序的优化:
+					内圈 循环 - i 减少比较次数
+					外圈 设置 flag  减少循环圈数,数组长度越长,效果越明显
+			*/
+			/*for(var i = 0; i < arr.length - 1; i ++){
+				var flag = true;
+				for(var j = 0; j < arr.length - 1 - i; j ++){
+					if(arr[j] > arr[j+1]){
+						var temp = arr[j];
+						arr[j] = arr[j+1];
+						arr[j+1] = temp;
+						flag = false;
+					}
+					console.log("aaa");
+				}
+				if(flag){
+					break;
+				}
+			}*/
+			
+			// 选择排序
+			/*for(var i = 0; i < arr.length - 1; i ++){
+				var minIndex = i;
+				for(var j = i+1; j < arr.length; j ++){
+					if(arr[minIndex] > arr[j]){
+						minIndex = j;
+					}
+				}
+				if(minIndex !== i){
+					var temp = arr[i];
+					arr[i] = arr[minIndex];
+					arr[minIndex] = temp;
+				}
+			}*/
+			 
+			// 插入排序   假设第一位是有序数列
+			for(var i = 1; i < arr.length; i ++){
+				// 将比较位置拿出来 跟前面的有序数列的值进行比较
+				var temp = arr[i];
+				for(var j = i; j > 0; j --){
+					if(temp < arr[j-1]){
+						// 如果temp值比前面的值小,将前面的值(j-1)赋给temp所在位置的值(j)
+						arr[j] = arr[j-1];
+					}else{
+						// 如果没有发生比较,跳出循环,保证j的标识temp的下标
+						break;
+					}
+				}
+				if(temp !== arr[i]){
+					// 将temp的值赋给它所在位置
+					arr[j] = temp;
+				}
+			}
+			
+			
+			
+			
+		</script>
+	</body>
+</html>

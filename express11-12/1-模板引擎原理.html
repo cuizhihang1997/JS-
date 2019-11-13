@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>模板引擎原理</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var obj = {
+				name: "张三",
+				role: "管理员"
+			}
+			// var str = "尊敬的<%= name %>用户,您的身份是<%=role %>";
+			// ? 跟在量词后面才表示 取少不取多
+			// var reg = /<%=[\w\W]*?%>/g;
+			// var reg = /<%=[^%>]*%>/g;
+			// // console.log(str.match(reg));
+			// var newStr = str.replace(reg, function(mtr){
+			// 	console.log(mtr); // <%= name %>  <%=role %>
+			// 	var reg1 = /[<%=%>\s]/g; // 去除<%=  %>
+			// 	return obj[mtr.replace(reg1,"")];
+			// })
+			// console.log(newStr);
+			
+			// `hello ${name},your role is ${role}`
+			
+			var str = "hello ${ name }, your role is ${role }";
+			var reg = /\$\{[\s\S]*?\}/g;
+			// var reg = /\$\{[^\}]*\}/g;
+			// console.log(str.match(reg));
+			var newStr = str.replace(reg, function (mtr){
+				var reg1 = /[\$\{\}\s]/g;
+				return obj[mtr.replace(reg1,"")];
+			})
+			console.log(newStr);
+		</script>
+	</body>
+</html>

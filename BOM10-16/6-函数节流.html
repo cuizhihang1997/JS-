@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>函数节流</title>
+		<style>
+			#box{
+				width: 400px;
+				height: 400px;
+				margin: 20px auto;
+				font-size: 80px;
+				color: #fff;
+				line-height: 400px;
+				text-align: center;
+				background-color: dodgerblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">0</div>
+		
+		<script type="text/javascript">
+			
+			// window.onresize = function (){
+			// 	console.log("aaa");
+			// }
+			
+			// 单位时间内,不管触发多少次都执行一次
+			// 两种方式:  时间戳的方式   延时器的方式
+			// 区别: 先执行   后执行
+			var n = 0;
+			var startTime = 0;
+			var timer = null;
+			/*window.onmousemove = function (){
+				// add();
+				// var now = Date.now();
+				// if(now - startTime > 1000){
+				// 	add();
+				// 	startTime = now;
+				// }
+				
+				if(!timer){
+					timer = setTimeout(function (){
+						add();
+						timer = null;
+					},1000)					
+				}
+			}*/
+			window.onmousemove = throttle1(add,1000);
+			
+			function add(){
+				box.innerText = ++n;
+			}
+			
+			// 时间戳版
+			function throttle(func, wait){
+				// 声明起始时间
+				var startTime = 0;
+				return function (){
+					// 声明当前时间
+					var now = Date.now();
+					// 判断当前时间与起始时间的差
+					if(now - startTime > wait){
+						func();
+						// 重置起始时间为当前
+						startTime = now;
+					}
+				}
+			}
+			
+			// 延时器版
+			function throttle1(func, wait){
+				return function (){
+					// 如果延时器不存在,设置延时器
+					if(!func.timer){
+						func.timer = setTimeout(function (){
+							// 隔单位时间执行函数,重置延时器
+							func();
+							func.timer = null;
+						},wait)
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

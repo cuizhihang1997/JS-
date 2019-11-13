@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原型模式</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function Person(){};
+			
+			// Person.prototype.name = "李白";
+			// Person.prototype.age = 24;
+			// function (){} ==> ()=>{}
+			// 有一个形参的情况下可以忽略 ()  function (a){...} ==> a => {};
+			// 如果函数只执行一句话,可以去掉花括号 function (a) { console.log(a) } ===> a => console.log(a)
+			// 箭头函数的弊端: 里面的this不指向函数本身
+			// Person.prototype.sayName = function(){
+				// console.log(this.name)
+			// }
+			// Person.prototype.xx = xx
+			// 写来很多,麻烦
+			
+			// 使用字面量形式写的时候 会丢失constructor
+			Person.prototype = {
+				// constructor: Person, 会被实例读取
+				name: "李白",
+				age: 24,
+				sayName: function (){
+					console.log(this.name);
+				}
+			}
+			
+			Object.defineProperty(Person.prototype, 'contructor', {
+				value: Person
+			})
+			
+			var user = new Person();
+			var user1 = new Person();
+		</script>
+	</body>
+</html>

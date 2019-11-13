@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>创建对象的方式</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 1. 原始创建方式
+			var obj = { name: "李四", age: 24, friend: ["张三","王五"] };
+			var obj1 = new Object();
+			obj1.name = '李白';
+			obj1.age = 34;
+			// ...
+			
+			// 问题: 无法快速创建多个不同属性值的对象
+			
+			// 通过函数创建  工厂模式
+			function createPerson(name,age,friend){
+				var obj = {
+					name : name,
+					age: age,
+					friend: friend
+				}
+				return obj;
+			}
+			
+			var user = createPerson("武则天",24, ['狄仁杰']);
+			var user1 = createPerson("苏轼",30, ['王安石']);
+			
+			// 生产狗
+			function createDog(name,age,skill){
+				var obj = {
+					name: name,
+					age: age,
+					skill: [skill]
+				}
+				return obj;
+			}
+			
+			var dog = createDog("旺财",10,'lookHouse');
+			
+			// 判断对象的类型
+			console.log(user.__proto__ === dog.__proto__); // true
+			console.log(user instanceof Object) // true
+			console.log(dog instanceof Object) // true
+			
+			
+			// 工厂模式: 无法区分创建的对象的类型
+		</script>
+	</body>
+</html>

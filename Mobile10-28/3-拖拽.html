@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>拖拽</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			position: absolute;
+			width: 150px;
+			height: 150px;
+			background-color: darkorange;
+		}
+	</style>
+</head>
+<body>
+	<div class="box"></div>
+	
+	<script type="text/javascript">
+		var box = document.querySelector(".box");
+		
+		
+		
+		box.ontouchstart = function (){
+			var boxX = box.offsetLeft;
+			var boxY = box.offsetTop;
+			console.log(event);
+			// 获取起点坐标  获取第一个在DOM上的手指信息
+			var moveX = event.targetTouches[0].pageX;
+			var moveY = event.targetTouches[0].pageY;
+			
+			box.ontouchmove = function (){
+				// box的当前坐标 = 起始坐标 + 移动的距离(当前的手指坐标 - 起始手指坐标);
+				box.style.left = boxX + event.targetTouches[0].pageX - moveX + "px";
+				box.style.top = boxY + event.targetTouches[0].pageY - moveY + "px";
+			}
+		}
+			
+	</script>
+</body>
+</html>

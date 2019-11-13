@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>基本数据类型和复杂数据类型</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 基本数据类型  判断方式
+			/*
+				String       typeof
+				Number			 typeof
+				Boolean			 typeof
+				undefined		 typeof/=== undefined
+				null				 === null
+			*/
+			// typeof string/number/boolean/undefined/object/function
+			var str = null;
+			console.log(str === null);
+			
+			var str1 = str;
+			console.log(str1);
+			str1 = 'aaa';
+			console.log("str1 ===>",str1,"str ===>",str);
+			
+			// 引用类型 判断方式
+			// instanceof 用来检验对象的类型
+			// 要检验的值 instanceof 这个的类型
+			/*
+				Object
+				Array
+				Function
+			*/
+			var obj = {};
+			function fn(){};
+			console.log(obj instanceof Object);
+			console.log([] instanceof Array);
+			console.log(fn instanceof Function);
+			
+			var arr = [1,3,4];
+			// var arr1 = arr;
+			// arr1.push("hello");
+			var arr1 = [];
+		 
+			// 克隆数组  浅克隆: 只复制指向堆的地址  深克隆: 创建一个新的数组,指向新的堆
+			arr.forEach(function(item,index,array){
+				arr1.push(item);
+			})
+			arr1.push(5);
+			console.log("arr1 ===>",arr1,"arr ===>",arr);
+			
+			// for(var i = 0; i < arr.length; i ++){
+			// 	arr1.push(arr[i]);
+			// }
+			
+			var arr2 = arr.slice(0);
+			arr2.push(6);
+			console.log("arr2 ===>",arr2,"arr ===>",arr);
+			
+			// arr2 = arr.splice(0,arr.length-1); 改变原数组
+		</script>
+	</body>
+</html>

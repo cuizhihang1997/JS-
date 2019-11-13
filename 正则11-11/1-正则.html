@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>正则</title>
+</head>
+
+<body>
+
+	<script type="text/javascript">
+		// 正则创建的两种方式  RegExp
+		var reg = /a/ig;
+		var reg1 = new RegExp('a');
+
+		var str = "hello world Oh my God";
+		var str1 = `abcd\nabcd
+			`;
+		// console.log(reg.test(str)); // 返回字符串中是否含有正则表达式的模板  false
+
+		// console.log(/oh/.test(str));
+		// console.log(str.match(reg)); // 返回字符串所有符合条件的子串
+		// console.log(str.match(/o/));
+		// console.log(str.match(/o/g));
+		// console.log(str.match(/o/ig));
+		// console.log(str1);
+		// console.log(str1.match(/^a/gm));
+
+		// var reg3 = /o/g;
+		// console.log(reg3.lastIndex);  // 表现正则开始检验的位置  可以赋值,手动重置检索位置 0
+		// console.log(reg3.exec(str)); // 依次返回符合条件的子串,检查下标往复循环   index:4
+		// console.log(reg3.lastIndex); // 5
+		// console.log(reg3.exec(str)); // index:7
+		// console.log(reg3.lastIndex); // 8
+		// console.log(reg3.exec(str)); // index: 19
+		// console.log(reg3.lastIndex); // 20
+		// console.log(reg3.exec(str)); // null
+		// console.log(reg3.lastIndex); // 0
+
+		// reg3.lastIndex = 10;
+		// console.log(reg3.exec(str)); // o index:4
+		// reg3.lastIndex = 0;
+		// console.log(reg3.lastIndex); // 0
+
+
+		// [] 组合,可以检验组合任意一个字符
+		// console.log(/oha/.test(str));
+		// console.log(/[oha]/.test(str));
+		// console.log(str.match(/[oha]/));
+
+		// console.log(/[0123456789]/.test('a')); // false
+		// console.log(/[0-9]/.test('123a')); // true
+		// console.log(/[a-z]/i.test(str));
+		// console.log(/[A-Z]/i.test(str));
+		// console.log(/[A-z]/.test(str));  // 匹配所有英文字母,不论大小写
+
+
+		// 边界  ^开头  $结尾
+		// console.log(/^a/.test("ba"));
+		// console.log(/[^ab]/.test("abc")); // true/false
+		// console.log(/a$/.test("ba"));
+		// console.log(/^a$/.test("ba")); // false
+
+		// 量词  * + ? {n} {n,} {n,m}  {n,m}? 能取n不取m  跟在要表示次数的子串后面
+		// console.log(/b*/.test('aaa'));  // true
+		// console.log(/c+/.test('aaac'));  // false
+		// console.log('aaac'.match(/a+/)); // ['aaa']
+		// console.log('aaac'.match(/a+?/)); // ['a']
+		// console.log(/a?b/.test('aaac'));  // true/false
+
+		// console.log(/a{3}/.test('aacaac')); // false  重复需要连接 aaa
+		// console.log(/a{0,}/.test('aacaac')); // true
+		// console.log(/a{2,5}/.test('acac')); // true
+		// console.log('aaaaaacaadaaabaaaa'.match(/a{2,5}/g));  // ['aaaaa','aa','aaa','aaaa']
+		// console.log('aaaaaaaaaaaaaaa'.match(/a{2,5}/g));  // ['aaaaa','aaaaa','aaaaa']
+		// console.log('aaaaaaaaaaaaaaa'.match(/a{2,5}?/g));  // ['aa','aa','aa'...]
+
+
+		// 正则匹配模板  在正则里不能随便写空格
+		// console.log(/^a|a$/.test('ba')); // true
+
+		// console.log(/(ab|ba)c/.test("aabc")); // true
+		// console.log("aabc".match(/(ab|ba)c/)); // ['abc','ab']
+
+		console.log(/./.test(" ")); // true
+		console.log(/\w/.test("3214")); // true
+		console.log('A1234你好'.match(/\w/g)); // 单词字符 字母+数字
+		console.log(/\W/.test("你好")); // true
+		console.log("daf3你好a".match(/\W/g)); //  ["你", "好"]
+
+		// /\d/ === /[0-9]
+		// /[\d\D]/  匹配所有  /[\w\W]/   /[\s\S]/
+
+		// 'abcd adc'
+		console.log(/\b\s/.test("\sa")); // false
+		console.log("abcd abc ha".match(/(\ba|a\b)/g)); // ['a', 'a', 'a'];
+		console.log("abcd abc ha hahah".match(/a\B/g)); // ['a', 'a', 'a']
+		console.log("abcd abc ha".match(/^a|a$/g)); // ['a', 'a', 'a'];
+
+		// 写一个正则表达式，检验字符串首尾是否是数字?检验首尾是否都是数字?
+		var strr = "112dsafdasfs123";
+		// ab bc /(ab)(bc)/
+		var reg4 = /^\d[\d\D]*\d$/;
+
+
+
+
+		console.log(/^([1-9]|[1-9]\d|1\d{2}|200)$/.test("18"));
+		console.log(/^(((13[0-9])|(15[0-9])|(18[0-9])|(198)|(199)|(145)|(147)|(149)|(166)|(17[0-8]))\d{8}$)/.test('13154155545'))
+		// var rnm = /^[1-9]|^[1-9]/
+
+		console.log(/^([1-9]|[1-9][0-9]|1[0-9][0-9]|200)$/.test(202))
+				
+
+		// 2. 校验1 - 200 的整数
+		// 答:
+		// 	3. 电话号码验证: 以 13 / 15 / 18(0 - 9) 或 145 / 147 / 149 或 166 或 17(0 - 8) 或 198 / 199 开头后面跟任意8个数字
+		// 答:
+	</script>
+</body>
+
+</html>

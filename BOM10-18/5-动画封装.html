@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>动画封装</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.container{
+				position: relative;
+				width: 950px;
+				height: 100px;
+				margin: 20px 80px;
+				border: 5px solid black;
+			}
+			#box{
+				position: absolute;
+				left: 0;
+				width: 150px;
+				height: 100px;
+				background-color: orange;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div id="box"></div>
+		</div>
+		<script type="text/javascript">
+			// 传入起点/终点/动画总时长/动画执行函数
+			
+			/*function animate(start, end, time, callback){
+				// 设置开始的时间戳
+				var startTime = performance.now();
+				// 声明起点和终点差值
+				var differ = end - start;
+				// 创建每帧之前要执行的动画
+				function loop(now){
+						// 获取当前时间和开始的时间差
+						var passTime = now - startTime;
+						
+						// 计算当前已过百分比
+						var per = passTime / time;
+						
+						if( per >= 1 ){  // 判读如果已经执行
+								per = 1; // 设置为最后的状态
+						}
+						// currentTime/duration  =  pass/target
+						// v ==> step/1000/60ms   ==>   timeFraction 控制动画的路径  transition-timing-function  linear/easeIn
+						var pass = differ * per; // 通过已过时间的百分比 * 开始结束数值差得出当前的数值
+						callback(pass); // 调用回调函数,把数值传递进去
+						if(per < 1) requestAnimationFrame(loop) //下一阵调用每帧之前要执行的函数
+				}
+				// 下一阵调用每帧之前要执行的函数
+				requestAnimationFrame(loop)
+			}
+			
+			
+			animate(0,400,1000,function (pass){
+				box.style.left = pass + "px";
+			})*/
+			
+			// per 表示时间过渡百分比,即动画进程
+			
+			box.onclick = function (){
+				animate(bounceEaseInOut,function (per){
+					box.style.left = per * 800 + "px";
+				},2000);
+			}
+			
+			// timeFraction 表示时间百分比
+			function linear(timeFraction){
+				return timeFraction;
+			}
+			
+			// 指数运动
+			function quad(timeFraction){
+				return Math.pow(timeFraction,5);
+			}
+			
+			// 弓箭运动  x 弹性系数 系数越高,拉弓越满
+			function back(timeFraction){  // 假设x是5
+				return Math.pow(timeFraction, 2) * (6.5 * timeFraction - 5);
+			}
+			
+			// 弹跳动画
+			function bounce(timeFraction){
+				for(var a = 0,b = 1, result; 1; a += b, b/= 2){
+					if(timeFraction >= (7 - 4 * a) / 11){
+						return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2);
+					}
+				}
+			}
+			
+			// 伸缩动画	 x 弹性系数,同上
+			function elastic(timeFraction){ // x = 3
+				return Math.pow(2, 10 * (timeFraction - 1)) * Math.cos(20 * Math.PI * 3/3 * timeFraction); 
+			}
+			
+			// 接受时序函数，返回变换后的变体, 翻转函数
+			function makeEaseOut(timing) {
+			  return function(timeFraction) {
+			    return 1 - timing(1 - timeFraction);
+			  }
+			}
+			
+			// 翻转的bounce函数
+			var bounceEaseOut = makeEaseOut(bounce);
+			
+			// easeInOut 变换  将动画分成两部分内容进行的函数
+			function makeEaseInOut(timing) {
+			  return function(timeFraction) {
+			    if (timeFraction < .5)
+			      return timing(2 * timeFraction) / 2;
+			    else
+			      return (2 - timing(2 * (1 - timeFraction))) / 2;
+			  }
+			}
+			
+			bounceEaseInOut = makeEaseInOut(bounce);
+			
+			// timing 时序函数  ==> 控制时间过渡曲线
+			// draw 动画函数
+			// duration 动画总时长
+			function animate(timing, draw, duration){
+				// 获取开始时间
+				var start = performance.now();
+				function loop(time){
+					// 设置当前执行时间和总时长的比例
+					var timeFraction = (time - start)/duration;
+					
+					// 判断停止条件
+					if(timeFraction >=1 ) timeFraction = 1;
+					
+					// 使用时序函数处理时间的比例关系
+					var per = timing(timeFraction);
+					
+					// 动画执行函数接受一个时间比例,根据比例处理动画
+					draw(per);
+					
+					// 循环执行动画  时间到终点
+					if(timeFraction < 1) requestAnimationFrame(loop);
+				}
+				requestAnimationFrame(loop);
+			}
+			
+			
+		</script>
+	</body>
+</html>

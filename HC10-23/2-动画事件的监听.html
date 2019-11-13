@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>动画事件的监听</title>
+		<style>
+			.d1{
+				position: relative;
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				animation: move 2s 3 alternate;
+			}
+			
+			.d2{
+				width: 100px;
+				height: 100px;
+				background-color: green;
+				transition: all .4s ease;
+			}
+			.d2.active{
+				width: 300px;
+			}
+			@keyframes move{
+				0%{
+					left: 0;
+				}
+				/* 80%{
+					left: 300px;
+				} */
+				100%{
+					left: 400px;
+				}
+			}
+			
+		</style>
+	</head>
+	<body>
+		<!-- 
+		x.addEventListener("animationend", myStartFunction);
+		动画的事件：
+			•	animationstart - CSS 动画开始后触发
+			•	animationiteration - CSS 动画重复播放时触发
+			•	animationend - CSS 动画完成后触发
+ -->
+
+		<div class="d1"></div>
+		<div class="d2"></div>
+
+		<script type="text/javascript">
+			var d1 = document.querySelector('.d1');
+			var d2 = document.querySelector('.d2');
+
+			// d1.onanimationstart = function (){
+			// 	console.log("动画开始了");
+			// }
+
+			d1.addEventListener("animationstart", function() {
+				console.log("动画开始了");
+			})
+			d1.addEventListener("animationiteration", function() {
+				console.log("动画重复执行了");
+			})
+			d1.addEventListener("animationend", function() {
+				console.log("动画结束了");
+				d2.classList.add("active");
+			})
+
+
+			// 过渡只有监听结束的方法
+			// d2.addEventListener("transitionstart",function (){
+			// 	console.log("过渡开始了");
+			// })
+			
+			d2.addEventListener("transitionend",function (){
+				console.log("过渡结束了");
+			})
+		</script>
+	</body>
+</html>

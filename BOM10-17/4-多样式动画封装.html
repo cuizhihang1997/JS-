@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>多样式动画封装</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				position: absolute;
+				width: 200px;
+				height: 200px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		
+		<script type="text/javascript">
+			// 改变box的宽度为400; 缓动改变
+			// 改变透明度为 .2
+			// 改变box的高度为300
+			
+			box.onclick = function (){
+				changeStyle(this,{
+					width: 400,
+					opacity: .2,
+					height: 300,
+					top: 50,
+					left: 300
+				})
+			}
+			
+			// for in  遍历对象
+			/*
+				styleObj = {
+					styleName: styleValue
+					...
+				}
+			*/
+			function changeStyle(ele,styleObj){
+				if(ele.timer) clearInterval(ele.timer);
+				ele.timer = setInterval(function (){
+					// 开始定时器的时候假设已经执行完毕
+					var flag = true;  // 表示是否都到终点的状态
+					
+					// 遍历所有样式属性
+					for(var i in styleObj){
+						// 获取起点  正常带px  透明度 . 放大倍数
+						var start,target;
+						if(i === "opacity"){
+							// 先放大,在parseInt
+							start = parseInt(getStyle(ele,'opacity') * 100);
+							target = styleObj[i] * 100;
+						}else if(i === "zIndex"){
+							// 层级没有变化 , 跳出当前循环
+							ele.style.zIndex = styleObj[i];
+							continue;
+						}else{
+							start = parseInt(getStyle(ele,i));
+							
+							target = styleObj[i];
+							
+						}
+						var step = (target - start) / 10;
+						if(Math.abs(step) < 1){
+							step = step > 0 ? 1 : Math.floor(step);
+						}
+						// 运动
+						if(i === "opacity"){
+							ele.style.opacity = (start + step) / 100;
+						}else{
+							ele.style[i] = start + step + 'px';
+						}
+						// 终点
+						
+						// 只要有一个到终点,就会停止
+						/*
+						if(start + step === target){
+							console.log("stop ...");
+							clearInterval(ele.timer);
+						}*/
+						// 当有一个没有到达终点,更改状态为false
+						if(start + step !== target){
+							flag = false;
+						}
+					}
+					
+					// 判断是否都到终点
+					if(flag){
+						clearInterval(ele.timer);
+					}
+				},1000/60)
+			}
+			
+			function getStyle(ele,styleName){
+				if(getComputedStyle){
+					return getComputedStyle(ele,null)[styleName];
+				}else{
+					return ele.currentStyle[styleName];
+				}
+			}
+		</script>
+	</body>
+</html>
+ 

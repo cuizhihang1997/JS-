@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>组合继承</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 组合继承: 原型继承 + 借用构造函数继承形式实现的组合继承 也称为伪经典继承
+			// 具体方法: 使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承。既通过在原型上定义方法实现了函数复用，又能够保证每个实例都有它自己的属性
+			
+			function Animal(color){
+				this.color = color;
+				this.friend = ["小草","萝卜"];
+			}
+			
+			Animal.prototype.hobby = "sleep";
+			Animal.prototype.jump = function (){
+				console.log("jumping ...");
+			}
+			
+			function Rabbit(name,color){
+				this.name = name;
+				// 让Rabbit具有Animal实例上的方法和属性,并且不会让引用类型值指向同一对象
+				Animal.call(this,color);
+			}
+			// 让Rabbit的实例共享 Animal 的原型的属性和方法
+			Rabbit.prototype = Animal.prototype;
+			
+			var rabbit1 = new Rabbit("萌萌","white");
+			var rabbit2 = new Rabbit("坤坤","black");
+			
+			console.log(rabbit1.friend === rabbit2.friend); // false
+			console.log(rabbit1.jump()); // jumping ...
+			console.log(rabbit2.hobby); // sleep
+		</script>
+	</body>
+</html>

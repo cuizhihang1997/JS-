@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原型链继承</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 构造函数 + 原型   可以让实例共享原型属性方法,且具有个性的属性和方法
+			
+			function Animal(color){
+				this.color = color;
+				this.friend = ["小草","萝卜"];
+			}
+			
+			Animal.prototype.jump = function (){
+				console.log("jumping ...");
+			}
+			
+			function Rabbit(name){
+				this.name = name;
+			}
+			
+			
+			// 想让兔子具有Animal的属性和方法
+			
+			// 将动物的原型 赋给 兔子的原型  这样兔子就继承了 动物原型的方法
+			Rabbit.prototype = new Animal('white');
+			// 声明一个Animal的实例 这个实例就具有 Animal构造函数的属性和方法,并且能继承Animal原型上的属性和方法
+			var rabbit = new Rabbit("流氓");  // Rabbit构造函数的属性和方法和Rabbit原型上的属性和方法
+			
+			//问题:
+			// 1. 一个实例出现的对象属性值为应用类型值的时候,改变一个,另一个跟着改
+			// 2. 无法定义rabbit原型上的独特属性
+			var rabbit1 = new Rabbit("小黑");
+			
+			console.log(rabbit.friend === rabbit1.friend);  // true
+		</script>
+	</body>
+</html>

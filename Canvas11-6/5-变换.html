@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>变换</title>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+	</head>
+	<body>
+		<canvas id="cvs" width="800" height="500">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			/*
+			以下方法需配合 save()方法使用
+				- scale() 方法缩放当前绘图，更大或更小
+				- 语法：context.scale(scalewidth,scaleheight)
+				  - scalewidth : 缩放当前绘图的宽度 (1=100%, 0.5=50%, 2=200%)
+				  - scaleheight : 缩放当前绘图的高度 (1=100%, 0.5=50%, 2=200%) 
+					
+				- ctx.translate(x,y) 方法重新映射画布上的 (0,0) 位置
+				- 参数说明：
+				  - x： 添加到水平坐标（x）上的值
+				  - y： 添加到垂直坐标（y）上的值
+					
+				context.rotate(rad); 方法旋转当前的绘图,接受一个弧度
+					旋转是以画布的左上角为起点的,所以一般旋转之前要使用translate将画布的原点设置在画布的中间位置
+			*/
+			
+			ctx.save();
+			
+			ctx.scale(.5,.5); // 画布
+			ctx.fillStyle = 'orange';
+			ctx.fillRect(50,50,200,100);
+			
+			ctx.restore(); // 还原空白环境
+			ctx.save(); // 再将空白环境保存下来
+			
+			ctx.translate(300,100);
+			ctx.rotate(Math.PI/2);
+			ctx.fillRect(50,100,200,80);
+			
+			
+			ctx.restore();
+			ctx.fillRect(60,100,300,80);
+		</script>
+	</body>
+</html>

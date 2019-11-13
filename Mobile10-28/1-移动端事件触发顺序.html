@@ -1,0 +1,50 @@
+<!DOCType html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>移动端事件的执行顺序</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html{touch-action: manipulation;}
+			.box{
+				width:200px;
+				height:200px;
+				margin:20px auto;
+				background-color:#ccc;
+			}
+		</style>
+</head>
+<body>
+    <div class="box"></div>
+    <script>
+			
+			var box = document.querySelector(".box");
+			
+			// 移动端事件的执行顺序: ontouchstart > ontouchmove > ontouchend > onclick 300ms延时
+			
+			// 声明一个起始时间
+			var startTime = 0;
+			function fn(){
+				// 如果事件类型是 touchstart,给起始时间赋值 Date.now()   Date.now() 返回当前的毫秒数
+				if(event.type === "touchstart"){
+					startTime = Date.now();
+				}
+				// 输出事件类型,事件结束时间与起始时间差
+				console.log(event.type, "时间间隔为 ===> " + (Date.now() - startTime));
+			}
+				
+			
+			// 分别绑定相应的事件
+			box.ontouchstart = fn;
+			box.ontouchmove = fn;
+			box.ontouchend = fn;
+			box.onclick = fn;
+			
+    </script>
+</body>
+</html>

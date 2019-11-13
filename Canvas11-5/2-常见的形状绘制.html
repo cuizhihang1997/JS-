@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>常见的形状绘制</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="300">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			// 矩形,圆,三角形
+			// ctx.rect(100, 100, 200, 150);
+			// ctx.stroke();
+			// 填充
+			// ctx.fillStyle = "red";
+			// ctx.fill();
+			
+			
+			// + 语法： ctx.strokeRect(x, y, width, height);
+			// + 语法：ctx.fillRect(x, y, width, height);
+			// ctx.strokeRect(100, 100, 200, 150);
+			// ctx.fillRect(100, 100, 200, 150);
+			
+			/**
+			 * ### 绘制圆形(arc)
+
+				概述：arc() 方法创建弧/曲线（用于创建圆或部分圆）
+
+				+ 语法：ctx.arc(x,y,r,sAngle,eAngle,counterclockwise)
+				+ 解释：
+					+ x,y：圆心坐标。
+					+ r：半径大小。
+					+ sAngle：绘制开始的弧度。 圆心到最右边点是0度，顺时针方向弧度增大
+					+ eAngel： 结束的弧度
+					+ counterclockwise：是否是逆时针。true是逆时针，false：顺时针
+					+ 弧度和角度的转换公式： rad = deg*Math.PI/180
+					+ 在Math提供的方法中sin、cos等都使用的弧度
+			 */
+			 ctx.beginPath();
+				
+				ctx.moveTo(100,100);
+				ctx.lineTo(160,100);
+				// ctx.moveTo(100,160);
+				// ctx.lineTo(100,100);
+				ctx.arc(100,100,60,0,Math.PI/3.27 ,false);
+				ctx.fillStyle = 'blue';
+				// ctx.moveTo(100,160);
+				// ctx.lineTo(100,100);
+				ctx.fill();
+				// ctx.arc(100,100,60,Math.PI/2,Math.PI/1.2,false);
+				// ctx.fillStyle = 'red';
+				// ctx.fill();
+				ctx.closePath();
+
+
+				ctx.beginPath();
+				ctx.moveTo(100,100);
+				ctx.lineTo(100+60* Math.cos(55*Math.PI/180)
+,100+60* Math.sin(55*Math.PI/180));
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(160,100);
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(120,160);
+				// // ctx.moveTo(100,160);
+				// // ctx.lineTo(100,100);
+				// ctx.arc(100,100,60,0,Math.PI/2 ,false);
+				// ctx.fill();
+				// ctx.moveTo(100,160);
+				// ctx.lineTo(100,100);
+				ctx.arc(100,100,60,Math.PI/3.27,Math.PI/1.125,false);
+				ctx.fillStyle = 'brown';
+				ctx.fill();
+				ctx.closePath();
+				
+				ctx.beginPath();
+				ctx.moveTo(100,100);
+				ctx.lineTo(100+60* Math.cos(160*Math.PI/180),100+60* Math.sin(160*Math.PI/180));
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(160,100);
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(120,160);
+				// // ctx.moveTo(100,160);
+				// // ctx.lineTo(100,100);
+				// ctx.arc(100,100,60,0,Math.PI/2 ,false);
+				// ctx.fill();
+				// ctx.moveTo(100,160);
+				// ctx.lineTo(100,100);
+				ctx.arc(100,100,60,Math.PI/1.125,Math.PI/0.9,false);
+				ctx.fillStyle = 'green';
+				ctx.fill();
+				ctx.closePath();
+
+
+				ctx.beginPath();
+				ctx.moveTo(100,100);
+				ctx.lineTo(100+60* Math.cos(200*Math.PI/180),100+60* Math.sin(200*Math.PI/180));
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(160,100);
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(120,160);
+				// // ctx.moveTo(100,160);
+				// // ctx.lineTo(100,100);
+				// ctx.arc(100,100,60,0,Math.PI/2 ,false);
+				// ctx.fill();
+				// ctx.moveTo(100,160);
+				// ctx.lineTo(100,100);
+				ctx.arc(100,100,60,Math.PI/0.9,Math.PI/0.69,false);
+				ctx.fillStyle = 'red';
+				ctx.fill();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.moveTo(100,100);
+				ctx.lineTo(100+60* Math.cos(260*Math.PI/180),100+60* Math.sin(260*Math.PI/180));
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(160,100);
+				// ctx.moveTo(100,100);
+				// ctx.lineTo(120,160);
+				// // ctx.moveTo(100,160);
+				// // ctx.lineTo(100,100);
+				// ctx.arc(100,100,60,0,Math.PI/2 ,false);
+				// ctx.fill();
+				// ctx.moveTo(100,160);
+				// ctx.lineTo(100,100);
+				ctx.arc(100,100,60,Math.PI/0.69,2*Math.PI,false);
+				ctx.fillStyle = 'yellow';
+				ctx.fill();
+				ctx.closePath();
+				
+				
+
+				// ctx.beginPath();
+				// // ctx.moveTo(100,100);
+				// // ctx.lineTo(160,100);
+			
+				// // ctx.arc(100,100,60,0,Math.PI/2 ,false);
+				// ctx.arc(100,100,60,Math.PI/2,Math.PI/1,false);
+				// // ctx.moveTo(100,160);
+				// // ctx.lineTo(100,100);
+				// ctx.closePath();
+				// ctx.fill();
+				// ctx.beginPath();
+				
+				
+				// ctx.moveTo(50,100);
+				// ctx.lineTo(200,140);
+				// ctx.lineTo(50,200);
+				// // ctx.fill();
+				// ctx.closePath();
+				// ctx.stroke();
+			
+			// 作业: 画一个饼图  [55° 蓝色,105° 棕色,40° 绿色,60° 红色,100° 黄色]
+			window.onclick =function(){
+
+
+				console.log(event.offsetX)
+				console.log(event.offsetY)
+			}
+			
+			// 作业: 画一个饼图  [55° 蓝色,105° 棕色,40° 绿色,60° 红色,100° 黄色]
+		</script>
+	</body>
+</html>

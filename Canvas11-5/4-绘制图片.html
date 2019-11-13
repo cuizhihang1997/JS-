@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="300">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		<!-- <img id="imgEle" src="../lib/image/HC/shar.jpg" alt=""> -->
+		
+		<script type="text/javascript">
+			/*
+				绘制图片要写在图片的加载函数里,等图片加载完成之后才能绘制  imgEle.onload = () => {};
+				context.drawImage(img,x,y,width,height);
+					x,y 绘制图片左上角的坐标， img是绘制图片的dom对象;
+					width/height：绘制图片的宽高 可以省略; 如果指定宽高，最好成比例，不然图片会被拉伸
+					
+				context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+					sx,sy 裁剪的左上角坐标，  swidth：裁剪图片的宽度。 sheight:裁剪的高度
+			*/
+		 
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			
+			// var imgEle = document.createElement('img');
+			// var imgEle = new Image();
+			// imgEle.src = "../lib/image/HC/avatar.jpg";
+			// imgEle.onload = function (){
+			// 	ctx.drawImage(imgEle,50,50,120,120);
+			// }
+		 
+			// canvas中的帧动画
+			var imgEle = document.createElement('img');
+			var imgEle = new Image();
+			imgEle.src = "../lib/image/HC/shark2.png";
+			imgEle.onload = function (){
+				var sh = 0;
+				setInterval(function (){
+					ctx.clearRect(0,0,600,300);
+					ctx.drawImage(imgEle,0, sh, 516, 273 , 0, 0, 516, 273);
+					sh += 273;
+					if(sh === 3276) sh = 0;
+				},100);
+			}
+			
+		</script>
+	</body>
+</html>

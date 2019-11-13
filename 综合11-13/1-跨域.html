@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>跨域</title>
+	</head>
+	<body>
+		
+		<!-- <img src="https://favicon.yandex.net/favicon/jquery.com" alt=""> -->
+		<!-- <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script> -->
+		<script type="text/javascript">
+			// 页面互相访问
+			// ajax({
+			// 	url: "http://127.0.0.1:8080/b.html",
+			// 	success: function (res){
+			// 		console.log(res);
+			// 	}
+			// })
+			// document.domain = '192.168.0.173';
+			// var ifr = document.createElement('iframe');
+			// ifr.src = 'http://192.168.0.173:8080/b.html';
+			// ifr.display = "none";
+			// document.body.appendChild(ifr);
+			// ifr.onload = function(){
+			//     var doc = ifr.contentDocument || ifr.contentWindow.document;
+			//     //在这里操作doc，也就是b.html
+			// 		console.log(doc);
+			//     ifr.onload = null;
+			// };
+			
+			
+			// 前台请求后端数据
+			// ajax({
+			// 	url: "http://192.168.0.173:3000/users",
+			// 	success: function(res){
+			// 		console.log(res);
+			// 	}
+			// })
+			
+			// jsonP  提前声明回调函数  传一个回调函数  后台返回一个函数调用
+			// var scriptEle = document.createElement("script");
+			// scriptEle.src = "http://192.168.0.173:3000/users?cb=otherName";
+			// // 服务器返回   otherName({ code: "success",msg: "天呐,你竟然请求到我了" });
+			// document.body.appendChild(scriptEle);
+			
+			// function otherName(res){
+			// 	console.log(res);
+			// }
+			
+			// cors  后台设置好,我们就能访问
+			// ajax({
+			// 	url: "http://192.168.0.173:3000/users",
+			// 	success: function(res){
+			// 		console.log(res);
+			// 	}
+			// })
+			
+			// 使用websocket
+			// 1. 创建实例
+			var ws = new WebSocket("ws://192.168.0.173:8080");
+			// 建立连接
+			ws.onopen = function() {
+			  console.log("client：打开连接");
+				// 向后台发送数据
+			  ws.send("client：hello，服务端");
+			};
+			// 监听后台返回数据
+			ws.onmessage = function(res) {
+			  console.log("client：接收到服务端的消息 " + res.data);
+			  setTimeout(() => {
+					// 关闭通讯
+			    ws.close();
+			  }, 5000);
+			};
+			// 监听关闭事件
+			ws.onclose = function(params) {
+			  console.log("client：关闭连接");
+			};
+			
+			
+			// 杨建立+张哲浩  抄写5遍
+			// http://douban.com?start=1&limit=10
+			// url: http://douban.com,
+			// data: { start: 1, limit: 10 }   data传一个对象,自己处理get/post方式
+			function ajax(params){
+				if(!params.url){
+					alert("请输入url");
+					return;
+				}
+				var obj = {
+					method: "GET",
+					data: null,
+					success: function (){
+						console.log("success");
+					},
+					fail: function (){
+						console.log("fail");
+					}
+				}
+				params = Object.assign(obj,params);
+				
+				// 判断方式
+				if(params.method.toUpperCase === "GET" && params.data){
+					var str = "";
+					// data: { start: 1, limit: 10 }   ===>  ?start=1&limit=10&xxx
+					for(var i in params.data){
+						str += `&${i}=${params.data[i]}`;
+					}
+					// &start=1&limit=10
+					str.repalce("&","?"); // ?start=1&limit=10
+					// 拼接在url上
+					params.url += str;
+					// 将data变成null
+					params.data = null;
+				}
+				
+				var xhr = new XMLHttpRequest();
+				xhr.onload = function (){
+					var data = JSON.parse(xhr.responseText);
+					params.success(data);
+				}
+				xhr.onerror = function (){
+					params.fail();
+				}
+				
+				xhr.open(params.method,params.url);
+				// 表单post提交
+				if(params.method.toUpperCase === "POST"){
+					xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+					// 将post形式的参数改成 name=value  {}
+					var postStr = "";
+					// data: { start: 1, limit: 10 }   ===>  start=1&limit=10&xxx
+					for(var i in params.data){
+						postStr += `&${i}=${params.data[i]}`;
+					}
+					params.data = postStr.slice(1);
+				}
+				xhr.send(params.data);
+			}
+			
+		</script>
+	</body>
+</html>

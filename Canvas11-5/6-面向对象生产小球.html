@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>面向对象生产小球</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#cvs{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="600" height="500">
+			你的浏览器不支持canvas，请升级浏览器.浏览器不支持 
+		</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			// var ctx = cvs.getContext("2d");
+			/*
+				1. 生成小球(随机大小[15-28]/随机颜色 hsla 更改h 0-360)
+				2. 小球运动函数
+			*/
+			function Ball(id){
+				// 1. 获取画布元素
+				this.cvs = document.querySelector(id);
+				this.ctx = this.cvs.getContext("2d");
+				// 起始坐标/半径
+				this.x = this.y = this.r = this.rdR();
+				// 随机步长
+				this.stepX = this.rdStep();
+				this.stepY = this.rdStep();
+				// 随机颜色
+				this.color = this.rdColor();
+				
+				this.init();
+			}
+			
+			Ball.prototype = {
+				init(){
+					this.createBall();
+					this.move();
+				},
+				// 生产小球
+				createBall(){
+					var ctx = this.ctx;
+					// 开始画
+					ctx.beginPath();
+					// 画圆
+					ctx.arc(this.x,this.y,this.r,0,2*Math.PI,false);
+					ctx.fillStyle = `hsla(${this.color},70%,60%,1)`;
+					ctx.fill();
+					// 闭合路径
+					ctx.closePath();
+				},
+				// 运动
+				move(){
+					// 箭头函数没有this,在其中使用this,this指向外面的大环境
+					setInterval(() => {
+						// 清除画布
+						// this.ctx.clearRect(this.x - this.r, this.y - this.r, 2 * this.r + 2, 2 * this.r + 2);
+						this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+						// 移动
+						this.x += this.stepX;
+						this.y += this.stepY;
+						
+						// 判断碰壁
+						if(this.x <= this.r){
+							this.x = this.r;
+							this.stepX = -this.stepX;
+						}else if(this.x >= this.cvs.width - this.r){
+							this.x = this.cvs.width - this.r;
+							this.stepX = -this.stepX;
+						}
+						
+						if(this.y <= this.r){
+							this.y = this.r;
+							this.stepY = -this.stepY;
+						}else if(this.y >= this.cvs.height - this.r){
+							this.y = this.cvs.height - this.r;
+							this.stepY = -this.stepY;
+						}
+						
+						this.createBall();
+					},1000 / 60)
+				},
+				// 随机步长
+				rdStep(){
+					// [3,7]
+					return Math.floor(Math.random() * 5) + 3; 
+				},
+				// 随机颜色
+				rdColor(){
+					return Math.floor(Math.random() * 361);
+				},
+				// 随机半径
+				rdR(){
+					// [15-28]
+					return Math.floor(Math.random() * 14) + 15;
+				}
+			}
+		 
+			
+			// 生成运动的小球的构造函数
+			var ball = new Ball('#cvs');
+// 		var balls = [];
+// for (var i = 0; i < 100; i++) {
+//   var ball = new Ball('#cvs');
+//   balls.push(ball);
+//   ball.createBall();
+// }
+			
+		</script>
+	</body>
+</html>

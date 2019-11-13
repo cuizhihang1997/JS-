@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>±í</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			position: relative;
+			width: 300px;
+			height: 300px;
+			margin: 30px auto;
+			border: 2px solid red;
+			border-radius: 50%;
+		}
+		.line{
+			position: absolute;
+			top: 30px;
+			left: 149px;
+			width: 2px;
+			height: 120px;
+			background-color: #000000;
+			animation: circle 60s steps(60) infinite;
+			transform-origin: bottom;
+			z-index: 99;
+		}
+		.degree{
+			position: absolute;
+			top: 0;
+			left: 149px;
+			width: 2px;
+			height: 100%;
+			background-color: blue;
+		}
+		.box::after{
+			position: absolute;
+			top: 5%;
+			left: 5%;
+			width: 90%;
+			height: 90%;
+			border-radius: 50%;
+			content: "";
+			background-color: #fff;
+		}
+		
+		@keyframes circle{
+			0%{
+				transform: rotate(0deg);
+			}
+			100%{
+				transform: rotate(360deg);
+			}
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="degree"></div>
+		<div class="line"></div>
+	</div>
+	
+	
+</body>
+</html>

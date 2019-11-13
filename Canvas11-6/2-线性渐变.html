@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>线性渐变</title>
+		<style>
+			canvas{
+				display: block;
+				margin: 20px auto;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cvs" width="800" height="500">您的浏览器不支持</canvas>
+		
+		<script type="text/javascript">
+			var cvs = document.querySelector("#cvs");
+			var ctx = cvs.getContext("2d");
+			/* ctx.createLinearGradient(x0,y0,x1,y1);  
+					参数：x0,y0起始坐标，x1,y1结束坐标  创建的区域  超出创建的区域就是将固定颜色延伸
+			
+				 需要使用addColorStop添加颜色  gradient.addColorStop(position, color)
+						position 参数必须是一个 0.0 与 1.0 之间的数值，表示渐变中颜色所在的相对位置。例如，0.5 表示颜色会出现在正中间
+						color 参数必须是一个有效的 CSS 颜色值  如 #FFF,rgba(0,0,0,1)，等等
+			*/
+			
+			// 创建线性渐变对象 
+			var clg = ctx.createLinearGradient(50,50,300,50);
+			clg.addColorStop(0,'#ff0');
+			clg.addColorStop(1,'#f00');
+			
+			ctx.fillStyle = clg;
+			ctx.fillRect(50,50,300,50);
+			ctx.fillRect(0,120,600,120);
+			
+		</script>
+	</body>
+</html>

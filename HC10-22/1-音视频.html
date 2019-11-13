@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>音视频</title>
+		<style>
+			#process{
+				width: 400px;
+				height: 10px;
+				margin: 20px;
+				background-color: green;
+				cursor: pointer;
+			}
+			#inner{
+				width: 0;
+				height: 100%;
+				background-color: orange;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- <audio src="../lib/image/HC/1.mp3" controls></audio> -->
+		
+		<video src="../BOM10-21/瀑布流.webm" width="400" height="300" controls></video>
+		
+		<button>重新加载</button>
+		<button>播放</button>
+		<button>暂停</button>
+		<button>获取当前进度,总进度,是否是暂停</button>
+		<button>点击全屏</button>
+		
+		<div id="process">
+			<div id="inner"></div>
+		</div>
+		
+		<script type="text/javascript">
+			/*
+			+ 属性
+			  - currentTime 视频播放的当前进度
+			  - duration 视频的总时间
+			  - paused 视频播放是否是暂停
+			+ 方法
+			  - `load()` 重新加载音频/视频元素
+			    + 语法: `audio|video.load()`
+			    + 用于在更改来源或其他设置后对音频/视频元素进行更新
+			  - `play()` 播放
+			  - `pause()` 暂停
+				
+			- oncanplay: 事件在用户可以开始播放视频/音频（audio/video）时触发。
+			- ontimeupdate: 通过该事件来报告当前的播放进度.
+			- onended: 播放完时触发
+			*/
+			
+			var vd = document.querySelector("video");
+			var btns = document.querySelectorAll("button");
+			btns[0].onclick = function (){
+				vd.src = '../lib/image/HC/movie.ogg';
+				vd.load();
+			}
+			btns[1].onclick = function(){
+				vd.play();
+			}
+			btns[2].onclick = function (){
+				vd.pause();
+			}
+			btns[3].onclick = function (){
+				console.log("当前播放进度: ",vd.currentTime," 总时长: ",vd.duration," 暂停状态: ",vd.paused);
+			}
+			
+			btns[4].onclick = function (){
+				vd.webkitRequestFullScreen();
+			}
+			
+			vd.oncanplay = function (){
+				console.log("可以播放视频了,加载完成了");
+			}
+			
+			vd.ontimeupdate = function (){
+				// 视频播放时不断触发的函数
+				console.log("当前播放进度: ",vd.currentTime);
+				// 当前播放进度/总时长 = innerWidth/processWidth
+				// inner.style.width = vd.currentTime / vd.duration * process.offsetWidth + "px";
+				inner.style.width = vd.currentTime / vd.duration * 100 + "%";
+			}
+			
+			// 拖拽进度条
+			process.onmousedown = function (){
+				
+				process.onmousemove = function (){
+					// 获取鼠标距离process的左边距  就是inner的宽度   offsetX指鼠标距离触发事件的对象的左边距
+					var left = event.offsetX;
+					inner.style.width = left + "px";
+					vd.currentTime = left / process.offsetWidth * vd.duration;
+				}
+				
+				window.onmouseup = function (){
+					process.onmousemove = null;
+				}
+			}
+			
+			vd.onended = function (){
+				console.log("done ...");
+			}
+		</script>
+	</body>
+</html>
